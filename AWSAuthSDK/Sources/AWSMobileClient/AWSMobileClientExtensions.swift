@@ -1171,11 +1171,30 @@ extension AWSMobileClient {
 extension AWSMobileClient: AWSCognitoAuthDelegate {
     
     public func getViewController() -> UIViewController {
-        // This should never get called based on the design
-        if (developerNavigationController?.visibleViewController != nil) {
-            return developerNavigationController!.visibleViewController!
+        
+        if let visibleViewController = developerNavigationController?.visibleViewController {
+            return visibleViewController
         }
-        return UIApplication.shared.keyWindow!.rootViewController!
+        
+        if let rootViewController = UIApplication.shared.keyWindow?.rootViewController {
+            return rootViewController
+        } else if #available(iOS 13.0, *) {
+            if #available(iOS 15.0, *) {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .filter { $0.activationState == .foregroundActive }
+                    .first?.keyWindow?.rootViewController ?? UIViewController()
+            } else {
+                return UIApplication.shared.connectedScenes
+                    .compactMap { $0 as? UIWindowScene }
+                    .filter { $0.activationState == .foregroundActive }
+                    .first?.windows
+                    .first(where: \.isKeyWindow)?.rootViewController ?? UIViewController()
+            }
+        }
+        
+        // un-expected return an redandunt instance of UIViewController
+        return UIViewController()
     }
     
     public func shouldLaunchSignInVCIfRefreshTokenIsExpired() -> Bool {
