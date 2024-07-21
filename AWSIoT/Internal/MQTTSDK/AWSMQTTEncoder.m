@@ -17,43 +17,42 @@
 #import "AWSMQTTEncoder.h"
 
 @interface AWSMQTTEncoder () {
-    NSOutputStream* stream;
     NSMutableData*  buffer;
     NSInteger       byteIndex;
 }
 
-@property (nonatomic, strong) dispatch_semaphore_t encodeSemaphore;
-
+@property (nonatomic, strong) dispatch_queue_t encodeQueue;
+@property (nonatomic, strong) NSOutputStream* stream;
 @end
 
 @implementation AWSMQTTEncoder
 
 - (id)initWithStream:(NSOutputStream*)aStream
- {
+{
     _status = AWSMQTTEncoderStatusInitializing;
-    stream = aStream;
-    [stream setDelegate:self];
-    _encodeSemaphore = dispatch_semaphore_create(1);
+    self.stream = aStream;
+    [self.stream setDelegate:self];
+    self.encodeQueue = dispatch_queue_create("com.amazon.aws.iot.encoder-queue", DISPATCH_QUEUE_SERIAL);
     return self;
 }
 
 - (void)open {
     AWSDDLogDebug(@"opening encoder stream.");
-    [stream setDelegate:self];
-    [stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [stream open];
+    [self.stream setDelegate:self];
+    [self.stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [self.stream open];
 }
 
 - (void)close {
     AWSDDLogDebug(@"closing encoder stream.");
-    [stream close];
-    [stream setDelegate:nil];
-    stream = nil; 
+    [self.stream close];
+    [self.stream setDelegate:nil];
+    self.stream = nil;
 }
 
 //This is executed in the runLoop.
 - (void)stream:(NSStream*)sender handleEvent:(NSStreamEvent)eventCode {
-    if(stream == nil)
+    if(self.stream == nil)
         return;
 
     AWSDDLogVerbose(@"%s [Line %d] EventCode:%lu, Thread: %@", __PRETTY_FUNCTION__, __LINE__, (unsigned long)eventCode, [NSThread currentThread]);
@@ -70,25 +69,10 @@
                 [_delegate encoder:self handleEvent:AWSMQTTEncoderEventReady];
             }
             else if (_status == AWSMQTTEncoderStatusSending) {
-                UInt8* ptr;
-                NSInteger n, length;
-                
-                ptr = (UInt8*) [buffer bytes] + byteIndex;
-                // Number of bytes pending for transfer
-                length = [buffer length] - byteIndex;
-                n = [stream write:ptr maxLength:length];
-                if (n == -1) {
-                    _status = AWSMQTTEncoderStatusError;
-                    [_delegate encoder:self handleEvent:AWSMQTTEncoderEventErrorOccurred];
-                }
-                else if (n < length) {
-                    byteIndex += n;
-                }
-                else {
-                    buffer = NULL;
-                    byteIndex = 0;
-                    _status = AWSMQTTEncoderStatusReady;
-                }
+                dispatch_assert_queue_not(self.encodeQueue);
+                dispatch_sync(self.encodeQueue, ^{
+                    [self writeBytes];
+                });
             }
             break;
         case NSStreamEventErrorOccurred:
@@ -105,24 +89,29 @@
 }
 
 - (void)encodeMessage:(AWSMQTTMessage*)msg {
-    //Adding a mutex to prevent buffer from being modified by multiple threads
-    AWSDDLogVerbose(@"***** waiting on encodeSemaphore *****");
-    dispatch_semaphore_wait(self.encodeSemaphore, DISPATCH_TIME_FOREVER);
-    AWSDDLogVerbose(@"***** passed encodeSempahore. *****");
+    dispatch_assert_queue_not(self.encodeQueue);
+    dispatch_sync(self.encodeQueue, ^{
+        [self encodeWhenReady:msg];
+    });
+}
+
+# pragma mark - private/serial functions -
+
+- (void)encodeWhenReady:(AWSMQTTMessage*)msg {
+    dispatch_assert_queue(self.encodeQueue);
     UInt8 header;
     NSInteger n, length;
-    
+
     if (_status != AWSMQTTEncoderStatusReady) {
         AWSDDLogInfo(@"Encoder not ready");
-        dispatch_semaphore_signal(self.encodeSemaphore);
         return;
     }
-    
+
     assert (buffer == NULL);
     assert (byteIndex == 0);
-    
+
     buffer = [[NSMutableData alloc] init];
-    
+
     // encode fixed header
     header = [msg type] << 4;
     if ([msg isDuplicate]) {
@@ -133,7 +122,7 @@
         header |= 0x01;
     }
     [buffer appendBytes:&header length:1];
-    
+
     // encode remaining length
     length = [[msg data] length];
     do {
@@ -145,13 +134,13 @@
         [buffer appendBytes:&digit length:1];
     }
     while (length > 0);
-    
+
     // encode message data
     if ([msg data] != NULL) {
         [buffer appendData:[msg data]];
     }
-    
-    n = [stream write:[buffer bytes] maxLength:[buffer length]];
+
+    n = [self.stream write:[buffer bytes] maxLength:[buffer length]];
     if (n == -1) {
         _status = AWSMQTTEncoderStatusError;
         [_delegate encoder:self handleEvent:AWSMQTTEncoderEventErrorOccurred];
@@ -164,9 +153,29 @@
         buffer = NULL;
         // XXX [delegate encoder:self handleEvent:MQTTEncoderEventReady];
     }
-    AWSDDLogVerbose(@"***** signaling encodeSemaphore *****");
-    dispatch_semaphore_signal(self.encodeSemaphore);
-    AWSDDLogVerbose(@"<<%@>>: Encoder finished writing message", [NSThread currentThread]);
+}
+
+- (void)writeBytes {
+    dispatch_assert_queue(self.encodeQueue);
+    UInt8* ptr;
+    NSInteger n, length;
+
+    ptr = (UInt8*) [buffer bytes] + byteIndex;
+    // Number of bytes pending for transfer
+    length = [buffer length] - byteIndex;
+    n = [self.stream write:ptr maxLength:length];
+    if (n == -1) {
+        _status = AWSMQTTEncoderStatusError;
+        [_delegate encoder:self handleEvent:AWSMQTTEncoderEventErrorOccurred];
+    }
+    else if (n < length) {
+        byteIndex += n;
+    }
+    else {
+        buffer = NULL;
+        byteIndex = 0;
+        _status = AWSMQTTEncoderStatusReady;
+    }
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 #import "AWSCognitoIdentityProviderResources.h"
 
 static NSString *const AWSInfoCognitoIdentityProvider = @"CognitoIdentityProvider";
-NSString *const AWSCognitoIdentityProviderSDKVersion = @"2.17.0";
+NSString *const AWSCognitoIdentityProviderSDKVersion = @"2.34.0";
 
 
 @interface AWSCognitoIdentityProviderResponseSerializer : AWSJSONResponseSerializer
@@ -46,6 +46,7 @@ static NSDictionary *errorCodeDictionary = nil;
                             @"DuplicateProviderException" : @(AWSCognitoIdentityProviderErrorDuplicateProvider),
                             @"EnableSoftwareTokenMFAException" : @(AWSCognitoIdentityProviderErrorEnableSoftwareTokenMFA),
                             @"ExpiredCodeException" : @(AWSCognitoIdentityProviderErrorExpiredCode),
+                            @"ForbiddenException" : @(AWSCognitoIdentityProviderErrorForbidden),
                             @"GroupExistsException" : @(AWSCognitoIdentityProviderErrorGroupExists),
                             @"InternalErrorException" : @(AWSCognitoIdentityProviderErrorInternalError),
                             @"InvalidEmailRoleAccessPolicyException" : @(AWSCognitoIdentityProviderErrorInvalidEmailRoleAccessPolicy),
@@ -66,8 +67,11 @@ static NSDictionary *errorCodeDictionary = nil;
                             @"SoftwareTokenMFANotFoundException" : @(AWSCognitoIdentityProviderErrorSoftwareTokenMFANotFound),
                             @"TooManyFailedAttemptsException" : @(AWSCognitoIdentityProviderErrorTooManyFailedAttempts),
                             @"TooManyRequestsException" : @(AWSCognitoIdentityProviderErrorTooManyRequests),
+                            @"UnauthorizedException" : @(AWSCognitoIdentityProviderErrorUnauthorized),
                             @"UnexpectedLambdaException" : @(AWSCognitoIdentityProviderErrorUnexpectedLambda),
                             @"UnsupportedIdentityProviderException" : @(AWSCognitoIdentityProviderErrorUnsupportedIdentityProvider),
+                            @"UnsupportedOperationException" : @(AWSCognitoIdentityProviderErrorUnsupportedOperation),
+                            @"UnsupportedTokenTypeException" : @(AWSCognitoIdentityProviderErrorUnsupportedTokenType),
                             @"UnsupportedUserStateException" : @(AWSCognitoIdentityProviderErrorUnsupportedUserState),
                             @"UserImportInProgressException" : @(AWSCognitoIdentityProviderErrorUserImportInProgress),
                             @"UserLambdaValidationException" : @(AWSCognitoIdentityProviderErrorUserLambdaValidation),
@@ -1679,6 +1683,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
+- (AWSTask<AWSCognitoIdentityProviderGetLogDeliveryConfigurationResponse *> *)getLogDeliveryConfiguration:(AWSCognitoIdentityProviderGetLogDeliveryConfigurationRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"AWSCognitoIdentityProviderService"
+                 operationName:@"GetLogDeliveryConfiguration"
+                   outputClass:[AWSCognitoIdentityProviderGetLogDeliveryConfigurationResponse class]];
+}
+
+- (void)getLogDeliveryConfiguration:(AWSCognitoIdentityProviderGetLogDeliveryConfigurationRequest *)request
+     completionHandler:(void (^)(AWSCognitoIdentityProviderGetLogDeliveryConfigurationResponse *response, NSError *error))completionHandler {
+    [[self getLogDeliveryConfiguration:request] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityProviderGetLogDeliveryConfigurationResponse *> * _Nonnull task) {
+        AWSCognitoIdentityProviderGetLogDeliveryConfigurationResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
 - (AWSTask<AWSCognitoIdentityProviderGetSigningCertificateResponse *> *)getSigningCertificate:(AWSCognitoIdentityProviderGetSigningCertificateRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodPOST
@@ -2106,6 +2133,52 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
      completionHandler:(void (^)(AWSCognitoIdentityProviderRespondToAuthChallengeResponse *response, NSError *error))completionHandler {
     [[self respondToAuthChallenge:request] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityProviderRespondToAuthChallengeResponse *> * _Nonnull task) {
         AWSCognitoIdentityProviderRespondToAuthChallengeResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSCognitoIdentityProviderRevokeTokenResponse *> *)revokeToken:(AWSCognitoIdentityProviderRevokeTokenRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"AWSCognitoIdentityProviderService"
+                 operationName:@"RevokeToken"
+                   outputClass:[AWSCognitoIdentityProviderRevokeTokenResponse class]];
+}
+
+- (void)revokeToken:(AWSCognitoIdentityProviderRevokeTokenRequest *)request
+     completionHandler:(void (^)(AWSCognitoIdentityProviderRevokeTokenResponse *response, NSError *error))completionHandler {
+    [[self revokeToken:request] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityProviderRevokeTokenResponse *> * _Nonnull task) {
+        AWSCognitoIdentityProviderRevokeTokenResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSCognitoIdentityProviderSetLogDeliveryConfigurationResponse *> *)setLogDeliveryConfiguration:(AWSCognitoIdentityProviderSetLogDeliveryConfigurationRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@""
+                  targetPrefix:@"AWSCognitoIdentityProviderService"
+                 operationName:@"SetLogDeliveryConfiguration"
+                   outputClass:[AWSCognitoIdentityProviderSetLogDeliveryConfigurationResponse class]];
+}
+
+- (void)setLogDeliveryConfiguration:(AWSCognitoIdentityProviderSetLogDeliveryConfigurationRequest *)request
+     completionHandler:(void (^)(AWSCognitoIdentityProviderSetLogDeliveryConfigurationResponse *response, NSError *error))completionHandler {
+    [[self setLogDeliveryConfiguration:request] continueWithBlock:^id _Nullable(AWSTask<AWSCognitoIdentityProviderSetLogDeliveryConfigurationResponse *> * _Nonnull task) {
+        AWSCognitoIdentityProviderSetLogDeliveryConfigurationResponse *result = task.result;
         NSError *error = task.error;
 
         if (completionHandler) {

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -103,6 +103,25 @@ static id mockNetworking = nil;
     OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
 
     [AWSCognitoIdentity removeCognitoIdentityForKey:key];
+}
+
+- (void)testCreateIdentityPoolWithSuppliedHeaders {
+    AWSServiceConfiguration *configuration = [AWSTestUtility getDefaultServiceConfiguration];
+    configuration.headers = @{@"foo": @"bar"};
+    id key = @"test-with-headers";
+    [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration forKey:key];
+    AWSCognitoIdentity *cognitoIdentity = [AWSCognitoIdentity CognitoIdentityForKey:key];
+    NSDictionary *expected = @{@"foo": @"bar", @"Content-Type": @"application/x-amz-json-1.1"};
+    XCTAssertEqualObjects(cognitoIdentity.configuration.headers, expected, @"expected provided headers to be included in configuration object");
+}
+
+- (void)testCreateIdentityPoolNoSuppliedHeaders {
+    AWSServiceConfiguration *configuration = [AWSTestUtility getDefaultServiceConfiguration];
+    id key = @"test-without-headers";
+    [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration forKey:key];
+    AWSCognitoIdentity *cognitoIdentity = [AWSCognitoIdentity CognitoIdentityForKey:key];
+    NSDictionary *expected = @{@"Content-Type": @"application/x-amz-json-1.1"};
+    XCTAssertEqualObjects(cognitoIdentity.configuration.headers, expected, @"expected Content-Type header to be included");
 }
 
 - (void)testDeleteIdentities {
@@ -536,6 +555,54 @@ static id mockNetworking = nil;
     [AWSCognitoIdentity removeCognitoIdentityForKey:key];
 }
 
+- (void)testGetPrincipalTagAttributeMap {
+    NSString *key = @"testGetPrincipalTagAttributeMap";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration forKey:key];
+
+    AWSCognitoIdentity *awsClient = [AWSCognitoIdentity CognitoIdentityForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+    [[[[AWSCognitoIdentity CognitoIdentityForKey:key] getPrincipalTagAttributeMap:[AWSCognitoIdentityGetPrincipalTagAttributeMapInput new]] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", task.error.domain);
+        XCTAssertEqual(8848, task.error.code);
+        XCTAssertNil(task.result);
+        return nil;
+    }] waitUntilFinished];
+
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSCognitoIdentity removeCognitoIdentityForKey:key];
+}
+
+- (void)testGetPrincipalTagAttributeMapCompletionHandler {
+    NSString *key = @"testGetPrincipalTagAttributeMap";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration forKey:key];
+
+    AWSCognitoIdentity *awsClient = [AWSCognitoIdentity CognitoIdentityForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+	[[AWSCognitoIdentity CognitoIdentityForKey:key] getPrincipalTagAttributeMap:[AWSCognitoIdentityGetPrincipalTagAttributeMapInput new] completionHandler:^(AWSCognitoIdentityGetPrincipalTagAttributeMapResponse* _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
+        XCTAssertEqual(8848, error.code);
+        XCTAssertNil(response);
+        dispatch_semaphore_signal(semaphore);
+    }];
+	
+ 	dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int)(2.0 * NSEC_PER_SEC)));
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSCognitoIdentity removeCognitoIdentityForKey:key];
+}
+
 - (void)testListIdentities {
     NSString *key = @"testListIdentities";
     AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
@@ -814,6 +881,54 @@ static id mockNetworking = nil;
         XCTAssertNotNil(error);
         XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
         XCTAssertEqual(8848, error.code);
+        dispatch_semaphore_signal(semaphore);
+    }];
+	
+ 	dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int)(2.0 * NSEC_PER_SEC)));
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSCognitoIdentity removeCognitoIdentityForKey:key];
+}
+
+- (void)testSetPrincipalTagAttributeMap {
+    NSString *key = @"testSetPrincipalTagAttributeMap";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration forKey:key];
+
+    AWSCognitoIdentity *awsClient = [AWSCognitoIdentity CognitoIdentityForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+    [[[[AWSCognitoIdentity CognitoIdentityForKey:key] setPrincipalTagAttributeMap:[AWSCognitoIdentitySetPrincipalTagAttributeMapInput new]] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", task.error.domain);
+        XCTAssertEqual(8848, task.error.code);
+        XCTAssertNil(task.result);
+        return nil;
+    }] waitUntilFinished];
+
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSCognitoIdentity removeCognitoIdentityForKey:key];
+}
+
+- (void)testSetPrincipalTagAttributeMapCompletionHandler {
+    NSString *key = @"testSetPrincipalTagAttributeMap";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSCognitoIdentity registerCognitoIdentityWithConfiguration:configuration forKey:key];
+
+    AWSCognitoIdentity *awsClient = [AWSCognitoIdentity CognitoIdentityForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+	[[AWSCognitoIdentity CognitoIdentityForKey:key] setPrincipalTagAttributeMap:[AWSCognitoIdentitySetPrincipalTagAttributeMapInput new] completionHandler:^(AWSCognitoIdentitySetPrincipalTagAttributeMapResponse* _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
+        XCTAssertEqual(8848, error.code);
+        XCTAssertNil(response);
         dispatch_semaphore_signal(semaphore);
     }];
 	

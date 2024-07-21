@@ -19,7 +19,7 @@
 #import "AWSPinpointContext.h"
 #import "AWSPinpointSessionClient.h"
 #import "AWSPinpointConfiguration.h"
-#import "AWSClientContext.h"
+#import <AWSCore/AWSClientContext.h>
 #import "AWSPinpointTargeting.h"
 #import "AWSPinpointNotificationManager.h"
 #import "AWSPinpointAnalyticsClient.h"
@@ -153,7 +153,7 @@ static AWSSynchronizedMutableDictionary *_pinpointForAppNamespace = nil;
         }
         
         if (configuration.enableAutoSessionRecording) {
-            [_pinpointContext.sessionClient startSession];
+            [_pinpointContext.sessionClient startPinpointSession];
         }
         
         AWSDDLogInfo(@"Pinpoint SDK Initialization successfully completed.");

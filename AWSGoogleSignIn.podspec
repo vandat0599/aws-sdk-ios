@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
    s.name         = 'AWSGoogleSignIn'
-   s.version      = '2.17.0'
+   s.version      = '2.34.0'
    s.summary      = 'Amazon Web Services SDK for iOS.'
  
    s.description  = 'The AWS SDK for iOS provides a library, code samples, and documentation for developers to build connected mobile applications using AWS.'
@@ -9,13 +9,13 @@ Pod::Spec.new do |s|
    s.license      = 'Apache License, Version 2.0'
    s.author       = { 'Amazon Web Services' => 'amazonwebservices' }
    s.platform     = :ios, '9.0'
-   s.source       = { :git => 'https://github.com/aws/aws-sdk-ios.git',
+   s.source       = { :git => 'https://github.com/aws-amplify/aws-sdk-ios.git',
                       :tag => s.version}
    s.requires_arc = true
-   s.dependency 'AWSAuthCore', '2.17.0'
-   s.dependency 'AWSCore', '2.17.0'
+   s.dependency 'AWSAuthCore', '2.34.0'
+   s.dependency 'AWSCore', '2.34.0'
    s.source_files = 'AWSAuthSDK/Sources/AWSGoogleSignIn/*.{h,m}', 'AWSAuthSDK/Dependencies/GoogleHeaders/*.h'
    s.public_header_files = 'AWSAuthSDK/Sources/AWSGoogleSignIn/*.h'
    s.private_header_files = 'AWSAuthSDK/Dependencies/GoogleHeaders/*.h'
-   s.resource_bundle = {  'AWSGoogleSignIn' => 'AWSAuthSDK/Sources/AWSGoogleSignIn/Images.xcassets' }
+   s.resource_bundle = {  'AWSGoogleSignIn' => ['AWSAuthSDK/Sources/AWSGoogleSignIn/Images.xcassets','AWSAuthSDK/Sources/AWSGoogleSignIn/PrivacyInfo.xcprivacy']  }
  end

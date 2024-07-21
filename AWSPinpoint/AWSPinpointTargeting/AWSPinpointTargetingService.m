@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 #import "AWSPinpointTargetingResources.h"
 
 static NSString *const AWSInfoPinpointTargeting = @"PinpointTargeting";
-NSString *const AWSPinpointTargetingSDKVersion = @"2.17.0";
+NSString *const AWSPinpointTargetingSDKVersion = @"2.34.0";
 
 
 @interface AWSPinpointTargetingResponseSerializer : AWSJSONResponseSerializer
@@ -40,6 +40,7 @@ static NSDictionary *errorCodeDictionary = nil;
 + (void)initialize {
     errorCodeDictionary = @{
                             @"BadRequestException" : @(AWSPinpointTargetingErrorBadRequest),
+                            @"ConflictException" : @(AWSPinpointTargetingErrorConflict),
                             @"ForbiddenException" : @(AWSPinpointTargetingErrorForbidden),
                             @"InternalServerErrorException" : @(AWSPinpointTargetingErrorInternalServerError),
                             @"MethodNotAllowedException" : @(AWSPinpointTargetingErrorMethodNotAllowed),
@@ -422,6 +423,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
      completionHandler:(void (^)(AWSPinpointTargetingCreateImportJobResponse *response, NSError *error))completionHandler {
     [[self createImportJob:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingCreateImportJobResponse *> * _Nonnull task) {
         AWSPinpointTargetingCreateImportJobResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingCreateInAppTemplateResponse *> *)createInAppTemplate:(AWSPinpointTargetingCreateInAppTemplateRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@"/v1/templates/{template-name}/inapp"
+                  targetPrefix:@""
+                 operationName:@"CreateInAppTemplate"
+                   outputClass:[AWSPinpointTargetingCreateInAppTemplateResponse class]];
+}
+
+- (void)createInAppTemplate:(AWSPinpointTargetingCreateInAppTemplateRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingCreateInAppTemplateResponse *response, NSError *error))completionHandler {
+    [[self createInAppTemplate:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingCreateInAppTemplateResponse *> * _Nonnull task) {
+        AWSPinpointTargetingCreateInAppTemplateResponse *result = task.result;
         NSError *error = task.error;
 
         if (completionHandler) {
@@ -859,6 +883,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
      completionHandler:(void (^)(AWSPinpointTargetingDeleteGcmChannelResponse *response, NSError *error))completionHandler {
     [[self deleteGcmChannel:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingDeleteGcmChannelResponse *> * _Nonnull task) {
         AWSPinpointTargetingDeleteGcmChannelResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingDeleteInAppTemplateResponse *> *)deleteInAppTemplate:(AWSPinpointTargetingDeleteInAppTemplateRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodDELETE
+                     URLString:@"/v1/templates/{template-name}/inapp"
+                  targetPrefix:@""
+                 operationName:@"DeleteInAppTemplate"
+                   outputClass:[AWSPinpointTargetingDeleteInAppTemplateResponse class]];
+}
+
+- (void)deleteInAppTemplate:(AWSPinpointTargetingDeleteInAppTemplateRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingDeleteInAppTemplateResponse *response, NSError *error))completionHandler {
+    [[self deleteInAppTemplate:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingDeleteInAppTemplateResponse *> * _Nonnull task) {
+        AWSPinpointTargetingDeleteInAppTemplateResponse *result = task.result;
         NSError *error = task.error;
 
         if (completionHandler) {
@@ -1674,6 +1721,52 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
+- (AWSTask<AWSPinpointTargetingGetInAppMessagesResponse *> *)getInAppMessages:(AWSPinpointTargetingGetInAppMessagesRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodGET
+                     URLString:@"/v1/apps/{application-id}/endpoints/{endpoint-id}/inappmessages"
+                  targetPrefix:@""
+                 operationName:@"GetInAppMessages"
+                   outputClass:[AWSPinpointTargetingGetInAppMessagesResponse class]];
+}
+
+- (void)getInAppMessages:(AWSPinpointTargetingGetInAppMessagesRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingGetInAppMessagesResponse *response, NSError *error))completionHandler {
+    [[self getInAppMessages:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingGetInAppMessagesResponse *> * _Nonnull task) {
+        AWSPinpointTargetingGetInAppMessagesResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingGetInAppTemplateResponse *> *)getInAppTemplate:(AWSPinpointTargetingGetInAppTemplateRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodGET
+                     URLString:@"/v1/templates/{template-name}/inapp"
+                  targetPrefix:@""
+                 operationName:@"GetInAppTemplate"
+                   outputClass:[AWSPinpointTargetingGetInAppTemplateResponse class]];
+}
+
+- (void)getInAppTemplate:(AWSPinpointTargetingGetInAppTemplateRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingGetInAppTemplateResponse *response, NSError *error))completionHandler {
+    [[self getInAppTemplate:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingGetInAppTemplateResponse *> * _Nonnull task) {
+        AWSPinpointTargetingGetInAppTemplateResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
 - (AWSTask<AWSPinpointTargetingGetJourneyResponse *> *)getJourney:(AWSPinpointTargetingGetJourneyRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodGET
@@ -1756,6 +1849,75 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
      completionHandler:(void (^)(AWSPinpointTargetingGetJourneyExecutionMetricsResponse *response, NSError *error))completionHandler {
     [[self getJourneyExecutionMetrics:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingGetJourneyExecutionMetricsResponse *> * _Nonnull task) {
         AWSPinpointTargetingGetJourneyExecutionMetricsResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse *> *)getJourneyRunExecutionActivityMetrics:(AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodGET
+                     URLString:@"/v1/apps/{application-id}/journeys/{journey-id}/runs/{run-id}/activities/{journey-activity-id}/execution-metrics"
+                  targetPrefix:@""
+                 operationName:@"GetJourneyRunExecutionActivityMetrics"
+                   outputClass:[AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse class]];
+}
+
+- (void)getJourneyRunExecutionActivityMetrics:(AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse *response, NSError *error))completionHandler {
+    [[self getJourneyRunExecutionActivityMetrics:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse *> * _Nonnull task) {
+        AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse *> *)getJourneyRunExecutionMetrics:(AWSPinpointTargetingGetJourneyRunExecutionMetricsRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodGET
+                     URLString:@"/v1/apps/{application-id}/journeys/{journey-id}/runs/{run-id}/execution-metrics"
+                  targetPrefix:@""
+                 operationName:@"GetJourneyRunExecutionMetrics"
+                   outputClass:[AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse class]];
+}
+
+- (void)getJourneyRunExecutionMetrics:(AWSPinpointTargetingGetJourneyRunExecutionMetricsRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse *response, NSError *error))completionHandler {
+    [[self getJourneyRunExecutionMetrics:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse *> * _Nonnull task) {
+        AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingGetJourneyRunsResponse *> *)getJourneyRuns:(AWSPinpointTargetingGetJourneyRunsRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodGET
+                     URLString:@"/v1/apps/{application-id}/journeys/{journey-id}/runs"
+                  targetPrefix:@""
+                 operationName:@"GetJourneyRuns"
+                   outputClass:[AWSPinpointTargetingGetJourneyRunsResponse class]];
+}
+
+- (void)getJourneyRuns:(AWSPinpointTargetingGetJourneyRunsRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingGetJourneyRunsResponse *response, NSError *error))completionHandler {
+    [[self getJourneyRuns:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingGetJourneyRunsResponse *> * _Nonnull task) {
+        AWSPinpointTargetingGetJourneyRunsResponse *result = task.result;
         NSError *error = task.error;
 
         if (completionHandler) {
@@ -2295,6 +2457,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
+- (AWSTask<AWSPinpointTargetingSendOTPMessageResponse *> *)sendOTPMessage:(AWSPinpointTargetingSendOTPMessageRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@"/v1/apps/{application-id}/otp"
+                  targetPrefix:@""
+                 operationName:@"SendOTPMessage"
+                   outputClass:[AWSPinpointTargetingSendOTPMessageResponse class]];
+}
+
+- (void)sendOTPMessage:(AWSPinpointTargetingSendOTPMessageRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingSendOTPMessageResponse *response, NSError *error))completionHandler {
+    [[self sendOTPMessage:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingSendOTPMessageResponse *> * _Nonnull task) {
+        AWSPinpointTargetingSendOTPMessageResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
 - (AWSTask<AWSPinpointTargetingSendUsersMessagesResponse *> *)sendUsersMessages:(AWSPinpointTargetingSendUsersMessagesRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodPOST
@@ -2661,6 +2846,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
     }];
 }
 
+- (AWSTask<AWSPinpointTargetingUpdateInAppTemplateResponse *> *)updateInAppTemplate:(AWSPinpointTargetingUpdateInAppTemplateRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPUT
+                     URLString:@"/v1/templates/{template-name}/inapp"
+                  targetPrefix:@""
+                 operationName:@"UpdateInAppTemplate"
+                   outputClass:[AWSPinpointTargetingUpdateInAppTemplateResponse class]];
+}
+
+- (void)updateInAppTemplate:(AWSPinpointTargetingUpdateInAppTemplateRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingUpdateInAppTemplateResponse *response, NSError *error))completionHandler {
+    [[self updateInAppTemplate:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingUpdateInAppTemplateResponse *> * _Nonnull task) {
+        AWSPinpointTargetingUpdateInAppTemplateResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
 - (AWSTask<AWSPinpointTargetingUpdateJourneyResponse *> *)updateJourney:(AWSPinpointTargetingUpdateJourneyRequest *)request {
     return [self invokeRequest:request
                     HTTPMethod:AWSHTTPMethodPUT
@@ -2881,6 +3089,29 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
      completionHandler:(void (^)(AWSPinpointTargetingUpdateVoiceTemplateResponse *response, NSError *error))completionHandler {
     [[self updateVoiceTemplate:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingUpdateVoiceTemplateResponse *> * _Nonnull task) {
         AWSPinpointTargetingUpdateVoiceTemplateResponse *result = task.result;
+        NSError *error = task.error;
+
+        if (completionHandler) {
+            completionHandler(result, error);
+        }
+
+        return nil;
+    }];
+}
+
+- (AWSTask<AWSPinpointTargetingVerifyOTPMessageResponse *> *)verifyOTPMessage:(AWSPinpointTargetingVerifyOTPMessageRequest *)request {
+    return [self invokeRequest:request
+                    HTTPMethod:AWSHTTPMethodPOST
+                     URLString:@"/v1/apps/{application-id}/verify-otp"
+                  targetPrefix:@""
+                 operationName:@"VerifyOTPMessage"
+                   outputClass:[AWSPinpointTargetingVerifyOTPMessageResponse class]];
+}
+
+- (void)verifyOTPMessage:(AWSPinpointTargetingVerifyOTPMessageRequest *)request
+     completionHandler:(void (^)(AWSPinpointTargetingVerifyOTPMessageResponse *response, NSError *error))completionHandler {
+    [[self verifyOTPMessage:request] continueWithBlock:^id _Nullable(AWSTask<AWSPinpointTargetingVerifyOTPMessageResponse *> * _Nonnull task) {
+        AWSPinpointTargetingVerifyOTPMessageResponse *result = task.result;
         NSError *error = task.error;
 
         if (completionHandler) {

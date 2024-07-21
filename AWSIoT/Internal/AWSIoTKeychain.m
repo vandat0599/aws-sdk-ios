@@ -22,6 +22,8 @@ NSString *const AWSIoTKeychainEndPrivateKeyTag = @"\n-----END RSA PRIVATE KEY---
 NSString *const AWSIoTKeychainStartCertKeyTag = @"-----BEGIN CERTIFICATE-----\n";
 NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
 
+static AWSIoTKeyChainAccessibility _accessibility = AWSIoTKeyChainAccessibilityAfterFirstUnlockThisDeviceOnly;
+
 @implementation AWSIoTKeychain
 
 + (NSString*)publicKeyTag {
@@ -119,7 +121,7 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     sanityCheck = SecItemDelete((CFDictionaryRef)queryPublicKey);
     if (sanityCheck != noErr) {
         if (sanityCheck == errSecItemNotFound) {
-            AWSDDLogError(@"Error removing public key errSecItemNotFound");
+            AWSDDLogError(@"Error removing public key: errSecItemNotFound");
         } else {
             AWSDDLogError(@"Error removing public key, OSStatus == %d.", (int)sanityCheck);
             status = NO;
@@ -129,19 +131,19 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     return status;
 }
 
-+ (BOOL)isValidCertificate:(NSString*)tag {
++ (BOOL)isValidCertificate:(NSString*)privateKeyTag certificateLabel:(NSString*)certificateLabel {
     
-    SecIdentityRef identityRef = [AWSIoTKeychain getIdentityRef:tag];
+    SecIdentityRef identityRef = [AWSIoTKeychain getIdentityRef:privateKeyTag certificateLabel:certificateLabel];
     if (identityRef) {
         SecCertificateRef cert = NULL;
         OSStatus status = SecIdentityCopyCertificate(identityRef, &cert);
+        CFRelease(identityRef);
         if (status == noErr) {
             return YES;
         } else {
             AWSDDLogError(@"SecIdentityCopyCertificate failed [%d]", (int)status);
         }
     }
-    
     return NO;
 }
 
@@ -158,7 +160,11 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
 }
 
 + (BOOL)addCertificateToKeychain:(NSString*)cert {
-        return [AWSIoTKeychain addCertificate:[AWSIoTKeychain certToDer:cert]];
+    return [AWSIoTKeychain addCertificateToKeychain:cert tag:[AWSIoTKeychain certTag]];
+}
+
++ (BOOL)addCertificateToKeychain:(NSString*)cert tag:(NSString*)tag {
+    return [AWSIoTKeychain addCertificate:[AWSIoTKeychain certToDer:cert] withTag:tag];
 }
 
 + (BOOL)addCertificateFromPemFile:(NSString*)fileName withTag:(NSString*)tag {
@@ -189,29 +195,8 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     return [AWSIoTKeychain addCertificate:certData withTag:tag];
 }
 
-+ (BOOL)addCertificate:(NSData*)cert {
-    SecCertificateRef certRef = SecCertificateCreateWithData(kCFAllocatorDefault, (__bridge CFDataRef)cert);
-    if (certRef == NULL) {
-        AWSDDLogError(@"Error create Sec Certificate from data");
-        return NO;
-    }
-    return [self addCertificateRef:certRef];
-}
-
-
-+ (BOOL)addCertificateRef:(SecCertificateRef)certRef {
-    NSMutableDictionary * queryCertificate = [[NSMutableDictionary alloc] init];
-    
-    [queryCertificate setObject:(id)kSecClassCertificate forKey:(id)kSecClass];
-    [queryCertificate setObject:[AWSIoTKeychain certTag] forKey:(id)kSecAttrLabel];
-    [queryCertificate setObject:(__bridge id)certRef forKey:(id)kSecValueRef];
-
-    OSStatus sanityCheck = SecItemAdd((CFDictionaryRef)queryCertificate, nil);
-    if ((sanityCheck != noErr) && (sanityCheck != errSecDuplicateItem)) {
-        AWSDDLogError(@"add certificate to keychain with error: %d", (int)sanityCheck);
-        return NO;
-    }
-    return YES;
++ (BOOL)addCertificate:(NSData *)cert {
+    return [AWSIoTKeychain addCertificate:cert withTag:[AWSIoTKeychain certTag]];
 }
 
 + (BOOL)addCertificate:(NSData*)cert withTag:(NSString*)tag {
@@ -221,23 +206,32 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
         return NO;
     }
     
+    BOOL result = [AWSIoTKeychain addCertificateRef:certRef tag:tag];
+    CFRelease(certRef);
+    return result;
+}
+
++ (BOOL)addCertificateRef:(SecCertificateRef)certRef {
+    return [AWSIoTKeychain addCertificateRef:certRef tag:[AWSIoTKeychain certTag]];
+}
+
++ (BOOL)addCertificateRef:(SecCertificateRef)certRef tag:(NSString*)tag {
     NSMutableDictionary * queryCertificate = [[NSMutableDictionary alloc] init];
     
     [queryCertificate setObject:(id)kSecClassCertificate forKey:(id)kSecClass];
     [queryCertificate setObject:tag forKey:(id)kSecAttrLabel];
     [queryCertificate setObject:(__bridge id)certRef forKey:(id)kSecValueRef];
-    
+    [queryCertificate setObject:(__bridge id)[AWSIoTKeychain accessibilityType] forKey:(id)kSecAttrAccessible];
+
     OSStatus sanityCheck = SecItemAdd((CFDictionaryRef)queryCertificate, nil);
     if ((sanityCheck != noErr) && (sanityCheck != errSecDuplicateItem)) {
         AWSDDLogError(@"add certificate to keychain with error: %d", (int)sanityCheck);
         return NO;
     }
-    
     return YES;
 }
 
 + (BOOL)removeCertificate {
-    
     NSMutableDictionary * queryCertificate = [[NSMutableDictionary alloc] init];
     
     [queryCertificate setObject:(id)kSecClassCertificate forKey:(id)kSecClass];
@@ -255,7 +249,6 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     
     return YES;
 }
-
 
 + (BOOL)removeCertificateWithTag:(NSString*)tag {
     
@@ -315,7 +308,7 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
         publicKeyRef = NULL;
     }
     
-    return (__bridge NSData *)publicKeyRef;
+    return (__bridge_transfer NSData *)publicKeyRef;
 }
 
 + (SecKeyRef)getPrivateKeyRef:(NSString*)tag {
@@ -357,25 +350,25 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
         privateKeyBits = NULL;
     }
     
-    return (__bridge NSData *)privateKeyBits;
+    return (__bridge_transfer NSData *)privateKeyBits;
 }
 
-+ (SecIdentityRef)getIdentityRef:(NSString*)tag {
++ (SecIdentityRef)getIdentityRef:(NSString*)privateKeyTag certificateLabel:(NSString *)certificateLabel {
     OSStatus sanityCheck = noErr;
     SecIdentityRef identityRef = NULL;
     
     NSMutableDictionary * queryIdentityRef = [[NSMutableDictionary alloc] init];
     
     [queryIdentityRef setObject:(id)kSecClassIdentity forKey:(id)kSecClass];
-    [queryIdentityRef setObject:tag forKey:(id)kSecAttrApplicationTag]; 
+    [queryIdentityRef setObject:privateKeyTag forKey:(id)kSecAttrApplicationTag];
+    [queryIdentityRef setObject:certificateLabel forKey:(id)kSecAttrLabel];
     [queryIdentityRef setObject:(id)kSecAttrKeyTypeRSA forKey:(id)kSecAttrKeyType];
     [queryIdentityRef setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecReturnRef];
     
     sanityCheck = SecItemCopyMatching((CFDictionaryRef)queryIdentityRef, (CFTypeRef *)&identityRef);
-    
     if (sanityCheck != noErr){
         AWSDDLogError(@"getIdentityRef error: %d",(int)sanityCheck);
-        identityRef = NULL;
+        return nil;
     }
     
     return identityRef;
@@ -384,8 +377,7 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
 + (BOOL)addPublicKeyRef:(SecKeyRef)pubkeyRef tag:(NSString*)tag {
     
     OSStatus sanityCheck = noErr;
-    CFTypeRef persistPeer = NULL;
-    
+
     NSMutableDictionary * publicKeyAttr = [[NSMutableDictionary alloc] init];
     
     [publicKeyAttr setObject:(id)kSecClassKey forKey:(id)kSecClass];
@@ -394,8 +386,9 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     [publicKeyAttr setObject:(__bridge id _Nonnull)(pubkeyRef) forKey:(id)kSecValueRef];
     [publicKeyAttr setObject:(id)kSecAttrKeyClassPublic forKey:(id)kSecAttrKeyClass];
     [publicKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecReturnPersistentRef];
-    
-    sanityCheck = SecItemAdd((CFDictionaryRef) publicKeyAttr, (CFTypeRef *)&persistPeer);
+    [publicKeyAttr setObject:(__bridge id)[AWSIoTKeychain accessibilityType] forKey:(id)kSecAttrAccessible];
+
+    sanityCheck = SecItemAdd((CFDictionaryRef) publicKeyAttr, nil);
     if ((sanityCheck != noErr) && (sanityCheck != errSecDuplicateItem)){
         AWSDDLogError(@"addPublicKeyRef error: %d",(int)sanityCheck);
         return NO;
@@ -417,7 +410,8 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     [publicKeyAttr setObject:pubkey forKey:(id)kSecValueData];
     [publicKeyAttr setObject:(id)kSecAttrKeyClassPublic forKey:(id)kSecAttrKeyClass];
     [publicKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecReturnPersistentRef];
-    
+    [publicKeyAttr setObject:(__bridge id)[AWSIoTKeychain accessibilityType] forKey:(id)kSecAttrAccessible];
+
     sanityCheck = SecItemAdd((CFDictionaryRef) publicKeyAttr, (CFTypeRef *)&persistPeer);
     if ((sanityCheck != noErr) && (sanityCheck != errSecDuplicateItem)){
         AWSDDLogError(@"addPublicKey error: %d",(int)sanityCheck);
@@ -430,8 +424,6 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
 + (BOOL)addPrivateKeyRef:(SecKeyRef)privkeyRef tag:(NSString*)tag {
     
     OSStatus sanityCheck = noErr;
-    CFTypeRef persistPeer = NULL;
-    
     NSMutableDictionary * privateKeyAttr = [[NSMutableDictionary alloc] init];
     
     [privateKeyAttr setObject:(id)kSecClassKey forKey:(id)kSecClass];
@@ -440,8 +432,9 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     [privateKeyAttr setObject:(__bridge id _Nonnull)(privkeyRef) forKey:(id)kSecValueRef];
     [privateKeyAttr setObject:(id)kSecAttrKeyClassPrivate forKey:(id)kSecAttrKeyClass];
     [privateKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecReturnPersistentRef];
-    
-    sanityCheck = SecItemAdd((CFDictionaryRef) privateKeyAttr, (CFTypeRef *)&persistPeer);
+    [privateKeyAttr setObject:(__bridge id)[AWSIoTKeychain accessibilityType] forKey:(id)kSecAttrAccessible];
+
+    sanityCheck = SecItemAdd((CFDictionaryRef) privateKeyAttr, nil);
     if ((sanityCheck != noErr) && (sanityCheck != errSecDuplicateItem)){
         AWSDDLogError(@"addPrivateKeyRef error: %d",(int)sanityCheck);
         return NO;
@@ -463,7 +456,8 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     [privateKeyAttr setObject:privkey forKey:(id)kSecValueData];
     [privateKeyAttr setObject:(id)kSecAttrKeyClassPrivate forKey:(id)kSecAttrKeyClass];
     [privateKeyAttr setObject:[NSNumber numberWithBool:YES] forKey:(id)kSecReturnPersistentRef];
-    
+    [privateKeyAttr setObject:(__bridge id)[AWSIoTKeychain accessibilityType] forKey:(id)kSecAttrAccessible];
+
     sanityCheck = SecItemAdd((CFDictionaryRef) privateKeyAttr, (CFTypeRef *)&persistPeer);
     if ((sanityCheck != noErr) && (sanityCheck != errSecDuplicateItem)){
         AWSDDLogError(@"addPrivateKey error: %d",(int)sanityCheck);
@@ -514,7 +508,7 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     OSStatus sanityCheck = SecItemDelete((CFDictionaryRef)queryPrivateKey);
     if (sanityCheck != noErr) {
         if (sanityCheck == errSecItemNotFound) {
-            AWSDDLogError(@"Error removing private key errSecItemNotFound");
+            AWSDDLogError(@"Error removing private key: errSecItemNotFound");
         } else {
             AWSDDLogError(@"Error removing private key, OSStatus == %d.", (int)sanityCheck);
             return NO;
@@ -522,6 +516,31 @@ NSString *const AWSIoTKeychainEndCertKeyTag = @"\n-----END CERTIFICATE-----";
     }
     
     return YES;
+}
+
++ (void)setKeyChainAccessibility:(AWSIoTKeyChainAccessibility)accessibility {
+    _accessibility = accessibility;
+}
+
++ (CFTypeRef)accessibilityType {
+    switch (_accessibility) {
+        case AWSIoTKeyChainAccessibilityWhenUnlocked:
+            return kSecAttrAccessibleWhenUnlocked;
+        case AWSIoTKeyChainAccessibilityAfterFirstUnlock:
+            return kSecAttrAccessibleAfterFirstUnlock;
+        case AWSIoTKeyChainAccessibilityAlways:
+            return kSecAttrAccessibleAlways;
+        case AWSIoTKeyChainAccessibilityWhenPasscodeSetThisDeviceOnly:
+            return kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly;
+        case AWSIoTKeyChainAccessibilityWhenUnlockedThisDeviceOnly:
+            return kSecAttrAccessibleWhenUnlockedThisDeviceOnly;
+        case AWSIoTKeyChainAccessibilityAfterFirstUnlockThisDeviceOnly:
+            return kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly;
+        case AWSIoTKeyChainAccessibilityAlwaysThisDeviceOnly:
+            return kSecAttrAccessibleAlwaysThisDeviceOnly;
+        default:
+            return nil;
+    }
 }
 
 @end

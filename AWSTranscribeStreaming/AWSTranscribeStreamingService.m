@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2022 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@
 NSString *const AWSTranscribeStreamingClientErrorDomain = @"com.amazonaws.AWSTranscribeStreamingClientErrorDomain";
 
 static NSString *const AWSInfoTranscribeStreaming = @"TranscribeStreaming";
-NSString *const AWSTranscribeStreamingSDKVersion = @"2.17.0";
+NSString *const AWSTranscribeStreamingSDKVersion = @"2.34.0";
 
 @interface AWSTranscribeStreamingResponseSerializer : AWSJSONResponseSerializer
 
@@ -50,6 +50,7 @@ static NSDictionary *errorCodeDictionary = nil;
         @"ConflictException" : @(AWSTranscribeStreamingErrorConflict),
         @"InternalFailureException" : @(AWSTranscribeStreamingErrorInternalFailure),
         @"LimitExceededException" : @(AWSTranscribeStreamingErrorLimitExceeded),
+        @"ServiceUnavailableException" : @(AWSTranscribeStreamingErrorServiceUnavailable),
     };
 }
 
@@ -333,6 +334,11 @@ static AWSSynchronizedMutableDictionary *_serviceClients = nil;
         
         components.host = [NSString stringWithFormat:@"transcribestreaming.%@.amazonaws.com",
                            self.configuration.endpoint.regionName];
+
+        // need to add ".cn" at end of URL if it is in China Region
+        if ([self.configuration.endpoint.regionName hasPrefix:@"cn"]) {
+            components.host = [components.host stringByAppendingString:@".cn"];
+        }
         
         components.port = @(8443);
         

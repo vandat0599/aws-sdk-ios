@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -19,6 +19,10 @@
 NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticLoadBalancingErrorDomain";
 
 @implementation AWSElasticLoadBalancingAction
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -93,6 +97,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingAddListenerCertificatesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"certificates" : @"Certificates",
@@ -108,6 +116,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingAddListenerCertificatesOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"certificates" : @"Certificates",
@@ -121,6 +133,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingAddTagsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -137,9 +153,111 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingAddTagsOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingAddTrustStoreRevocationsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"revocationContents" : @"RevocationContents",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
++ (NSValueTransformer *)revocationContentsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingRevocationContent class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingAddTrustStoreRevocationsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"trustStoreRevocations" : @"TrustStoreRevocations",
+             };
+}
+
++ (NSValueTransformer *)trustStoreRevocationsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTrustStoreRevocation class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingAnomalyDetection
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"mitigationInEffect" : @"MitigationInEffect",
+             @"result" : @"Result",
+             };
+}
+
++ (NSValueTransformer *)mitigationInEffectJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"yes"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingMitigationInEffectEnumYes);
+        }
+        if ([value caseInsensitiveCompare:@"no"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingMitigationInEffectEnumNo);
+        }
+        return @(AWSElasticLoadBalancingMitigationInEffectEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingMitigationInEffectEnumYes:
+                return @"yes";
+            case AWSElasticLoadBalancingMitigationInEffectEnumNo:
+                return @"no";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)resultJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"anomalous"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingAnomalyResultEnumAnomalous);
+        }
+        if ([value caseInsensitiveCompare:@"normal"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingAnomalyResultEnumNormal);
+        }
+        return @(AWSElasticLoadBalancingAnomalyResultEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingAnomalyResultEnumAnomalous:
+                return @"anomalous";
+            case AWSElasticLoadBalancingAnomalyResultEnumNormal:
+                return @"normal";
+            default:
+                return nil;
+        }
+    }];
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingAuthenticateCognitoActionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -183,6 +301,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingAuthenticateOidcActionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -231,6 +353,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingAvailabilityZone
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"loadBalancerAddresses" : @"LoadBalancerAddresses",
@@ -248,6 +374,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingCertificate
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"certificateArn" : @"CertificateArn",
@@ -258,6 +388,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingCipher
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -270,15 +404,21 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingCreateListenerInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"alpnPolicy" : @"AlpnPolicy",
              @"certificates" : @"Certificates",
              @"defaultActions" : @"DefaultActions",
              @"loadBalancerArn" : @"LoadBalancerArn",
+             @"mutualAuthentication" : @"MutualAuthentication",
              @"port" : @"Port",
              @"protocols" : @"Protocol",
              @"sslPolicy" : @"SslPolicy",
+             @"tags" : @"Tags",
              };
 }
 
@@ -288,6 +428,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 + (NSValueTransformer *)defaultActionsJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingAction class]];
+}
+
++ (NSValueTransformer *)mutualAuthenticationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSElasticLoadBalancingMutualAuthenticationAttributes class]];
 }
 
 + (NSValueTransformer *)protocolsJSONTransformer {
@@ -310,6 +454,9 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -325,15 +472,25 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
             default:
                 return nil;
         }
     }];
 }
 
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTag class]];
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingCreateListenerOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -348,6 +505,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingCreateLoadBalancerInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -421,6 +582,9 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
         if ([value caseInsensitiveCompare:@"network"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingLoadBalancerTypeEnumNetwork);
         }
+        if ([value caseInsensitiveCompare:@"gateway"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingLoadBalancerTypeEnumGateway);
+        }
         return @(AWSElasticLoadBalancingLoadBalancerTypeEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -428,6 +592,8 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
                 return @"application";
             case AWSElasticLoadBalancingLoadBalancerTypeEnumNetwork:
                 return @"network";
+            case AWSElasticLoadBalancingLoadBalancerTypeEnumGateway:
+                return @"gateway";
             default:
                 return nil;
         }
@@ -437,6 +603,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingCreateLoadBalancerOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -452,12 +622,17 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingCreateRuleInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"actions" : @"Actions",
              @"conditions" : @"Conditions",
              @"listenerArn" : @"ListenerArn",
              @"priority" : @"Priority",
+             @"tags" : @"Tags",
              };
 }
 
@@ -469,9 +644,17 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingRuleCondition class]];
 }
 
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTag class]];
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingCreateRuleOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -487,6 +670,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingCreateTargetGroupInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"healthCheckEnabled" : @"HealthCheckEnabled",
@@ -496,10 +683,13 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
              @"healthCheckProtocol" : @"HealthCheckProtocol",
              @"healthCheckTimeoutSeconds" : @"HealthCheckTimeoutSeconds",
              @"healthyThresholdCount" : @"HealthyThresholdCount",
+             @"ipAddressType" : @"IpAddressType",
              @"matcher" : @"Matcher",
              @"name" : @"Name",
              @"port" : @"Port",
              @"protocols" : @"Protocol",
+             @"protocolVersion" : @"ProtocolVersion",
+             @"tags" : @"Tags",
              @"targetType" : @"TargetType",
              @"unhealthyThresholdCount" : @"UnhealthyThresholdCount",
              @"vpcId" : @"VpcId",
@@ -526,6 +716,9 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -541,6 +734,29 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)ipAddressTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"ipv4"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv4);
+        }
+        if ([value caseInsensitiveCompare:@"ipv6"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv6);
+        }
+        return @(AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv4:
+                return @"ipv4";
+            case AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv6:
+                return @"ipv6";
             default:
                 return nil;
         }
@@ -571,6 +787,9 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -586,10 +805,16 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
             default:
                 return nil;
         }
     }];
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTag class]];
 }
 
 + (NSValueTransformer *)targetTypeJSONTransformer {
@@ -603,6 +828,9 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
         if ([value caseInsensitiveCompare:@"lambda"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingTargetTypeEnumLambda);
         }
+        if ([value caseInsensitiveCompare:@"alb"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetTypeEnumAlb);
+        }
         return @(AWSElasticLoadBalancingTargetTypeEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -612,6 +840,8 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
                 return @"ip";
             case AWSElasticLoadBalancingTargetTypeEnumLambda:
                 return @"lambda";
+            case AWSElasticLoadBalancingTargetTypeEnumAlb:
+                return @"alb";
             default:
                 return nil;
         }
@@ -621,6 +851,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingCreateTargetGroupOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -634,7 +868,51 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @end
 
+@implementation AWSElasticLoadBalancingCreateTrustStoreInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"caCertificatesBundleS3Bucket" : @"CaCertificatesBundleS3Bucket",
+             @"caCertificatesBundleS3Key" : @"CaCertificatesBundleS3Key",
+             @"caCertificatesBundleS3ObjectVersion" : @"CaCertificatesBundleS3ObjectVersion",
+             @"name" : @"Name",
+             @"tags" : @"Tags",
+             };
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTag class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingCreateTrustStoreOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"trustStores" : @"TrustStores",
+             };
+}
+
++ (NSValueTransformer *)trustStoresJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTrustStore class]];
+}
+
+@end
+
 @implementation AWSElasticLoadBalancingDeleteListenerInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -646,9 +924,17 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDeleteListenerOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingDeleteLoadBalancerInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -660,9 +946,17 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDeleteLoadBalancerOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingDeleteRuleInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -674,9 +968,17 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDeleteRuleOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingDeleteTargetGroupInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -688,9 +990,39 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDeleteTargetGroupOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDeleteTrustStoreInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDeleteTrustStoreOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingDeregisterTargetsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -707,9 +1039,17 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDeregisterTargetsOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingDescribeAccountLimitsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -721,6 +1061,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeAccountLimitsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -737,6 +1081,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeListenerCertificatesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"listenerArn" : @"ListenerArn",
@@ -748,6 +1096,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeListenerCertificatesOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -764,6 +1116,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeListenersInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"listenerArns" : @"ListenerArns",
@@ -776,6 +1132,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeListenersOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -792,6 +1152,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeLoadBalancerAttributesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"loadBalancerArn" : @"LoadBalancerArn",
@@ -801,6 +1165,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeLoadBalancerAttributesOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -816,6 +1184,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeLoadBalancersInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"loadBalancerArns" : @"LoadBalancerArns",
@@ -828,6 +1200,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeLoadBalancersOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -844,6 +1220,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeRulesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"listenerArn" : @"ListenerArn",
@@ -856,6 +1236,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeRulesOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -872,17 +1256,52 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeSSLPoliciesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"loadBalancerType" : @"LoadBalancerType",
              @"marker" : @"Marker",
              @"names" : @"Names",
              @"pageSize" : @"PageSize",
              };
 }
 
++ (NSValueTransformer *)loadBalancerTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"application"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingLoadBalancerTypeEnumApplication);
+        }
+        if ([value caseInsensitiveCompare:@"network"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingLoadBalancerTypeEnumNetwork);
+        }
+        if ([value caseInsensitiveCompare:@"gateway"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingLoadBalancerTypeEnumGateway);
+        }
+        return @(AWSElasticLoadBalancingLoadBalancerTypeEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingLoadBalancerTypeEnumApplication:
+                return @"application";
+            case AWSElasticLoadBalancingLoadBalancerTypeEnumNetwork:
+                return @"network";
+            case AWSElasticLoadBalancingLoadBalancerTypeEnumGateway:
+                return @"gateway";
+            default:
+                return nil;
+        }
+    }];
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingDescribeSSLPoliciesOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -899,6 +1318,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeTagsInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"resourceArns" : @"ResourceArns",
@@ -908,6 +1331,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeTagsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -923,6 +1350,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeTargetGroupAttributesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"targetGroupArn" : @"TargetGroupArn",
@@ -932,6 +1363,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeTargetGroupAttributesOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -947,6 +1382,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeTargetGroupsInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"loadBalancerArn" : @"LoadBalancerArn",
@@ -960,6 +1399,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingDescribeTargetGroupsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -976,8 +1419,13 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeTargetHealthInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"include" : @"Include",
              @"targetGroupArn" : @"TargetGroupArn",
              @"targets" : @"Targets",
              };
@@ -991,6 +1439,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingDescribeTargetHealthOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"targetHealthDescriptions" : @"TargetHealthDescriptions",
@@ -1003,7 +1455,151 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @end
 
+@implementation AWSElasticLoadBalancingDescribeTrustStoreAssociationsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"marker" : @"Marker",
+             @"pageSize" : @"PageSize",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDescribeTrustStoreAssociationsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextMarker" : @"NextMarker",
+             @"trustStoreAssociations" : @"TrustStoreAssociations",
+             };
+}
+
++ (NSValueTransformer *)trustStoreAssociationsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTrustStoreAssociation class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDescribeTrustStoreRevocation
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"numberOfRevokedEntries" : @"NumberOfRevokedEntries",
+             @"revocationId" : @"RevocationId",
+             @"revocationType" : @"RevocationType",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
++ (NSValueTransformer *)revocationTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CRL"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingRevocationTypeCrl);
+        }
+        return @(AWSElasticLoadBalancingRevocationTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingRevocationTypeCrl:
+                return @"CRL";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDescribeTrustStoreRevocationsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"marker" : @"Marker",
+             @"pageSize" : @"PageSize",
+             @"revocationIds" : @"RevocationIds",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDescribeTrustStoreRevocationsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextMarker" : @"NextMarker",
+             @"trustStoreRevocations" : @"TrustStoreRevocations",
+             };
+}
+
++ (NSValueTransformer *)trustStoreRevocationsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingDescribeTrustStoreRevocation class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDescribeTrustStoresInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"marker" : @"Marker",
+             @"names" : @"Names",
+             @"pageSize" : @"PageSize",
+             @"trustStoreArns" : @"TrustStoreArns",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingDescribeTrustStoresOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextMarker" : @"NextMarker",
+             @"trustStores" : @"TrustStores",
+             };
+}
+
++ (NSValueTransformer *)trustStoresJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTrustStore class]];
+}
+
+@end
+
 @implementation AWSElasticLoadBalancingFixedResponseActionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1016,6 +1612,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingForwardActionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1034,7 +1634,68 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @end
 
+@implementation AWSElasticLoadBalancingGetTrustStoreCaCertificatesBundleInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingGetTrustStoreCaCertificatesBundleOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"location" : @"Location",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingGetTrustStoreRevocationContentInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"revocationId" : @"RevocationId",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingGetTrustStoreRevocationContentOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"location" : @"Location",
+             };
+}
+
+@end
+
 @implementation AWSElasticLoadBalancingHostHeaderConditionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1045,6 +1706,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingHttpHeaderConditionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1057,6 +1722,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingHttpRequestMethodConditionConfig
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"values" : @"Values",
@@ -1066,6 +1735,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 @end
 
 @implementation AWSElasticLoadBalancingLimit
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1078,6 +1751,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingListener
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"alpnPolicy" : @"AlpnPolicy",
@@ -1085,6 +1762,7 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
              @"defaultActions" : @"DefaultActions",
              @"listenerArn" : @"ListenerArn",
              @"loadBalancerArn" : @"LoadBalancerArn",
+             @"mutualAuthentication" : @"MutualAuthentication",
              @"port" : @"Port",
              @"protocols" : @"Protocol",
              @"sslPolicy" : @"SslPolicy",
@@ -1097,6 +1775,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 + (NSValueTransformer *)defaultActionsJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingAction class]];
+}
+
++ (NSValueTransformer *)mutualAuthenticationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSElasticLoadBalancingMutualAuthenticationAttributes class]];
 }
 
 + (NSValueTransformer *)protocolsJSONTransformer {
@@ -1119,6 +1801,9 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -1134,6 +1819,8 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
             default:
                 return nil;
         }
@@ -1144,6 +1831,10 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
 
 @implementation AWSElasticLoadBalancingLoadBalancer
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"availabilityZones" : @"AvailabilityZones",
@@ -1151,6 +1842,7 @@ NSString *const AWSElasticLoadBalancingErrorDomain = @"com.amazonaws.AWSElasticL
              @"createdTime" : @"CreatedTime",
              @"customerOwnedIpv4Pool" : @"CustomerOwnedIpv4Pool",
              @"DNSName" : @"DNSName",
+             @"enforceSecurityGroupInboundRulesOnPrivateLinkTraffic" : @"EnforceSecurityGroupInboundRulesOnPrivateLinkTraffic",
              @"ipAddressType" : @"IpAddressType",
              @"loadBalancerArn" : @"LoadBalancerArn",
              @"loadBalancerName" : @"LoadBalancerName",
@@ -1228,6 +1920,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"network"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingLoadBalancerTypeEnumNetwork);
         }
+        if ([value caseInsensitiveCompare:@"gateway"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingLoadBalancerTypeEnumGateway);
+        }
         return @(AWSElasticLoadBalancingLoadBalancerTypeEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -1235,6 +1930,8 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"application";
             case AWSElasticLoadBalancingLoadBalancerTypeEnumNetwork:
                 return @"network";
+            case AWSElasticLoadBalancingLoadBalancerTypeEnumGateway:
+                return @"gateway";
             default:
                 return nil;
         }
@@ -1245,9 +1942,14 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingLoadBalancerAddress
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"allocationId" : @"AllocationId",
+             @"IPv6Address" : @"IPv6Address",
              @"ipAddress" : @"IpAddress",
              @"privateIPv4Address" : @"PrivateIPv4Address",
              };
@@ -1256,6 +1958,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingLoadBalancerAttribute
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1267,6 +1973,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingLoadBalancerState
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1310,8 +2020,13 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingMatcher
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"grpcCode" : @"GrpcCode",
              @"httpCode" : @"HttpCode",
              };
 }
@@ -1320,12 +2035,17 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingModifyListenerInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"alpnPolicy" : @"AlpnPolicy",
              @"certificates" : @"Certificates",
              @"defaultActions" : @"DefaultActions",
              @"listenerArn" : @"ListenerArn",
+             @"mutualAuthentication" : @"MutualAuthentication",
              @"port" : @"Port",
              @"protocols" : @"Protocol",
              @"sslPolicy" : @"SslPolicy",
@@ -1338,6 +2058,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 + (NSValueTransformer *)defaultActionsJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingAction class]];
+}
+
++ (NSValueTransformer *)mutualAuthenticationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSElasticLoadBalancingMutualAuthenticationAttributes class]];
 }
 
 + (NSValueTransformer *)protocolsJSONTransformer {
@@ -1360,6 +2084,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -1375,6 +2102,8 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
             default:
                 return nil;
         }
@@ -1384,6 +2113,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingModifyListenerOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1398,6 +2131,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingModifyLoadBalancerAttributesInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1414,6 +2151,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingModifyLoadBalancerAttributesOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"attributes" : @"Attributes",
@@ -1427,6 +2168,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingModifyRuleInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1448,6 +2193,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingModifyRuleOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"rules" : @"Rules",
@@ -1461,6 +2210,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingModifyTargetGroupAttributesInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1477,6 +2230,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingModifyTargetGroupAttributesOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"attributes" : @"Attributes",
@@ -1490,6 +2247,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingModifyTargetGroupInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1526,6 +2287,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -1541,6 +2305,8 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
             default:
                 return nil;
         }
@@ -1555,6 +2321,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingModifyTargetGroupOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"targetGroups" : @"TargetGroups",
@@ -1567,7 +2337,62 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSElasticLoadBalancingModifyTrustStoreInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"caCertificatesBundleS3Bucket" : @"CaCertificatesBundleS3Bucket",
+             @"caCertificatesBundleS3Key" : @"CaCertificatesBundleS3Key",
+             @"caCertificatesBundleS3ObjectVersion" : @"CaCertificatesBundleS3ObjectVersion",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingModifyTrustStoreOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"trustStores" : @"TrustStores",
+             };
+}
+
++ (NSValueTransformer *)trustStoresJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingTrustStore class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingMutualAuthenticationAttributes
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"ignoreClientCertificateExpiry" : @"IgnoreClientCertificateExpiry",
+             @"mode" : @"Mode",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
 @implementation AWSElasticLoadBalancingPathPatternConditionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1578,6 +2403,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingQueryStringConditionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1593,6 +2422,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingQueryStringKeyValuePair
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"key" : @"Key",
@@ -1603,6 +2436,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingRedirectActionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1640,6 +2477,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingRegisterTargetsInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"targetGroupArn" : @"TargetGroupArn",
@@ -1655,9 +2496,17 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingRegisterTargetsOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingRemoveListenerCertificatesInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1674,9 +2523,17 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingRemoveListenerCertificatesOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingRemoveTagsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1689,9 +2546,73 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingRemoveTagsOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingRemoveTrustStoreRevocationsInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"revocationIds" : @"RevocationIds",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingRemoveTrustStoreRevocationsOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingRevocationContent
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"revocationType" : @"RevocationType",
+             @"s3Bucket" : @"S3Bucket",
+             @"s3Key" : @"S3Key",
+             @"s3ObjectVersion" : @"S3ObjectVersion",
+             };
+}
+
++ (NSValueTransformer *)revocationTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CRL"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingRevocationTypeCrl);
+        }
+        return @(AWSElasticLoadBalancingRevocationTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingRevocationTypeCrl:
+                return @"CRL";
+            default:
+                return nil;
+        }
+    }];
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingRule
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1714,6 +2635,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingRuleCondition
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1756,6 +2681,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingRulePriorityPair
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"priority" : @"Priority",
@@ -1766,6 +2695,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingSetIpAddressTypeInput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1799,6 +2732,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingSetIpAddressTypeOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"ipAddressType" : @"IpAddressType",
@@ -1830,6 +2767,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingSetRulePrioritiesInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"rulePriorities" : @"RulePriorities",
@@ -1843,6 +2784,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingSetRulePrioritiesOutput
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1858,33 +2803,111 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingSetSecurityGroupsInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"enforceSecurityGroupInboundRulesOnPrivateLinkTraffic" : @"EnforceSecurityGroupInboundRulesOnPrivateLinkTraffic",
              @"loadBalancerArn" : @"LoadBalancerArn",
              @"securityGroups" : @"SecurityGroups",
              };
+}
+
++ (NSValueTransformer *)enforceSecurityGroupInboundRulesOnPrivateLinkTrafficJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"on"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOn);
+        }
+        if ([value caseInsensitiveCompare:@"off"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOff);
+        }
+        return @(AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOn:
+                return @"on";
+            case AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOff:
+                return @"off";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end
 
 @implementation AWSElasticLoadBalancingSetSecurityGroupsOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"enforceSecurityGroupInboundRulesOnPrivateLinkTraffic" : @"EnforceSecurityGroupInboundRulesOnPrivateLinkTraffic",
              @"securityGroupIds" : @"SecurityGroupIds",
              };
+}
+
++ (NSValueTransformer *)enforceSecurityGroupInboundRulesOnPrivateLinkTrafficJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"on"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOn);
+        }
+        if ([value caseInsensitiveCompare:@"off"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOff);
+        }
+        return @(AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOn:
+                return @"on";
+            case AWSElasticLoadBalancingEnforceSecurityGroupInboundRulesOnPrivateLinkTrafficEnumOff:
+                return @"off";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end
 
 @implementation AWSElasticLoadBalancingSetSubnetsInput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"ipAddressType" : @"IpAddressType",
              @"loadBalancerArn" : @"LoadBalancerArn",
              @"subnetMappings" : @"SubnetMappings",
              @"subnets" : @"Subnets",
              };
+}
+
++ (NSValueTransformer *)ipAddressTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"ipv4"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingIpAddressTypeIpv4);
+        }
+        if ([value caseInsensitiveCompare:@"dualstack"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingIpAddressTypeDualstack);
+        }
+        return @(AWSElasticLoadBalancingIpAddressTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingIpAddressTypeIpv4:
+                return @"ipv4";
+            case AWSElasticLoadBalancingIpAddressTypeDualstack:
+                return @"dualstack";
+            default:
+                return nil;
+        }
+    }];
 }
 
 + (NSValueTransformer *)subnetMappingsJSONTransformer {
@@ -1895,9 +2918,14 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingSetSubnetsOutput
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"availabilityZones" : @"AvailabilityZones",
+             @"ipAddressType" : @"IpAddressType",
              };
 }
 
@@ -1905,9 +2933,34 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSElasticLoadBalancingAvailabilityZone class]];
 }
 
++ (NSValueTransformer *)ipAddressTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"ipv4"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingIpAddressTypeIpv4);
+        }
+        if ([value caseInsensitiveCompare:@"dualstack"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingIpAddressTypeDualstack);
+        }
+        return @(AWSElasticLoadBalancingIpAddressTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingIpAddressTypeIpv4:
+                return @"ipv4";
+            case AWSElasticLoadBalancingIpAddressTypeDualstack:
+                return @"dualstack";
+            default:
+                return nil;
+        }
+    }];
+}
+
 @end
 
 @implementation AWSElasticLoadBalancingSourceIpConditionConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1919,11 +2972,16 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingSslPolicy
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"ciphers" : @"Ciphers",
              @"name" : @"Name",
              @"sslProtocols" : @"SslProtocols",
+             @"supportedLoadBalancerTypes" : @"SupportedLoadBalancerTypes",
              };
 }
 
@@ -1935,9 +2993,14 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingSubnetMapping
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"allocationId" : @"AllocationId",
+             @"IPv6Address" : @"IPv6Address",
              @"privateIPv4Address" : @"PrivateIPv4Address",
              @"subnetId" : @"SubnetId",
              };
@@ -1946,6 +3009,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingTag
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1957,6 +3024,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingTagDescription
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -1973,6 +3044,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingTargetDescription
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"availabilityZone" : @"AvailabilityZone",
@@ -1985,6 +3060,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingTargetGroup
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"healthCheckEnabled" : @"HealthCheckEnabled",
@@ -1994,10 +3073,12 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
              @"healthCheckProtocol" : @"HealthCheckProtocol",
              @"healthCheckTimeoutSeconds" : @"HealthCheckTimeoutSeconds",
              @"healthyThresholdCount" : @"HealthyThresholdCount",
+             @"ipAddressType" : @"IpAddressType",
              @"loadBalancerArns" : @"LoadBalancerArns",
              @"matcher" : @"Matcher",
              @"port" : @"Port",
              @"protocols" : @"Protocol",
+             @"protocolVersion" : @"ProtocolVersion",
              @"targetGroupArn" : @"TargetGroupArn",
              @"targetGroupName" : @"TargetGroupName",
              @"targetType" : @"TargetType",
@@ -2026,6 +3107,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -2041,6 +3125,29 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)ipAddressTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"ipv4"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv4);
+        }
+        if ([value caseInsensitiveCompare:@"ipv6"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv6);
+        }
+        return @(AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv4:
+                return @"ipv4";
+            case AWSElasticLoadBalancingTargetGroupIpAddressTypeEnumIpv6:
+                return @"ipv6";
             default:
                 return nil;
         }
@@ -2071,6 +3178,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"TCP_UDP"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingProtocolEnumTcpUdp);
         }
+        if ([value caseInsensitiveCompare:@"GENEVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingProtocolEnumGeneve);
+        }
         return @(AWSElasticLoadBalancingProtocolEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -2086,6 +3196,8 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"UDP";
             case AWSElasticLoadBalancingProtocolEnumTcpUdp:
                 return @"TCP_UDP";
+            case AWSElasticLoadBalancingProtocolEnumGeneve:
+                return @"GENEVE";
             default:
                 return nil;
         }
@@ -2103,6 +3215,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"lambda"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingTargetTypeEnumLambda);
         }
+        if ([value caseInsensitiveCompare:@"alb"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetTypeEnumAlb);
+        }
         return @(AWSElasticLoadBalancingTargetTypeEnumUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -2112,6 +3227,8 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"ip";
             case AWSElasticLoadBalancingTargetTypeEnumLambda:
                 return @"lambda";
+            case AWSElasticLoadBalancingTargetTypeEnumAlb:
+                return @"alb";
             default:
                 return nil;
         }
@@ -2121,6 +3238,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingTargetGroupAttribute
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -2133,6 +3254,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingTargetGroupStickinessConfig
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"durationSeconds" : @"DurationSeconds",
@@ -2144,6 +3269,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingTargetGroupTuple
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"targetGroupArn" : @"TargetGroupArn",
@@ -2154,6 +3283,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSElasticLoadBalancingTargetHealth
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -2245,6 +3378,9 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
         if ([value caseInsensitiveCompare:@"unhealthy"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingTargetHealthStateEnumUnhealthy);
         }
+        if ([value caseInsensitiveCompare:@"unhealthy.draining"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTargetHealthStateEnumUnhealthyDraining);
+        }
         if ([value caseInsensitiveCompare:@"unused"] == NSOrderedSame) {
             return @(AWSElasticLoadBalancingTargetHealthStateEnumUnused);
         }
@@ -2263,6 +3399,8 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
                 return @"healthy";
             case AWSElasticLoadBalancingTargetHealthStateEnumUnhealthy:
                 return @"unhealthy";
+            case AWSElasticLoadBalancingTargetHealthStateEnumUnhealthyDraining:
+                return @"unhealthy.draining";
             case AWSElasticLoadBalancingTargetHealthStateEnumUnused:
                 return @"unused";
             case AWSElasticLoadBalancingTargetHealthStateEnumDraining:
@@ -2279,12 +3417,21 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSElasticLoadBalancingTargetHealthDescription
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"anomalyDetection" : @"AnomalyDetection",
              @"healthCheckPort" : @"HealthCheckPort",
              @"target" : @"Target",
              @"targetHealth" : @"TargetHealth",
              };
+}
+
++ (NSValueTransformer *)anomalyDetectionJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSElasticLoadBalancingAnomalyDetection class]];
 }
 
 + (NSValueTransformer *)targetJSONTransformer {
@@ -2293,6 +3440,92 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 + (NSValueTransformer *)targetHealthJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSElasticLoadBalancingTargetHealth class]];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingTrustStore
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"name" : @"Name",
+             @"numberOfCaCertificates" : @"NumberOfCaCertificates",
+             @"status" : @"Status",
+             @"totalRevokedEntries" : @"TotalRevokedEntries",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTrustStoreStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingTrustStoreStatusCreating);
+        }
+        return @(AWSElasticLoadBalancingTrustStoreStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingTrustStoreStatusActive:
+                return @"ACTIVE";
+            case AWSElasticLoadBalancingTrustStoreStatusCreating:
+                return @"CREATING";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingTrustStoreAssociation
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"resourceArn" : @"ResourceArn",
+             };
+}
+
+@end
+
+@implementation AWSElasticLoadBalancingTrustStoreRevocation
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"numberOfRevokedEntries" : @"NumberOfRevokedEntries",
+             @"revocationId" : @"RevocationId",
+             @"revocationType" : @"RevocationType",
+             @"trustStoreArn" : @"TrustStoreArn",
+             };
+}
+
++ (NSValueTransformer *)revocationTypeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CRL"] == NSOrderedSame) {
+            return @(AWSElasticLoadBalancingRevocationTypeCrl);
+        }
+        return @(AWSElasticLoadBalancingRevocationTypeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSElasticLoadBalancingRevocationTypeCrl:
+                return @"CRL";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end

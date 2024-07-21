@@ -1,3 +1,4 @@
+xcframeworks
 # OS generated files #
 ######################
 .COMPONENT_CACHED
@@ -28,9 +29,10 @@ xcuserdata
 
 # Built assets #
 ######################
-build
-builtFramework
 AWS*.framework
+build
+build_result/
+builtFramework
 
 # Stuff that can't be committed #
 ######################
@@ -46,3 +48,6 @@ Scripts/ocunit2junit
 __pycache__/
 awsconfiguration.json
 credentials-mc.json
+
+.env
+amplify-ci-support

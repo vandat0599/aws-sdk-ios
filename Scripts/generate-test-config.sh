@@ -4,12 +4,12 @@
 
 ##################################################
 # CANONICAL SOURCE OF THIS FILE IS
-#   https://github.com/aws-amplify/amplify-ci-support/blob/master/src/integ_test_resources/common/scripts/generate-test-config.sh
+#   https://github.com/aws-amplify/amplify-ci-support/blob/main/src/integ_test_resources/common/scripts/generate-test-config.sh
 #
 # As of this writing (06-May-2020), we manually copy this file into the CI
 # support directories for the projects that use it:
-# - https://github.com/aws-amplify/aws-sdk-ios/tree/master/Scripts/generate-test-config.sh
-# - https://github.com/aws-amplify/aws-sdk-android/tree/master/build-support/generate-test-config.sh
+# - https://github.com/aws-amplify/aws-sdk-ios/tree/main/Scripts/generate-test-config.sh
+# - https://github.com/aws-amplify/aws-sdk-android/tree/main/build-support/generate-test-config.sh
 #
 # From there, this script will be invoked by the CircleCI build process during
 # test setup, or it may be invoked manually for local integration test runs
@@ -120,7 +120,7 @@ OPTIONS:
         'AWS_SECRET_ACCESS_KEY', and 'AWS_SESSION_TOKEN'.
 
     -b <branch>
-        The branch of the ci-support repo to check out. Defaults to 'master'.
+        The branch of the ci-support repo to check out. Defaults to 'main'.
 
     -p <android|ios>
         Generate configuration file for platform="<val>"
@@ -145,7 +145,7 @@ EOF
 # PARSE ARGUMENTS
 
 assume_role=""
-branch="master"
+branch="main"
 platform=""
 region=${AWS_DEFAULT_REGION}
 
@@ -197,7 +197,6 @@ cmd_quiet_flag="--quiet"
 
 [[ -n $region ]] || die "'region' not specified"
 export AWS_DEFAULT_REGION=${region}
-
 
 ##################################################
 # LOCAL FUNCTIONS
@@ -253,13 +252,25 @@ function resolve_credentials {
     # Ensure we don't output credentials
     [[ $LOG_LEVEL -ge $LOG_LEVEL_TRACE ]] && set +x
 
+    local circleci_execution_role
+    circleci_execution_role=$(aws ssm get-parameter --name "/mobile-sdk/${platform}/common/circleci_execution_role" 2> /dev/null || echo "")
+    readonly circleci_execution_role
+
+    if [ -z "${circleci_execution_role}" ]; then
+      die "Role not found for Circle CI in region: ${AWS_DEFAULT_REGION}"
+    fi
+
     local circleci_execution_role_arn
-    circleci_execution_role_arn=$(aws ssm get-parameter --name "/mobile-sdk/${platform}/common/circleci_execution_role" | jq -r .Parameter.Value)
+    circleci_execution_role_arn=$(echo "${circleci_execution_role}" | jq -r .Parameter.Value)
     readonly circleci_execution_role_arn
 
     local assume_role_creds
     assume_role_creds=$(aws sts assume-role --duration-seconds 3600 --role-arn "${circleci_execution_role_arn}" --role-session-name "IntegTest-$(date +%Y%m%d%H%M%S)")
     readonly assume_role_creds
+
+    if [ -z "${assume_role_creds}" ]; then
+      die "Failed to assume role credentials for Circle CI"
+    fi
 
     AWS_ACCESS_KEY_ID=$(echo "$assume_role_creds" | jq -r '.Credentials.AccessKeyId')
     readonly AWS_ACCESS_KEY_ID

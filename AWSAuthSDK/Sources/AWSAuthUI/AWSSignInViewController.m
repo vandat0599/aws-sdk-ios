@@ -45,6 +45,7 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
 @property (weak, nonatomic) IBOutlet UIButton *providerRow1;
 @property (weak, nonatomic) IBOutlet UIButton *providerRow2;
 @property (weak, nonatomic) IBOutlet UIButton *providerRow3;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 @end
 
@@ -109,30 +110,9 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
 
 #pragma mark - UIViewController
 
-
-- (void)keyboardDidShow:(NSNotification *)notification {
-    CGSize keyboardSize = ((NSValue *)[[notification userInfo]
-                                       valueForKey:UIKeyboardFrameBeginUserInfoKey]).CGRectValue.size;
-    
-    CGPoint buttonOrigin = self.signInButton.frame.origin;
-    CGRect visibleRect = self.view.frame;
-    
-    visibleRect.size.height -= keyboardSize.height;
-    
-    if (visibleRect.size.height < buttonOrigin.y) {
-        [self.view setFrame:CGRectMake(0,visibleRect.size.height - buttonOrigin.y, self.view.frame.size.width, self.view.frame.size.height)];
-    }
-}
-
-- (void)keyboardDidHide:(NSNotification *)notification {
-    [self.view setFrame:CGRectMake(0, NAVIGATION_BAR_HEIGHT ,self.view.frame.size.width,self.view.frame.size.height)];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     AWSDDLogDebug(@"Sign-In Loading...");
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
     // set up the navigation controller
     [self setUpNavigationController];
@@ -169,18 +149,6 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
     [AWSSignInManager sharedInstance].pendingSignIn = NO;
     [AWSSignInManager sharedInstance].pendingUsername = @"";
     [AWSSignInManager sharedInstance].pendingPassword = @"";
-    
-}
-
-// This is used to dismiss the keyboard, user just has to tap outside the
-// user name and password views and it will dismiss
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    if (touch.phase == UITouchPhaseBegan) {
-        [self.view endEditing:YES];
-    }
-    
-    [super touchesBegan:touches withEvent:event];
 }
 
 #pragma mark - Utility Methods
@@ -342,7 +310,7 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
             backgroundImageView.backgroundColor = [AWSAuthUIHelper getBackgroundColor:self.config];
         }
         backgroundImageView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [self.view insertSubview:backgroundImageView atIndex:0];
+        [self.contentView insertSubview:backgroundImageView atIndex:0];
     }
 }
 
@@ -360,6 +328,7 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
 
 - (void)setUpNavigationController {
     UIColor *textColor = [AWSAuthUIHelper getTextColor:config];
+    UIColor *backgroundColor = [AWSAuthUIHelper getBackgroundColor:config];
 
     self.navigationController.navigationBar.topItem.title = @"Sign In";
     self.canCancel = self.config.canCancel;
@@ -376,9 +345,14 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
                                                                     NSForegroundColorAttributeName: textColor,
                                                                     };
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = [AWSAuthUIHelper getBackgroundColor:config];
+    self.navigationController.navigationBar.barTintColor = backgroundColor;
     self.navigationController.navigationBar.tintColor = textColor;
-    
+    if (@available(iOS 13.0, *)) {
+        UINavigationBarAppearance *barAppearance = [[UINavigationBarAppearance alloc] init];
+        barAppearance.backgroundColor = backgroundColor;
+        self.navigationController.navigationBar.standardAppearance = barAppearance;
+        self.navigationController.navigationBar.scrollEdgeAppearance = barAppearance;
+    }
 }
 
 - (void)setUpFont {
@@ -391,7 +365,9 @@ static NSInteger const SCALED_DOWN_LOGO_IMAGE_HEIGHT = 140;
 
 - (void)barButtonClosePressed {
     [self dismissViewControllerAnimated:YES completion:nil];
-    self.completionHandlerCustom(nil, nil, [[NSError alloc] initWithDomain:@"AWSMobileClientError" code:-2 userInfo:@{@"message": @"The user cancelled the sign in operation"}]);
+    if (self.completionHandlerCustom) {
+        self.completionHandlerCustom(nil, nil, [[NSError alloc] initWithDomain:@"AWSMobileClientError" code:-2 userInfo:@{@"message": @"The user cancelled the sign in operation"}]);
+    }
     AWSDDLogDebug(@"User closed sign in screen.");
 }
 

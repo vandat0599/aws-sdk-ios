@@ -57,7 +57,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             signInWasSuccessful.fulfill()
         }
         wait(for: [signInWasSuccessful, signInListenerWasSuccessful], timeout: 10)
-        XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper.currentSignInHandlerCallback,
+        XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper?.currentSignInHandlerCallback,
                      "Current sign callback should be nil after callback is invoked")
         AWSMobileClient.default().removeUserStateListener(self)
     }
@@ -80,7 +80,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             signInShouldFail.fulfill()
         }
         wait(for: [signInShouldFail], timeout: 10)
-        XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper.currentSignInHandlerCallback,
+        XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper?.currentSignInHandlerCallback,
                      "Current sign callback should be nil after callback is invoked")
     }
 
@@ -112,17 +112,91 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             
             // Manually set password completion task to mock confirm signIn flow.
             let newPasswordRequiredTask = AWSTaskCompletionSource<AWSCognitoIdentityNewPasswordRequiredDetails>()
-            AWSMobileClient.default().userpoolOpsHelper.newPasswordRequiredTaskCompletionSource = newPasswordRequiredTask
+            AWSMobileClient.default().userpoolOpsHelper?.newPasswordRequiredTaskCompletionSource = newPasswordRequiredTask
             AWSMobileClient.default().confirmSignIn(challengeResponse: "code") { (signInResult, error) in
                 // Completion will not be called because the continuation is mocked above.
             }
             signInWasSuccessfulExpectation.fulfill()
         }
-        wait(for: [signInWasSuccessfulExpectation], timeout: 10)
-        XCTAssertNotNil(AWSMobileClient.default().userpoolOpsHelper.currentConfirmSignInHandlerCallback,
+        wait(for: [signInWasSuccessfulExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
+        XCTAssertNotNil(AWSMobileClient.default().userpoolOpsHelper?.currentConfirmSignInHandlerCallback,
                         "Current confirmsign callback should not be nil")
-        XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper.currentSignInHandlerCallback,
+        XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper?.currentSignInHandlerCallback,
                      "Current sign callback should be nil")
+    }
+    
+    /// Test whether the confirm sign in completion source is reset when complete
+    ///
+    /// - Given: An unauthenticated session with MFA
+    /// - When:
+    ///    - I invoke `signIn` with completion callback
+    ///    - And then invoke `confirmSignIn` from the above callback
+    ///    - And then I wait for completion
+    /// - Then:
+    ///    - My `confirmSignIn` completion source should be nil
+    ///    - A second `confirmSignIn` call in the same session does not crash the app.
+    ///
+    func testConfirmSignCompletionSourceReset() {
+        func confirmSignIn() {
+            let username = "testUser" + UUID().uuidString
+            adminCreateUser(username: username,
+                            temporaryPassword: AWSMobileClientTestBase.sharedPassword,
+                            userAttributes: [
+                                "email": AWSMobileClientTestBase.sharedEmail
+                            ])
+            let confirmSignInWasSuccessfulExpectation = expectation(description: "confirmSignIn was successful")
+            
+            AWSMobileClient.default().signIn(username: username,
+                                             password: AWSMobileClientTestBase.sharedPassword) { (signInResult, error) in
+                if let error = error {
+                    XCTFail("User login failed: \(error.localizedDescription)")
+                    return
+                }
+                
+                guard let signInResult = signInResult else {
+                    XCTFail("User login failed, signInResult unexpectedly nil")
+                    return
+                }
+                
+                XCTAssert(signInResult.signInState == .newPasswordRequired)
+                
+                AWSMobileClient.default().confirmSignIn(
+                    challengeResponse: AWSMobileClientTestBase.sharedPassword
+                ) { (signInResult, error) in
+                    defer {
+                        confirmSignInWasSuccessfulExpectation.fulfill()
+                    }
+                    
+                    if let error = error {
+                        XCTFail("Confirm sign in failed: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let signInResult = signInResult else {
+                        XCTFail("Confirm sign in failed, signInResult unexpectedly nil")
+                        return
+                    }
+                    
+                    XCTAssert(signInResult.signInState == .signedIn)
+                    XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper?.currentConfirmSignInHandlerCallback,
+                                    "Current confirmsign callback should be nil")
+                    XCTAssertNil(AWSMobileClient.default().userpoolOpsHelper?.newPasswordRequiredTaskCompletionSource,
+                                    "New password completion source should be nil")
+                }
+            }
+            wait(for: [confirmSignInWasSuccessfulExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
+        }
+        
+        func signOut() {
+            AWSMobileClient.default().signOut()
+            AWSMobileClient.default().clearCredentials()
+            AWSMobileClient.default().clearKeychain()
+        }
+        
+        // Call confirmSignIn twice to ensure second call does not crash.
+        confirmSignIn()
+        signOut()
+        confirmSignIn()
     }
     
     /// Test whether signIn operation works as intended after a signIn and signOut call
@@ -183,7 +257,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             }
             
         }
-        wait(for: [firstSignInExpectation, secondSignInExpectation], timeout: 10)
+        wait(for: [firstSignInExpectation, secondSignInExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
     }
     
     /// Test whether the state of AWSMobileClient is current after signIn
@@ -215,7 +289,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             XCTAssertTrue(AWSMobileClient.default().isSignedIn, "AWSMobileClient isSignedIn should be true after signIn")
             firstSignInExpectation.fulfill()
         }
-        wait(for: [firstSignInExpectation], timeout: 10)
+        wait(for: [firstSignInExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
     }
     
     /// Test if invalidating refresh token displays signOut message and the user is able to signIn after that.
@@ -242,8 +316,8 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
                 return
             }
         }
-        wait(for: [tokenFetchExpectation], timeout: 20)
-        invalidateSession(username: username)
+        wait(for: [tokenFetchExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
+        invalidateRefreshToken(username: username)
         
         let signOutExpectation = expectation(description: "signout was called")
         AWSMobileClient.default().addUserStateListener(self) { (userstate, info) in
@@ -266,7 +340,11 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             }
         }
         
-        wait(for: [signOutExpectation, tokenFetchExpectation2], timeout: 35, enforceOrder: true)
+        wait(
+            for: [signOutExpectation, tokenFetchExpectation2],
+            timeout: AWSMobileClientTestBase.networkRequestTimeout,
+            enforceOrder: true
+        )
         AWSMobileClient.default().removeUserStateListener(self)
     }
 
@@ -295,7 +373,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
                 return
             }
         }
-        wait(for: [tokenFetchExpectation], timeout: 20)
+        wait(for: [tokenFetchExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
 
         // Setup a listener to call releaseSignInWait whenever you get signedOutUserPoolsTokenInvalid
         AWSMobileClient.default().addUserStateListener(self) { (userstate, info) in
@@ -305,7 +383,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
         }
 
         // Now invalidate the session and then try to call getToken
-        invalidateSession(username: username)
+        invalidateRefreshToken(username: username)
 
         let tokenFetchFailExpectation = expectation(description: "Token fetch should complete")
         AWSMobileClient.default().getTokens { (token, error) in
@@ -318,7 +396,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
                 return
             }
         }
-        wait(for: [tokenFetchFailExpectation], timeout: 20)
+        wait(for: [tokenFetchFailExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
         AWSMobileClient.default().removeUserStateListener(self)
     }
 
@@ -347,7 +425,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
                 return
             }
         }
-        wait(for: [tokenFetchExpectation], timeout: 20)
+        wait(for: [tokenFetchExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
 
         // Setup a listener to call releaseSignInWait whenever you get signedOutUserPoolsTokenInvalid
         AWSMobileClient.default().addUserStateListener(self) { (userstate, info) in
@@ -357,7 +435,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
         }
 
         // Now invalidate the session and then try to call getToken
-        invalidateSession(username: username)
+        invalidateRefreshToken(username: username)
 
         let tokenFetchFailExpectation = expectation(description: "Token fetch should complete")
         tokenFetchFailExpectation.expectedFulfillmentCount = 50
@@ -375,7 +453,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
             }
         }
 
-        wait(for: [tokenFetchFailExpectation], timeout: 20)
+        wait(for: [tokenFetchFailExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
         AWSMobileClient.default().removeUserStateListener(self)
     }
 
@@ -385,7 +463,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
     /// - When:
     ///    - I call signOut after receiving signedOutUserPoolsTokenInvalid
     /// - Then:
-    ///    - The waiting getTokens call should complete with an .unableToSignIn error.
+    ///    - The waiting getTokens call should complete with an error.
     ///
     func testSignOutOnSessionExpiry() {
         XCTAssertFalse(AWSMobileClient.default().isSignedIn, "Should be in signOut state")
@@ -404,7 +482,7 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
                 return
             }
         }
-        wait(for: [tokenFetchExpectation], timeout: 20)
+        wait(for: [tokenFetchExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
 
         // Setup a listener to call signOut whenever you get signedOutUserPoolsTokenInvalid
         AWSMobileClient.default().addUserStateListener(self) { (userstate, info) in
@@ -414,20 +492,25 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
         }
 
         // Now invalidate the session and then try to call getToken
-        invalidateSession(username: username)
+        invalidateRefreshToken(username: username)
 
         let tokenFetchFailExpectation = expectation(description: "Token fetch should complete")
         AWSMobileClient.default().getTokens { (token, error) in
             defer {
                 tokenFetchFailExpectation.fulfill()
             }
-            guard let error = error as? AWSMobileClientError,
-                case .unableToSignIn = error else {
+            guard let error = error as? AWSMobileClientError else {
                 XCTFail("Should receive an unable to signIn error")
                 return
             }
+            switch error {
+            case .notSignedIn, .unableToSignIn:
+                break;
+            default:
+                XCTFail("Error should be either of notSignedIn or unableToSigIn but received \(error)")
+            }
         }
-        wait(for: [tokenFetchFailExpectation], timeout: 20)
+        wait(for: [tokenFetchFailExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
         AWSMobileClient.default().removeUserStateListener(self)
     }
 
@@ -451,6 +534,6 @@ class AWSMobileClientSignInTests: AWSMobileClientTestBase {
                 return
             }
         }
-        wait(for: [tokenFetchExpectation], timeout: 20)
+        wait(for: [tokenFetchExpectation], timeout: AWSMobileClientTestBase.networkRequestTimeout)
     }
 }

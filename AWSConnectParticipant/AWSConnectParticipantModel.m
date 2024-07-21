@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -18,7 +18,78 @@
 
 NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectParticipantErrorDomain";
 
+@implementation AWSConnectParticipantAttachmentItem
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"attachmentId" : @"AttachmentId",
+             @"attachmentName" : @"AttachmentName",
+             @"contentType" : @"ContentType",
+             @"status" : @"Status",
+             };
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"APPROVED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantArtifactStatusApproved);
+        }
+        if ([value caseInsensitiveCompare:@"REJECTED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantArtifactStatusRejected);
+        }
+        if ([value caseInsensitiveCompare:@"IN_PROGRESS"] == NSOrderedSame) {
+            return @(AWSConnectParticipantArtifactStatusInProgress);
+        }
+        return @(AWSConnectParticipantArtifactStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSConnectParticipantArtifactStatusApproved:
+                return @"APPROVED";
+            case AWSConnectParticipantArtifactStatusRejected:
+                return @"REJECTED";
+            case AWSConnectParticipantArtifactStatusInProgress:
+                return @"IN_PROGRESS";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSConnectParticipantCompleteAttachmentUploadRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"attachmentIds" : @"AttachmentIds",
+             @"clientToken" : @"ClientToken",
+             @"connectionToken" : @"ConnectionToken",
+             };
+}
+
+@end
+
+@implementation AWSConnectParticipantCompleteAttachmentUploadResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
 @implementation AWSConnectParticipantConnectionCredentials
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -31,8 +102,13 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @implementation AWSConnectParticipantCreateParticipantConnectionRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"connectParticipant" : @"ConnectParticipant",
              @"participantToken" : @"ParticipantToken",
              @"types" : @"Type",
              };
@@ -41,6 +117,10 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 @end
 
 @implementation AWSConnectParticipantCreateParticipantConnectionResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -59,7 +139,44 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @end
 
+@implementation AWSConnectParticipantDescribeViewRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"connectionToken" : @"ConnectionToken",
+             @"viewToken" : @"ViewToken",
+             };
+}
+
+@end
+
+@implementation AWSConnectParticipantDescribeViewResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"view" : @"View",
+             };
+}
+
++ (NSValueTransformer *)viewJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSConnectParticipantView class]];
+}
+
+@end
+
 @implementation AWSConnectParticipantDisconnectParticipantRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -72,9 +189,47 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @implementation AWSConnectParticipantDisconnectParticipantResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
+@implementation AWSConnectParticipantGetAttachmentRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"attachmentId" : @"AttachmentId",
+             @"connectionToken" : @"ConnectionToken",
+             };
+}
+
+@end
+
+@implementation AWSConnectParticipantGetAttachmentResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"url" : @"Url",
+             @"urlExpiry" : @"UrlExpiry",
+             };
+}
+
 @end
 
 @implementation AWSConnectParticipantGetTranscriptRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -138,6 +293,10 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @implementation AWSConnectParticipantGetTranscriptResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"initialContactId" : @"InitialContactId",
@@ -154,17 +313,33 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @implementation AWSConnectParticipantItem
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"absoluteTime" : @"AbsoluteTime",
+             @"attachments" : @"Attachments",
+             @"contactId" : @"ContactId",
              @"content" : @"Content",
              @"contentType" : @"ContentType",
              @"displayName" : @"DisplayName",
              @"identifier" : @"Id",
+             @"messageMetadata" : @"MessageMetadata",
              @"participantId" : @"ParticipantId",
              @"participantRole" : @"ParticipantRole",
+             @"relatedContactId" : @"RelatedContactId",
              @"types" : @"Type",
              };
+}
+
++ (NSValueTransformer *)attachmentsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSConnectParticipantAttachmentItem class]];
+}
+
++ (NSValueTransformer *)messageMetadataJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSConnectParticipantMessageMetadata class]];
 }
 
 + (NSValueTransformer *)participantRoleJSONTransformer {
@@ -178,6 +353,12 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
         if ([value caseInsensitiveCompare:@"SYSTEM"] == NSOrderedSame) {
             return @(AWSConnectParticipantParticipantRoleSystem);
         }
+        if ([value caseInsensitiveCompare:@"CUSTOM_BOT"] == NSOrderedSame) {
+            return @(AWSConnectParticipantParticipantRoleCustomBot);
+        }
+        if ([value caseInsensitiveCompare:@"SUPERVISOR"] == NSOrderedSame) {
+            return @(AWSConnectParticipantParticipantRoleSupervisor);
+        }
         return @(AWSConnectParticipantParticipantRoleUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -187,6 +368,10 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
                 return @"CUSTOMER";
             case AWSConnectParticipantParticipantRoleSystem:
                 return @"SYSTEM";
+            case AWSConnectParticipantParticipantRoleCustomBot:
+                return @"CUSTOM_BOT";
+            case AWSConnectParticipantParticipantRoleSupervisor:
+                return @"SUPERVISOR";
             default:
                 return nil;
         }
@@ -195,24 +380,69 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 + (NSValueTransformer *)typesJSONTransformer {
     return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"TYPING"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeTyping);
+        }
+        if ([value caseInsensitiveCompare:@"PARTICIPANT_JOINED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeParticipantJoined);
+        }
+        if ([value caseInsensitiveCompare:@"PARTICIPANT_LEFT"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeParticipantLeft);
+        }
+        if ([value caseInsensitiveCompare:@"CHAT_ENDED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeChatEnded);
+        }
+        if ([value caseInsensitiveCompare:@"TRANSFER_SUCCEEDED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeTransferSucceeded);
+        }
+        if ([value caseInsensitiveCompare:@"TRANSFER_FAILED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeTransferFailed);
+        }
         if ([value caseInsensitiveCompare:@"MESSAGE"] == NSOrderedSame) {
             return @(AWSConnectParticipantChatItemTypeMessage);
         }
         if ([value caseInsensitiveCompare:@"EVENT"] == NSOrderedSame) {
             return @(AWSConnectParticipantChatItemTypeEvent);
         }
+        if ([value caseInsensitiveCompare:@"ATTACHMENT"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeAttachment);
+        }
         if ([value caseInsensitiveCompare:@"CONNECTION_ACK"] == NSOrderedSame) {
             return @(AWSConnectParticipantChatItemTypeConnectionAck);
+        }
+        if ([value caseInsensitiveCompare:@"MESSAGE_DELIVERED"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeMessageDelivered);
+        }
+        if ([value caseInsensitiveCompare:@"MESSAGE_READ"] == NSOrderedSame) {
+            return @(AWSConnectParticipantChatItemTypeMessageRead);
         }
         return @(AWSConnectParticipantChatItemTypeUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
+            case AWSConnectParticipantChatItemTypeTyping:
+                return @"TYPING";
+            case AWSConnectParticipantChatItemTypeParticipantJoined:
+                return @"PARTICIPANT_JOINED";
+            case AWSConnectParticipantChatItemTypeParticipantLeft:
+                return @"PARTICIPANT_LEFT";
+            case AWSConnectParticipantChatItemTypeChatEnded:
+                return @"CHAT_ENDED";
+            case AWSConnectParticipantChatItemTypeTransferSucceeded:
+                return @"TRANSFER_SUCCEEDED";
+            case AWSConnectParticipantChatItemTypeTransferFailed:
+                return @"TRANSFER_FAILED";
             case AWSConnectParticipantChatItemTypeMessage:
                 return @"MESSAGE";
             case AWSConnectParticipantChatItemTypeEvent:
                 return @"EVENT";
+            case AWSConnectParticipantChatItemTypeAttachment:
+                return @"ATTACHMENT";
             case AWSConnectParticipantChatItemTypeConnectionAck:
                 return @"CONNECTION_ACK";
+            case AWSConnectParticipantChatItemTypeMessageDelivered:
+                return @"MESSAGE_DELIVERED";
+            case AWSConnectParticipantChatItemTypeMessageRead:
+                return @"MESSAGE_READ";
             default:
                 return nil;
         }
@@ -221,7 +451,46 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @end
 
+@implementation AWSConnectParticipantMessageMetadata
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"messageId" : @"MessageId",
+             @"receipts" : @"Receipts",
+             };
+}
+
++ (NSValueTransformer *)receiptsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSConnectParticipantReceipt class]];
+}
+
+@end
+
+@implementation AWSConnectParticipantReceipt
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"deliveredTimestamp" : @"DeliveredTimestamp",
+             @"readTimestamp" : @"ReadTimestamp",
+             @"recipientParticipantId" : @"RecipientParticipantId",
+             };
+}
+
+@end
+
 @implementation AWSConnectParticipantSendEventRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -236,6 +505,10 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @implementation AWSConnectParticipantSendEventResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"absoluteTime" : @"AbsoluteTime",
@@ -246,6 +519,10 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 @end
 
 @implementation AWSConnectParticipantSendMessageRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -260,6 +537,10 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @implementation AWSConnectParticipantSendMessageResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"absoluteTime" : @"AbsoluteTime",
@@ -269,7 +550,48 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @end
 
+@implementation AWSConnectParticipantStartAttachmentUploadRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"attachmentName" : @"AttachmentName",
+             @"attachmentSizeInBytes" : @"AttachmentSizeInBytes",
+             @"clientToken" : @"ClientToken",
+             @"connectionToken" : @"ConnectionToken",
+             @"contentType" : @"ContentType",
+             };
+}
+
+@end
+
+@implementation AWSConnectParticipantStartAttachmentUploadResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"attachmentId" : @"AttachmentId",
+             @"uploadMetadata" : @"UploadMetadata",
+             };
+}
+
++ (NSValueTransformer *)uploadMetadataJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSConnectParticipantUploadMetadata class]];
+}
+
+@end
+
 @implementation AWSConnectParticipantStartPosition
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -281,7 +603,65 @@ NSString *const AWSConnectParticipantErrorDomain = @"com.amazonaws.AWSConnectPar
 
 @end
 
+@implementation AWSConnectParticipantUploadMetadata
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"headersToInclude" : @"HeadersToInclude",
+             @"url" : @"Url",
+             @"urlExpiry" : @"UrlExpiry",
+             };
+}
+
+@end
+
+@implementation AWSConnectParticipantView
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"arn" : @"Arn",
+             @"content" : @"Content",
+             @"identifier" : @"Id",
+             @"name" : @"Name",
+             @"version" : @"Version",
+             };
+}
+
++ (NSValueTransformer *)contentJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSConnectParticipantViewContent class]];
+}
+
+@end
+
+@implementation AWSConnectParticipantViewContent
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"actions" : @"Actions",
+             @"inputSchema" : @"InputSchema",
+             @"template" : @"Template",
+             };
+}
+
+@end
+
 @implementation AWSConnectParticipantWebsocket
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{

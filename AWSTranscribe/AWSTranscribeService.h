@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 
 /**
- <p>Operations and objects for transcribing speech to text.</p>
+ <p>Amazon Transcribe offers three main types of batch transcription: <b>Standard</b>, <b>Medical</b>, and <b>Call Analytics</b>.</p><ul><li><p><b>Standard transcriptions</b> are the most common option. Refer to for details.</p></li><li><p><b>Medical transcriptions</b> are tailored to medical professionals and incorporate medical terms. A common use case for this service is transcribing doctor-patient dialogue into after-visit notes. Refer to for details.</p></li><li><p><b>Call Analytics transcriptions</b> are designed for use with call center audio on two different channels; if you're looking for insight into customer service calls, use this option. Refer to for details.</p></li></ul>
  */
 @interface AWSTranscribe : AWSService
 
@@ -175,7 +175,32 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 + (void)removeTranscribeForKey:(NSString *)key;
 
 /**
- <p>Creates a new custom language model. Use Amazon S3 prefixes to provide the location of your input files. The time it takes to create your model depends on the size of your training data.</p>
+ <p>Creates a new Call Analytics category.</p><p>All categories are automatically applied to your Call Analytics transcriptions. Note that in order to apply categories to your transcriptions, you must create them before submitting your transcription request, as categories cannot be applied retroactively.</p><p>When creating a new category, you can use the <code>InputType</code> parameter to label the category as a <code>POST_CALL</code> or a <code>REAL_TIME</code> category. <code>POST_CALL</code> categories can only be applied to post-call transcriptions and <code>REAL_TIME</code> categories can only be applied to real-time transcriptions. If you do not include <code>InputType</code>, your category is created as a <code>POST_CALL</code> category by default.</p><p>Call Analytics categories are composed of rules. For each category, you must create between 1 and 20 rules. Rules can include these parameters: , , , and .</p><p>To update an existing category, see .</p><p>To learn more about Call Analytics categories, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-batch.html">Creating categories for post-call transcriptions</a> and <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-stream.html">Creating categories for real-time transcriptions</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateCallAnalyticsCategory service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeCreateCallAnalyticsCategoryResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeCreateCallAnalyticsCategoryRequest
+ @see AWSTranscribeCreateCallAnalyticsCategoryResponse
+ */
+- (AWSTask<AWSTranscribeCreateCallAnalyticsCategoryResponse *> *)createCallAnalyticsCategory:(AWSTranscribeCreateCallAnalyticsCategoryRequest *)request;
+
+/**
+ <p>Creates a new Call Analytics category.</p><p>All categories are automatically applied to your Call Analytics transcriptions. Note that in order to apply categories to your transcriptions, you must create them before submitting your transcription request, as categories cannot be applied retroactively.</p><p>When creating a new category, you can use the <code>InputType</code> parameter to label the category as a <code>POST_CALL</code> or a <code>REAL_TIME</code> category. <code>POST_CALL</code> categories can only be applied to post-call transcriptions and <code>REAL_TIME</code> categories can only be applied to real-time transcriptions. If you do not include <code>InputType</code>, your category is created as a <code>POST_CALL</code> category by default.</p><p>Call Analytics categories are composed of rules. For each category, you must create between 1 and 20 rules. Rules can include these parameters: , , , and .</p><p>To update an existing category, see .</p><p>To learn more about Call Analytics categories, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-batch.html">Creating categories for post-call transcriptions</a> and <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-stream.html">Creating categories for real-time transcriptions</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateCallAnalyticsCategory service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeCreateCallAnalyticsCategoryRequest
+ @see AWSTranscribeCreateCallAnalyticsCategoryResponse
+ */
+- (void)createCallAnalyticsCategory:(AWSTranscribeCreateCallAnalyticsCategoryRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeCreateCallAnalyticsCategoryResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Creates a new custom language model.</p><p>When creating a new custom language model, you must specify:</p><ul><li><p>If you want a Wideband (audio sample rates over 16,000 Hz) or Narrowband (audio sample rates under 16,000 Hz) base model</p></li><li><p>The location of your training and tuning files (this must be an Amazon S3 URI)</p></li><li><p>The language of your model</p></li><li><p>A unique name for your model</p></li></ul>
  
  @param request A container for the necessary parameters to execute the CreateLanguageModel service method.
 
@@ -187,7 +212,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeCreateLanguageModelResponse *> *)createLanguageModel:(AWSTranscribeCreateLanguageModelRequest *)request;
 
 /**
- <p>Creates a new custom language model. Use Amazon S3 prefixes to provide the location of your input files. The time it takes to create your model depends on the size of your training data.</p>
+ <p>Creates a new custom language model.</p><p>When creating a new custom language model, you must specify:</p><ul><li><p>If you want a Wideband (audio sample rates over 16,000 Hz) or Narrowband (audio sample rates under 16,000 Hz) base model</p></li><li><p>The location of your training and tuning files (this must be an Amazon S3 URI)</p></li><li><p>The language of your model</p></li><li><p>A unique name for your model</p></li></ul>
  
  @param request A container for the necessary parameters to execute the CreateLanguageModel service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -200,7 +225,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)createLanguageModel:(AWSTranscribeCreateLanguageModelRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeCreateLanguageModelResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Creates a new custom vocabulary that you can use to change how Amazon Transcribe Medical transcribes your audio file.</p>
+ <p>Creates a new custom medical vocabulary.</p><p>Before creating a new custom medical vocabulary, you must first upload a text file that contains your vocabulary table into an Amazon S3 bucket. Note that this differs from , where you can include a list of terms within your request using the <code>Phrases</code> flag; <code>CreateMedicalVocabulary</code> does not support the <code>Phrases</code> flag and only accepts vocabularies in table format.</p><p>Each language has a character set that contains all allowed characters for that specific language. If you use unsupported characters, your custom vocabulary request fails. Refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/charsets.html">Character Sets for Custom Vocabularies</a> to get the character set for your language.</p><p>For more information, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/custom-vocabulary.html">Custom vocabularies</a>.</p>
  
  @param request A container for the necessary parameters to execute the CreateMedicalVocabulary service method.
 
@@ -212,7 +237,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeCreateMedicalVocabularyResponse *> *)createMedicalVocabulary:(AWSTranscribeCreateMedicalVocabularyRequest *)request;
 
 /**
- <p>Creates a new custom vocabulary that you can use to change how Amazon Transcribe Medical transcribes your audio file.</p>
+ <p>Creates a new custom medical vocabulary.</p><p>Before creating a new custom medical vocabulary, you must first upload a text file that contains your vocabulary table into an Amazon S3 bucket. Note that this differs from , where you can include a list of terms within your request using the <code>Phrases</code> flag; <code>CreateMedicalVocabulary</code> does not support the <code>Phrases</code> flag and only accepts vocabularies in table format.</p><p>Each language has a character set that contains all allowed characters for that specific language. If you use unsupported characters, your custom vocabulary request fails. Refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/charsets.html">Character Sets for Custom Vocabularies</a> to get the character set for your language.</p><p>For more information, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/custom-vocabulary.html">Custom vocabularies</a>.</p>
  
  @param request A container for the necessary parameters to execute the CreateMedicalVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -225,7 +250,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)createMedicalVocabulary:(AWSTranscribeCreateMedicalVocabularyRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeCreateMedicalVocabularyResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Creates a new custom vocabulary that you can use to change the way Amazon Transcribe handles transcription of an audio file. </p>
+ <p>Creates a new custom vocabulary.</p><p>When creating a new custom vocabulary, you can either upload a text file that contains your new entries, phrases, and terms into an Amazon S3 bucket and include the URI in your request. Or you can include a list of terms directly in your request using the <code>Phrases</code> flag.</p><p>Each language has a character set that contains all allowed characters for that specific language. If you use unsupported characters, your custom vocabulary request fails. Refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/charsets.html">Character Sets for Custom Vocabularies</a> to get the character set for your language.</p><p>For more information, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/custom-vocabulary.html">Custom vocabularies</a>.</p>
  
  @param request A container for the necessary parameters to execute the CreateVocabulary service method.
 
@@ -237,7 +262,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeCreateVocabularyResponse *> *)createVocabulary:(AWSTranscribeCreateVocabularyRequest *)request;
 
 /**
- <p>Creates a new custom vocabulary that you can use to change the way Amazon Transcribe handles transcription of an audio file. </p>
+ <p>Creates a new custom vocabulary.</p><p>When creating a new custom vocabulary, you can either upload a text file that contains your new entries, phrases, and terms into an Amazon S3 bucket and include the URI in your request. Or you can include a list of terms directly in your request using the <code>Phrases</code> flag.</p><p>Each language has a character set that contains all allowed characters for that specific language. If you use unsupported characters, your custom vocabulary request fails. Refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/charsets.html">Character Sets for Custom Vocabularies</a> to get the character set for your language.</p><p>For more information, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/custom-vocabulary.html">Custom vocabularies</a>.</p>
  
  @param request A container for the necessary parameters to execute the CreateVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -250,7 +275,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)createVocabulary:(AWSTranscribeCreateVocabularyRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeCreateVocabularyResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Creates a new vocabulary filter that you can use to filter words, such as profane words, from the output of a transcription job.</p>
+ <p>Creates a new custom vocabulary filter.</p><p>You can use custom vocabulary filters to mask, delete, or flag specific words from your transcript. Custom vocabulary filters are commonly used to mask profanity in transcripts.</p><p>Each language has a character set that contains all allowed characters for that specific language. If you use unsupported characters, your custom vocabulary filter request fails. Refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/charsets.html">Character Sets for Custom Vocabularies</a> to get the character set for your language.</p><p>For more information, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/vocabulary-filtering.html">Vocabulary filtering</a>.</p>
  
  @param request A container for the necessary parameters to execute the CreateVocabularyFilter service method.
 
@@ -262,7 +287,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeCreateVocabularyFilterResponse *> *)createVocabularyFilter:(AWSTranscribeCreateVocabularyFilterRequest *)request;
 
 /**
- <p>Creates a new vocabulary filter that you can use to filter words, such as profane words, from the output of a transcription job.</p>
+ <p>Creates a new custom vocabulary filter.</p><p>You can use custom vocabulary filters to mask, delete, or flag specific words from your transcript. Custom vocabulary filters are commonly used to mask profanity in transcripts.</p><p>Each language has a character set that contains all allowed characters for that specific language. If you use unsupported characters, your custom vocabulary filter request fails. Refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/charsets.html">Character Sets for Custom Vocabularies</a> to get the character set for your language.</p><p>For more information, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/vocabulary-filtering.html">Vocabulary filtering</a>.</p>
  
  @param request A container for the necessary parameters to execute the CreateVocabularyFilter service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -275,7 +300,57 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)createVocabularyFilter:(AWSTranscribeCreateVocabularyFilterRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeCreateVocabularyFilterResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Deletes a custom language model using its name.</p>
+ <p>Deletes a Call Analytics category. To use this operation, specify the name of the category you want to delete using <code>CategoryName</code>. Category names are case sensitive.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteCallAnalyticsCategory service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeDeleteCallAnalyticsCategoryResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeDeleteCallAnalyticsCategoryRequest
+ @see AWSTranscribeDeleteCallAnalyticsCategoryResponse
+ */
+- (AWSTask<AWSTranscribeDeleteCallAnalyticsCategoryResponse *> *)deleteCallAnalyticsCategory:(AWSTranscribeDeleteCallAnalyticsCategoryRequest *)request;
+
+/**
+ <p>Deletes a Call Analytics category. To use this operation, specify the name of the category you want to delete using <code>CategoryName</code>. Category names are case sensitive.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteCallAnalyticsCategory service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeDeleteCallAnalyticsCategoryRequest
+ @see AWSTranscribeDeleteCallAnalyticsCategoryResponse
+ */
+- (void)deleteCallAnalyticsCategory:(AWSTranscribeDeleteCallAnalyticsCategoryRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeDeleteCallAnalyticsCategoryResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a Call Analytics job. To use this operation, specify the name of the job you want to delete using <code>CallAnalyticsJobName</code>. Job names are case sensitive.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteCallAnalyticsJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeDeleteCallAnalyticsJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeDeleteCallAnalyticsJobRequest
+ @see AWSTranscribeDeleteCallAnalyticsJobResponse
+ */
+- (AWSTask<AWSTranscribeDeleteCallAnalyticsJobResponse *> *)deleteCallAnalyticsJob:(AWSTranscribeDeleteCallAnalyticsJobRequest *)request;
+
+/**
+ <p>Deletes a Call Analytics job. To use this operation, specify the name of the job you want to delete using <code>CallAnalyticsJobName</code>. Job names are case sensitive.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteCallAnalyticsJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeDeleteCallAnalyticsJobRequest
+ @see AWSTranscribeDeleteCallAnalyticsJobResponse
+ */
+- (void)deleteCallAnalyticsJob:(AWSTranscribeDeleteCallAnalyticsJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeDeleteCallAnalyticsJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a custom language model. To use this operation, specify the name of the language model you want to delete using <code>ModelName</code>. custom language model names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteLanguageModel service method.
 
@@ -286,7 +361,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask *)deleteLanguageModel:(AWSTranscribeDeleteLanguageModelRequest *)request;
 
 /**
- <p>Deletes a custom language model using its name.</p>
+ <p>Deletes a custom language model. To use this operation, specify the name of the language model you want to delete using <code>ModelName</code>. custom language model names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteLanguageModel service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -297,7 +372,29 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)deleteLanguageModel:(AWSTranscribeDeleteLanguageModelRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- <p>Deletes a transcription job generated by Amazon Transcribe Medical and any related information.</p>
+ <p>Deletes a Medical Scribe job. To use this operation, specify the name of the job you want to delete using <code>MedicalScribeJobName</code>. Job names are case sensitive.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteMedicalScribeJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will be `nil`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeDeleteMedicalScribeJobRequest
+ */
+- (AWSTask *)deleteMedicalScribeJob:(AWSTranscribeDeleteMedicalScribeJobRequest *)request;
+
+/**
+ <p>Deletes a Medical Scribe job. To use this operation, specify the name of the job you want to delete using <code>MedicalScribeJobName</code>. Job names are case sensitive.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteMedicalScribeJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeDeleteMedicalScribeJobRequest
+ */
+- (void)deleteMedicalScribeJob:(AWSTranscribeDeleteMedicalScribeJobRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a medical transcription job. To use this operation, specify the name of the job you want to delete using <code>MedicalTranscriptionJobName</code>. Job names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteMedicalTranscriptionJob service method.
 
@@ -308,7 +405,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask *)deleteMedicalTranscriptionJob:(AWSTranscribeDeleteMedicalTranscriptionJobRequest *)request;
 
 /**
- <p>Deletes a transcription job generated by Amazon Transcribe Medical and any related information.</p>
+ <p>Deletes a medical transcription job. To use this operation, specify the name of the job you want to delete using <code>MedicalTranscriptionJobName</code>. Job names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteMedicalTranscriptionJob service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -319,7 +416,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)deleteMedicalTranscriptionJob:(AWSTranscribeDeleteMedicalTranscriptionJobRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- <p>Deletes a vocabulary from Amazon Transcribe Medical.</p>
+ <p>Deletes a custom medical vocabulary. To use this operation, specify the name of the custom vocabulary you want to delete using <code>VocabularyName</code>. Custom vocabulary names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteMedicalVocabulary service method.
 
@@ -330,7 +427,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask *)deleteMedicalVocabulary:(AWSTranscribeDeleteMedicalVocabularyRequest *)request;
 
 /**
- <p>Deletes a vocabulary from Amazon Transcribe Medical.</p>
+ <p>Deletes a custom medical vocabulary. To use this operation, specify the name of the custom vocabulary you want to delete using <code>VocabularyName</code>. Custom vocabulary names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteMedicalVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -341,7 +438,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)deleteMedicalVocabulary:(AWSTranscribeDeleteMedicalVocabularyRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- <p>Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.</p>
+ <p>Deletes a transcription job. To use this operation, specify the name of the job you want to delete using <code>TranscriptionJobName</code>. Job names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteTranscriptionJob service method.
 
@@ -352,7 +449,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask *)deleteTranscriptionJob:(AWSTranscribeDeleteTranscriptionJobRequest *)request;
 
 /**
- <p>Deletes a previously submitted transcription job along with any other generated results such as the transcription, models, and so on.</p>
+ <p>Deletes a transcription job. To use this operation, specify the name of the job you want to delete using <code>TranscriptionJobName</code>. Job names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteTranscriptionJob service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -363,7 +460,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)deleteTranscriptionJob:(AWSTranscribeDeleteTranscriptionJobRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- <p>Deletes a vocabulary from Amazon Transcribe. </p>
+ <p>Deletes a custom vocabulary. To use this operation, specify the name of the custom vocabulary you want to delete using <code>VocabularyName</code>. Custom vocabulary names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteVocabulary service method.
 
@@ -374,7 +471,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask *)deleteVocabulary:(AWSTranscribeDeleteVocabularyRequest *)request;
 
 /**
- <p>Deletes a vocabulary from Amazon Transcribe. </p>
+ <p>Deletes a custom vocabulary. To use this operation, specify the name of the custom vocabulary you want to delete using <code>VocabularyName</code>. Custom vocabulary names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -385,7 +482,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)deleteVocabulary:(AWSTranscribeDeleteVocabularyRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- <p>Removes a vocabulary filter.</p>
+ <p>Deletes a custom vocabulary filter. To use this operation, specify the name of the custom vocabulary filter you want to delete using <code>VocabularyFilterName</code>. Custom vocabulary filter names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteVocabularyFilter service method.
 
@@ -396,7 +493,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask *)deleteVocabularyFilter:(AWSTranscribeDeleteVocabularyFilterRequest *)request;
 
 /**
- <p>Removes a vocabulary filter.</p>
+ <p>Deletes a custom vocabulary filter. To use this operation, specify the name of the custom vocabulary filter you want to delete using <code>VocabularyFilterName</code>. Custom vocabulary filter names are case sensitive.</p>
  
  @param request A container for the necessary parameters to execute the DeleteVocabularyFilter service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -407,7 +504,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)deleteVocabularyFilter:(AWSTranscribeDeleteVocabularyFilterRequest *)request completionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler;
 
 /**
- <p>Gets information about a single custom language model. Use this information to see details about the language model in your AWS account. You can also see whether the base language model used to create your custom language model has been updated. If Amazon Transcribe has updated the base model, you can create a new custom language model using the updated base model. If the language model wasn't created, you can use this operation to understand why Amazon Transcribe couldn't create it. </p>
+ <p>Provides information about the specified custom language model.</p><p>This operation also shows if the base language model that you used to create your custom language model has been updated. If Amazon Transcribe has updated the base model, you can create a new custom language model using the updated base model.</p><p>If you tried to create a new custom language model and the request wasn't successful, you can use <code>DescribeLanguageModel</code> to help identify the reason for this failure.</p>
  
  @param request A container for the necessary parameters to execute the DescribeLanguageModel service method.
 
@@ -419,7 +516,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeDescribeLanguageModelResponse *> *)describeLanguageModel:(AWSTranscribeDescribeLanguageModelRequest *)request;
 
 /**
- <p>Gets information about a single custom language model. Use this information to see details about the language model in your AWS account. You can also see whether the base language model used to create your custom language model has been updated. If Amazon Transcribe has updated the base model, you can create a new custom language model using the updated base model. If the language model wasn't created, you can use this operation to understand why Amazon Transcribe couldn't create it. </p>
+ <p>Provides information about the specified custom language model.</p><p>This operation also shows if the base language model that you used to create your custom language model has been updated. If Amazon Transcribe has updated the base model, you can create a new custom language model using the updated base model.</p><p>If you tried to create a new custom language model and the request wasn't successful, you can use <code>DescribeLanguageModel</code> to help identify the reason for this failure.</p>
  
  @param request A container for the necessary parameters to execute the DescribeLanguageModel service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -432,7 +529,82 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)describeLanguageModel:(AWSTranscribeDescribeLanguageModelRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeDescribeLanguageModelResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Returns information about a transcription job from Amazon Transcribe Medical. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You find the results of the completed job in the <code>TranscriptFileUri</code> field.</p>
+ <p>Provides information about the specified Call Analytics category.</p><p>To get a list of your Call Analytics categories, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetCallAnalyticsCategory service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeGetCallAnalyticsCategoryResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorBadRequest`.
+ 
+ @see AWSTranscribeGetCallAnalyticsCategoryRequest
+ @see AWSTranscribeGetCallAnalyticsCategoryResponse
+ */
+- (AWSTask<AWSTranscribeGetCallAnalyticsCategoryResponse *> *)getCallAnalyticsCategory:(AWSTranscribeGetCallAnalyticsCategoryRequest *)request;
+
+/**
+ <p>Provides information about the specified Call Analytics category.</p><p>To get a list of your Call Analytics categories, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetCallAnalyticsCategory service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorBadRequest`.
+ 
+ @see AWSTranscribeGetCallAnalyticsCategoryRequest
+ @see AWSTranscribeGetCallAnalyticsCategoryResponse
+ */
+- (void)getCallAnalyticsCategory:(AWSTranscribeGetCallAnalyticsCategoryRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetCallAnalyticsCategoryResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides information about the specified Call Analytics job.</p><p>To view the job's status, refer to <code>CallAnalyticsJobStatus</code>. If the status is <code>COMPLETED</code>, the job is finished. You can find your completed transcript at the URI specified in <code>TranscriptFileUri</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your transcription job failed.</p><p>If you enabled personally identifiable information (PII) redaction, the redacted transcript appears at the location specified in <code>RedactedTranscriptFileUri</code>.</p><p>If you chose to redact the audio in your media file, you can find your redacted media file at the location specified in <code>RedactedMediaFileUri</code>.</p><p>To get a list of your Call Analytics jobs, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetCallAnalyticsJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeGetCallAnalyticsJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorNotFound`.
+ 
+ @see AWSTranscribeGetCallAnalyticsJobRequest
+ @see AWSTranscribeGetCallAnalyticsJobResponse
+ */
+- (AWSTask<AWSTranscribeGetCallAnalyticsJobResponse *> *)getCallAnalyticsJob:(AWSTranscribeGetCallAnalyticsJobRequest *)request;
+
+/**
+ <p>Provides information about the specified Call Analytics job.</p><p>To view the job's status, refer to <code>CallAnalyticsJobStatus</code>. If the status is <code>COMPLETED</code>, the job is finished. You can find your completed transcript at the URI specified in <code>TranscriptFileUri</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your transcription job failed.</p><p>If you enabled personally identifiable information (PII) redaction, the redacted transcript appears at the location specified in <code>RedactedTranscriptFileUri</code>.</p><p>If you chose to redact the audio in your media file, you can find your redacted media file at the location specified in <code>RedactedMediaFileUri</code>.</p><p>To get a list of your Call Analytics jobs, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetCallAnalyticsJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorNotFound`.
+ 
+ @see AWSTranscribeGetCallAnalyticsJobRequest
+ @see AWSTranscribeGetCallAnalyticsJobResponse
+ */
+- (void)getCallAnalyticsJob:(AWSTranscribeGetCallAnalyticsJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetCallAnalyticsJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides information about the specified Medical Scribe job.</p><p>To view the status of the specified medical transcription job, check the <code>MedicalScribeJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You can find the results at the location specified in <code>MedicalScribeOutput</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your Medical Scribe job failed.</p><p>To get a list of your Medical Scribe jobs, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetMedicalScribeJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeGetMedicalScribeJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorNotFound`.
+ 
+ @see AWSTranscribeGetMedicalScribeJobRequest
+ @see AWSTranscribeGetMedicalScribeJobResponse
+ */
+- (AWSTask<AWSTranscribeGetMedicalScribeJobResponse *> *)getMedicalScribeJob:(AWSTranscribeGetMedicalScribeJobRequest *)request;
+
+/**
+ <p>Provides information about the specified Medical Scribe job.</p><p>To view the status of the specified medical transcription job, check the <code>MedicalScribeJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You can find the results at the location specified in <code>MedicalScribeOutput</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your Medical Scribe job failed.</p><p>To get a list of your Medical Scribe jobs, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetMedicalScribeJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorNotFound`.
+ 
+ @see AWSTranscribeGetMedicalScribeJobRequest
+ @see AWSTranscribeGetMedicalScribeJobResponse
+ */
+- (void)getMedicalScribeJob:(AWSTranscribeGetMedicalScribeJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetMedicalScribeJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides information about the specified medical transcription job.</p><p>To view the status of the specified medical transcription job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You can find the results at the location specified in <code>TranscriptFileUri</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your transcription job failed.</p><p>To get a list of your medical transcription jobs, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetMedicalTranscriptionJob service method.
 
@@ -444,7 +616,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeGetMedicalTranscriptionJobResponse *> *)getMedicalTranscriptionJob:(AWSTranscribeGetMedicalTranscriptionJobRequest *)request;
 
 /**
- <p>Returns information about a transcription job from Amazon Transcribe Medical. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You find the results of the completed job in the <code>TranscriptFileUri</code> field.</p>
+ <p>Provides information about the specified medical transcription job.</p><p>To view the status of the specified medical transcription job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You can find the results at the location specified in <code>TranscriptFileUri</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your transcription job failed.</p><p>To get a list of your medical transcription jobs, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetMedicalTranscriptionJob service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -457,7 +629,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)getMedicalTranscriptionJob:(AWSTranscribeGetMedicalTranscriptionJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetMedicalTranscriptionJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Retrieves information about a medical vocabulary.</p>
+ <p>Provides information about the specified custom medical vocabulary.</p><p>To view the status of the specified custom medical vocabulary, check the <code>VocabularyState</code> field. If the status is <code>READY</code>, your custom vocabulary is available to use. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your vocabulary failed.</p><p>To get a list of your custom medical vocabularies, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetMedicalVocabulary service method.
 
@@ -469,7 +641,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeGetMedicalVocabularyResponse *> *)getMedicalVocabulary:(AWSTranscribeGetMedicalVocabularyRequest *)request;
 
 /**
- <p>Retrieves information about a medical vocabulary.</p>
+ <p>Provides information about the specified custom medical vocabulary.</p><p>To view the status of the specified custom medical vocabulary, check the <code>VocabularyState</code> field. If the status is <code>READY</code>, your custom vocabulary is available to use. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your vocabulary failed.</p><p>To get a list of your custom medical vocabularies, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetMedicalVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -482,7 +654,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)getMedicalVocabulary:(AWSTranscribeGetMedicalVocabularyRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetMedicalVocabularyResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptFileUri</code> field. If you enable content redaction, the redacted transcript appears in <code>RedactedTranscriptFileUri</code>.</p>
+ <p>Provides information about the specified transcription job.</p><p>To view the status of the specified transcription job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You can find the results at the location specified in <code>TranscriptFileUri</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your transcription job failed.</p><p>If you enabled content redaction, the redacted transcript can be found at the location specified in <code>RedactedTranscriptFileUri</code>.</p><p>To get a list of your transcription jobs, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetTranscriptionJob service method.
 
@@ -494,7 +666,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeGetTranscriptionJobResponse *> *)getTranscriptionJob:(AWSTranscribeGetTranscriptionJobRequest *)request;
 
 /**
- <p>Returns information about a transcription job. To see the status of the job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished and you can find the results at the location specified in the <code>TranscriptFileUri</code> field. If you enable content redaction, the redacted transcript appears in <code>RedactedTranscriptFileUri</code>.</p>
+ <p>Provides information about the specified transcription job.</p><p>To view the status of the specified transcription job, check the <code>TranscriptionJobStatus</code> field. If the status is <code>COMPLETED</code>, the job is finished. You can find the results at the location specified in <code>TranscriptFileUri</code>. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your transcription job failed.</p><p>If you enabled content redaction, the redacted transcript can be found at the location specified in <code>RedactedTranscriptFileUri</code>.</p><p>To get a list of your transcription jobs, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetTranscriptionJob service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -507,7 +679,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)getTranscriptionJob:(AWSTranscribeGetTranscriptionJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetTranscriptionJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Gets information about a vocabulary. </p>
+ <p>Provides information about the specified custom vocabulary.</p><p>To view the status of the specified custom vocabulary, check the <code>VocabularyState</code> field. If the status is <code>READY</code>, your custom vocabulary is available to use. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your custom vocabulary failed.</p><p>To get a list of your custom vocabularies, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetVocabulary service method.
 
@@ -519,7 +691,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeGetVocabularyResponse *> *)getVocabulary:(AWSTranscribeGetVocabularyRequest *)request;
 
 /**
- <p>Gets information about a vocabulary. </p>
+ <p>Provides information about the specified custom vocabulary.</p><p>To view the status of the specified custom vocabulary, check the <code>VocabularyState</code> field. If the status is <code>READY</code>, your custom vocabulary is available to use. If the status is <code>FAILED</code>, <code>FailureReason</code> provides details on why your custom vocabulary failed.</p><p>To get a list of your custom vocabularies, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -532,7 +704,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)getVocabulary:(AWSTranscribeGetVocabularyRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetVocabularyResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Returns information about a vocabulary filter.</p>
+ <p>Provides information about the specified custom vocabulary filter.</p><p>To get a list of your custom vocabulary filters, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetVocabularyFilter service method.
 
@@ -544,7 +716,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeGetVocabularyFilterResponse *> *)getVocabularyFilter:(AWSTranscribeGetVocabularyFilterRequest *)request;
 
 /**
- <p>Returns information about a vocabulary filter.</p>
+ <p>Provides information about the specified custom vocabulary filter.</p><p>To get a list of your custom vocabulary filters, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the GetVocabularyFilter service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -557,7 +729,57 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)getVocabularyFilter:(AWSTranscribeGetVocabularyFilterRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeGetVocabularyFilterResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Provides more information about the custom language models you've created. You can use the information in this list to find a specific custom language model. You can then use the operation to get more information about it.</p>
+ <p>Provides a list of Call Analytics categories, including all rules that make up each category.</p><p>To get detailed information about a specific Call Analytics category, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListCallAnalyticsCategories service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeListCallAnalyticsCategoriesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListCallAnalyticsCategoriesRequest
+ @see AWSTranscribeListCallAnalyticsCategoriesResponse
+ */
+- (AWSTask<AWSTranscribeListCallAnalyticsCategoriesResponse *> *)listCallAnalyticsCategories:(AWSTranscribeListCallAnalyticsCategoriesRequest *)request;
+
+/**
+ <p>Provides a list of Call Analytics categories, including all rules that make up each category.</p><p>To get detailed information about a specific Call Analytics category, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListCallAnalyticsCategories service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListCallAnalyticsCategoriesRequest
+ @see AWSTranscribeListCallAnalyticsCategoriesResponse
+ */
+- (void)listCallAnalyticsCategories:(AWSTranscribeListCallAnalyticsCategoriesRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListCallAnalyticsCategoriesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides a list of Call Analytics jobs that match the specified criteria. If no criteria are specified, all Call Analytics jobs are returned.</p><p>To get detailed information about a specific Call Analytics job, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListCallAnalyticsJobs service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeListCallAnalyticsJobsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListCallAnalyticsJobsRequest
+ @see AWSTranscribeListCallAnalyticsJobsResponse
+ */
+- (AWSTask<AWSTranscribeListCallAnalyticsJobsResponse *> *)listCallAnalyticsJobs:(AWSTranscribeListCallAnalyticsJobsRequest *)request;
+
+/**
+ <p>Provides a list of Call Analytics jobs that match the specified criteria. If no criteria are specified, all Call Analytics jobs are returned.</p><p>To get detailed information about a specific Call Analytics job, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListCallAnalyticsJobs service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListCallAnalyticsJobsRequest
+ @see AWSTranscribeListCallAnalyticsJobsResponse
+ */
+- (void)listCallAnalyticsJobs:(AWSTranscribeListCallAnalyticsJobsRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListCallAnalyticsJobsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides a list of custom language models that match the specified criteria. If no criteria are specified, all custom language models are returned.</p><p>To get detailed information about a specific custom language model, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListLanguageModels service method.
 
@@ -569,7 +791,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeListLanguageModelsResponse *> *)listLanguageModels:(AWSTranscribeListLanguageModelsRequest *)request;
 
 /**
- <p>Provides more information about the custom language models you've created. You can use the information in this list to find a specific custom language model. You can then use the operation to get more information about it.</p>
+ <p>Provides a list of custom language models that match the specified criteria. If no criteria are specified, all custom language models are returned.</p><p>To get detailed information about a specific custom language model, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListLanguageModels service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -582,7 +804,32 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)listLanguageModels:(AWSTranscribeListLanguageModelsRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListLanguageModelsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Lists medical transcription jobs with a specified status or substring that matches their names.</p>
+ <p>Provides a list of Medical Scribe jobs that match the specified criteria. If no criteria are specified, all Medical Scribe jobs are returned.</p><p>To get detailed information about a specific Medical Scribe job, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListMedicalScribeJobs service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeListMedicalScribeJobsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListMedicalScribeJobsRequest
+ @see AWSTranscribeListMedicalScribeJobsResponse
+ */
+- (AWSTask<AWSTranscribeListMedicalScribeJobsResponse *> *)listMedicalScribeJobs:(AWSTranscribeListMedicalScribeJobsRequest *)request;
+
+/**
+ <p>Provides a list of Medical Scribe jobs that match the specified criteria. If no criteria are specified, all Medical Scribe jobs are returned.</p><p>To get detailed information about a specific Medical Scribe job, use the operation.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListMedicalScribeJobs service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListMedicalScribeJobsRequest
+ @see AWSTranscribeListMedicalScribeJobsResponse
+ */
+- (void)listMedicalScribeJobs:(AWSTranscribeListMedicalScribeJobsRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListMedicalScribeJobsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides a list of medical transcription jobs that match the specified criteria. If no criteria are specified, all medical transcription jobs are returned.</p><p>To get detailed information about a specific medical transcription job, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListMedicalTranscriptionJobs service method.
 
@@ -594,7 +841,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeListMedicalTranscriptionJobsResponse *> *)listMedicalTranscriptionJobs:(AWSTranscribeListMedicalTranscriptionJobsRequest *)request;
 
 /**
- <p>Lists medical transcription jobs with a specified status or substring that matches their names.</p>
+ <p>Provides a list of medical transcription jobs that match the specified criteria. If no criteria are specified, all medical transcription jobs are returned.</p><p>To get detailed information about a specific medical transcription job, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListMedicalTranscriptionJobs service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -607,7 +854,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)listMedicalTranscriptionJobs:(AWSTranscribeListMedicalTranscriptionJobsRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListMedicalTranscriptionJobsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Returns a list of vocabularies that match the specified criteria. If you don't enter a value in any of the request parameters, returns the entire list of vocabularies.</p>
+ <p>Provides a list of custom medical vocabularies that match the specified criteria. If no criteria are specified, all custom medical vocabularies are returned.</p><p>To get detailed information about a specific custom medical vocabulary, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListMedicalVocabularies service method.
 
@@ -619,7 +866,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeListMedicalVocabulariesResponse *> *)listMedicalVocabularies:(AWSTranscribeListMedicalVocabulariesRequest *)request;
 
 /**
- <p>Returns a list of vocabularies that match the specified criteria. If you don't enter a value in any of the request parameters, returns the entire list of vocabularies.</p>
+ <p>Provides a list of custom medical vocabularies that match the specified criteria. If no criteria are specified, all custom medical vocabularies are returned.</p><p>To get detailed information about a specific custom medical vocabulary, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListMedicalVocabularies service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -632,7 +879,32 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)listMedicalVocabularies:(AWSTranscribeListMedicalVocabulariesRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListMedicalVocabulariesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Lists transcription jobs with the specified status.</p>
+ <p>Lists all tags associated with the specified transcription job, vocabulary, model, or resource.</p><p>To learn more about using tags with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tagging.html">Tagging resources</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListTagsForResource service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeListTagsForResourceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListTagsForResourceRequest
+ @see AWSTranscribeListTagsForResourceResponse
+ */
+- (AWSTask<AWSTranscribeListTagsForResourceResponse *> *)listTagsForResource:(AWSTranscribeListTagsForResourceRequest *)request;
+
+/**
+ <p>Lists all tags associated with the specified transcription job, vocabulary, model, or resource.</p><p>To learn more about using tags with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tagging.html">Tagging resources</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the ListTagsForResource service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeListTagsForResourceRequest
+ @see AWSTranscribeListTagsForResourceResponse
+ */
+- (void)listTagsForResource:(AWSTranscribeListTagsForResourceRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListTagsForResourceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides a list of transcription jobs that match the specified criteria. If no criteria are specified, all transcription jobs are returned.</p><p>To get detailed information about a specific transcription job, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListTranscriptionJobs service method.
 
@@ -644,7 +916,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeListTranscriptionJobsResponse *> *)listTranscriptionJobs:(AWSTranscribeListTranscriptionJobsRequest *)request;
 
 /**
- <p>Lists transcription jobs with the specified status.</p>
+ <p>Provides a list of transcription jobs that match the specified criteria. If no criteria are specified, all transcription jobs are returned.</p><p>To get detailed information about a specific transcription job, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListTranscriptionJobs service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -657,7 +929,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)listTranscriptionJobs:(AWSTranscribeListTranscriptionJobsRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListTranscriptionJobsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Returns a list of vocabularies that match the specified criteria. If no criteria are specified, returns the entire list of vocabularies.</p>
+ <p>Provides a list of custom vocabularies that match the specified criteria. If no criteria are specified, all custom vocabularies are returned.</p><p>To get detailed information about a specific custom vocabulary, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListVocabularies service method.
 
@@ -669,7 +941,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeListVocabulariesResponse *> *)listVocabularies:(AWSTranscribeListVocabulariesRequest *)request;
 
 /**
- <p>Returns a list of vocabularies that match the specified criteria. If no criteria are specified, returns the entire list of vocabularies.</p>
+ <p>Provides a list of custom vocabularies that match the specified criteria. If no criteria are specified, all custom vocabularies are returned.</p><p>To get detailed information about a specific custom vocabulary, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListVocabularies service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -682,7 +954,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)listVocabularies:(AWSTranscribeListVocabulariesRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListVocabulariesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Gets information about vocabulary filters.</p>
+ <p>Provides a list of custom vocabulary filters that match the specified criteria. If no criteria are specified, all custom vocabularies are returned.</p><p>To get detailed information about a specific custom vocabulary filter, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListVocabularyFilters service method.
 
@@ -694,7 +966,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeListVocabularyFiltersResponse *> *)listVocabularyFilters:(AWSTranscribeListVocabularyFiltersRequest *)request;
 
 /**
- <p>Gets information about vocabulary filters.</p>
+ <p>Provides a list of custom vocabulary filters that match the specified criteria. If no criteria are specified, all custom vocabularies are returned.</p><p>To get detailed information about a specific custom vocabulary filter, use the operation.</p>
  
  @param request A container for the necessary parameters to execute the ListVocabularyFilters service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -707,7 +979,57 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)listVocabularyFilters:(AWSTranscribeListVocabularyFiltersRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeListVocabularyFiltersResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Starts a batch job to transcribe medical speech to text.</p>
+ <p>Transcribes the audio from a customer service call and applies any additional Request Parameters you choose to include in your request.</p><p>In addition to many standard transcription features, Call Analytics provides you with call characteristics, call summarization, speaker sentiment, and optional redaction of your text transcript and your audio file. You can also apply custom categories to flag specified conditions. To learn more about these features and insights, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/call-analytics.html">Analyzing call center audio with Call Analytics</a>.</p><p>If you want to apply categories to your Call Analytics job, you must create them before submitting your job request. Categories cannot be retroactively applied to a job. To create a new category, use the operation. To learn more about Call Analytics categories, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-batch.html">Creating categories for post-call transcriptions</a> and <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-stream.html">Creating categories for real-time transcriptions</a>.</p><p>To make a <code>StartCallAnalyticsJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>Note that job queuing is enabled by default for Call Analytics jobs.</p><p>You must include the following parameters in your <code>StartCallAnalyticsJob</code> request:</p><ul><li><p><code>region</code>: The Amazon Web Services Region where you are making your request. For a list of Amazon Web Services Regions supported with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/general/latest/gr/transcribe.html">Amazon Transcribe endpoints and quotas</a>.</p></li><li><p><code>CallAnalyticsJobName</code>: A custom name that you create for your transcription job that's unique within your Amazon Web Services account.</p></li><li><p><code>DataAccessRoleArn</code>: The Amazon Resource Name (ARN) of an IAM role that has permissions to access the Amazon S3 bucket that contains your input files.</p></li><li><p><code>Media</code> (<code>MediaFileUri</code> or <code>RedactedMediaFileUri</code>): The Amazon S3 location of your media file.</p></li></ul><note><p>With Call Analytics, you can redact the audio contained in your media file by including <code>RedactedMediaFileUri</code>, instead of <code>MediaFileUri</code>, to specify the location of your input audio. If you choose to redact your audio, you can find your redacted media at the location specified in the <code>RedactedMediaFileUri</code> field of your response.</p></note>
+ 
+ @param request A container for the necessary parameters to execute the StartCallAnalyticsJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeStartCallAnalyticsJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeStartCallAnalyticsJobRequest
+ @see AWSTranscribeStartCallAnalyticsJobResponse
+ */
+- (AWSTask<AWSTranscribeStartCallAnalyticsJobResponse *> *)startCallAnalyticsJob:(AWSTranscribeStartCallAnalyticsJobRequest *)request;
+
+/**
+ <p>Transcribes the audio from a customer service call and applies any additional Request Parameters you choose to include in your request.</p><p>In addition to many standard transcription features, Call Analytics provides you with call characteristics, call summarization, speaker sentiment, and optional redaction of your text transcript and your audio file. You can also apply custom categories to flag specified conditions. To learn more about these features and insights, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/call-analytics.html">Analyzing call center audio with Call Analytics</a>.</p><p>If you want to apply categories to your Call Analytics job, you must create them before submitting your job request. Categories cannot be retroactively applied to a job. To create a new category, use the operation. To learn more about Call Analytics categories, see <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-batch.html">Creating categories for post-call transcriptions</a> and <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tca-categories-stream.html">Creating categories for real-time transcriptions</a>.</p><p>To make a <code>StartCallAnalyticsJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>Note that job queuing is enabled by default for Call Analytics jobs.</p><p>You must include the following parameters in your <code>StartCallAnalyticsJob</code> request:</p><ul><li><p><code>region</code>: The Amazon Web Services Region where you are making your request. For a list of Amazon Web Services Regions supported with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/general/latest/gr/transcribe.html">Amazon Transcribe endpoints and quotas</a>.</p></li><li><p><code>CallAnalyticsJobName</code>: A custom name that you create for your transcription job that's unique within your Amazon Web Services account.</p></li><li><p><code>DataAccessRoleArn</code>: The Amazon Resource Name (ARN) of an IAM role that has permissions to access the Amazon S3 bucket that contains your input files.</p></li><li><p><code>Media</code> (<code>MediaFileUri</code> or <code>RedactedMediaFileUri</code>): The Amazon S3 location of your media file.</p></li></ul><note><p>With Call Analytics, you can redact the audio contained in your media file by including <code>RedactedMediaFileUri</code>, instead of <code>MediaFileUri</code>, to specify the location of your input audio. If you choose to redact your audio, you can find your redacted media at the location specified in the <code>RedactedMediaFileUri</code> field of your response.</p></note>
+ 
+ @param request A container for the necessary parameters to execute the StartCallAnalyticsJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeStartCallAnalyticsJobRequest
+ @see AWSTranscribeStartCallAnalyticsJobResponse
+ */
+- (void)startCallAnalyticsJob:(AWSTranscribeStartCallAnalyticsJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeStartCallAnalyticsJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Transcribes patient-clinician conversations and generates clinical notes. </p><p>Amazon Web Services HealthScribe automatically provides rich conversation transcripts, identifies speaker roles, classifies dialogues, extracts medical terms, and generates preliminary clinical notes. To learn more about these features, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/health-scribe.html">Amazon Web Services HealthScribe</a>.</p><p>To make a <code>StartMedicalScribeJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>You must include the following parameters in your <code>StartMedicalTranscriptionJob</code> request:</p><ul><li><p><code>DataAccessRoleArn</code>: The ARN of an IAM role with the these minimum permissions: read permission on input file Amazon S3 bucket specified in <code>Media</code>, write permission on the Amazon S3 bucket specified in <code>OutputBucketName</code>, and full permissions on the KMS key specified in <code>OutputEncryptionKMSKeyId</code> (if set). The role should also allow <code>transcribe.amazonaws.com</code> to assume it. </p></li><li><p><code>Media</code> (<code>MediaFileUri</code>): The Amazon S3 location of your media file.</p></li><li><p><code>MedicalScribeJobName</code>: A custom name you create for your MedicalScribe job that is unique within your Amazon Web Services account.</p></li><li><p><code>OutputBucketName</code>: The Amazon S3 bucket where you want your output files stored.</p></li><li><p><code>Settings</code>: A <code>MedicalScribeSettings</code> obect that must set exactly one of <code>ShowSpeakerLabels</code> or <code>ChannelIdentification</code> to true. If <code>ShowSpeakerLabels</code> is true, <code>MaxSpeakerLabels</code> must also be set. </p></li><li><p><code>ChannelDefinitions</code>: A <code>MedicalScribeChannelDefinitions</code> array should be set if and only if the <code>ChannelIdentification</code> value of <code>Settings</code> is set to true. </p></li></ul>
+ 
+ @param request A container for the necessary parameters to execute the StartMedicalScribeJob service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeStartMedicalScribeJobResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeStartMedicalScribeJobRequest
+ @see AWSTranscribeStartMedicalScribeJobResponse
+ */
+- (AWSTask<AWSTranscribeStartMedicalScribeJobResponse *> *)startMedicalScribeJob:(AWSTranscribeStartMedicalScribeJobRequest *)request;
+
+/**
+ <p>Transcribes patient-clinician conversations and generates clinical notes. </p><p>Amazon Web Services HealthScribe automatically provides rich conversation transcripts, identifies speaker roles, classifies dialogues, extracts medical terms, and generates preliminary clinical notes. To learn more about these features, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/health-scribe.html">Amazon Web Services HealthScribe</a>.</p><p>To make a <code>StartMedicalScribeJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>You must include the following parameters in your <code>StartMedicalTranscriptionJob</code> request:</p><ul><li><p><code>DataAccessRoleArn</code>: The ARN of an IAM role with the these minimum permissions: read permission on input file Amazon S3 bucket specified in <code>Media</code>, write permission on the Amazon S3 bucket specified in <code>OutputBucketName</code>, and full permissions on the KMS key specified in <code>OutputEncryptionKMSKeyId</code> (if set). The role should also allow <code>transcribe.amazonaws.com</code> to assume it. </p></li><li><p><code>Media</code> (<code>MediaFileUri</code>): The Amazon S3 location of your media file.</p></li><li><p><code>MedicalScribeJobName</code>: A custom name you create for your MedicalScribe job that is unique within your Amazon Web Services account.</p></li><li><p><code>OutputBucketName</code>: The Amazon S3 bucket where you want your output files stored.</p></li><li><p><code>Settings</code>: A <code>MedicalScribeSettings</code> obect that must set exactly one of <code>ShowSpeakerLabels</code> or <code>ChannelIdentification</code> to true. If <code>ShowSpeakerLabels</code> is true, <code>MaxSpeakerLabels</code> must also be set. </p></li><li><p><code>ChannelDefinitions</code>: A <code>MedicalScribeChannelDefinitions</code> array should be set if and only if the <code>ChannelIdentification</code> value of <code>Settings</code> is set to true. </p></li></ul>
+ 
+ @param request A container for the necessary parameters to execute the StartMedicalScribeJob service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeStartMedicalScribeJobRequest
+ @see AWSTranscribeStartMedicalScribeJobResponse
+ */
+- (void)startMedicalScribeJob:(AWSTranscribeStartMedicalScribeJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeStartMedicalScribeJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Transcribes the audio from a medical dictation or conversation and applies any additional Request Parameters you choose to include in your request.</p><p>In addition to many standard transcription features, Amazon Transcribe Medical provides you with a robust medical vocabulary and, optionally, content identification, which adds flags to personal health information (PHI). To learn more about these features, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/how-it-works-med.html">How Amazon Transcribe Medical works</a>.</p><p>To make a <code>StartMedicalTranscriptionJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>You must include the following parameters in your <code>StartMedicalTranscriptionJob</code> request:</p><ul><li><p><code>region</code>: The Amazon Web Services Region where you are making your request. For a list of Amazon Web Services Regions supported with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/general/latest/gr/transcribe.html">Amazon Transcribe endpoints and quotas</a>.</p></li><li><p><code>MedicalTranscriptionJobName</code>: A custom name you create for your transcription job that is unique within your Amazon Web Services account.</p></li><li><p><code>Media</code> (<code>MediaFileUri</code>): The Amazon S3 location of your media file.</p></li><li><p><code>LanguageCode</code>: This must be <code>en-US</code>.</p></li><li><p><code>OutputBucketName</code>: The Amazon S3 bucket where you want your transcript stored. If you want your output stored in a sub-folder of this bucket, you must also include <code>OutputKey</code>.</p></li><li><p><code>Specialty</code>: This must be <code>PRIMARYCARE</code>.</p></li><li><p><code>Type</code>: Choose whether your audio is a conversation or a dictation.</p></li></ul>
  
  @param request A container for the necessary parameters to execute the StartMedicalTranscriptionJob service method.
 
@@ -719,7 +1041,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeStartMedicalTranscriptionJobResponse *> *)startMedicalTranscriptionJob:(AWSTranscribeStartMedicalTranscriptionJobRequest *)request;
 
 /**
- <p>Starts a batch job to transcribe medical speech to text.</p>
+ <p>Transcribes the audio from a medical dictation or conversation and applies any additional Request Parameters you choose to include in your request.</p><p>In addition to many standard transcription features, Amazon Transcribe Medical provides you with a robust medical vocabulary and, optionally, content identification, which adds flags to personal health information (PHI). To learn more about these features, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/how-it-works-med.html">How Amazon Transcribe Medical works</a>.</p><p>To make a <code>StartMedicalTranscriptionJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>You must include the following parameters in your <code>StartMedicalTranscriptionJob</code> request:</p><ul><li><p><code>region</code>: The Amazon Web Services Region where you are making your request. For a list of Amazon Web Services Regions supported with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/general/latest/gr/transcribe.html">Amazon Transcribe endpoints and quotas</a>.</p></li><li><p><code>MedicalTranscriptionJobName</code>: A custom name you create for your transcription job that is unique within your Amazon Web Services account.</p></li><li><p><code>Media</code> (<code>MediaFileUri</code>): The Amazon S3 location of your media file.</p></li><li><p><code>LanguageCode</code>: This must be <code>en-US</code>.</p></li><li><p><code>OutputBucketName</code>: The Amazon S3 bucket where you want your transcript stored. If you want your output stored in a sub-folder of this bucket, you must also include <code>OutputKey</code>.</p></li><li><p><code>Specialty</code>: This must be <code>PRIMARYCARE</code>.</p></li><li><p><code>Type</code>: Choose whether your audio is a conversation or a dictation.</p></li></ul>
  
  @param request A container for the necessary parameters to execute the StartMedicalTranscriptionJob service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -732,7 +1054,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)startMedicalTranscriptionJob:(AWSTranscribeStartMedicalTranscriptionJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeStartMedicalTranscriptionJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Starts an asynchronous job to transcribe speech to text. </p>
+ <p>Transcribes the audio from a media file and applies any additional Request Parameters you choose to include in your request.</p><p>To make a <code>StartTranscriptionJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>You must include the following parameters in your <code>StartTranscriptionJob</code> request:</p><ul><li><p><code>region</code>: The Amazon Web Services Region where you are making your request. For a list of Amazon Web Services Regions supported with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/general/latest/gr/transcribe.html">Amazon Transcribe endpoints and quotas</a>.</p></li><li><p><code>TranscriptionJobName</code>: A custom name you create for your transcription job that is unique within your Amazon Web Services account.</p></li><li><p><code>Media</code> (<code>MediaFileUri</code>): The Amazon S3 location of your media file.</p></li><li><p>One of <code>LanguageCode</code>, <code>IdentifyLanguage</code>, or <code>IdentifyMultipleLanguages</code>: If you know the language of your media file, specify it using the <code>LanguageCode</code> parameter; you can find all valid language codes in the <a href="https://docs.aws.amazon.com/transcribe/latest/dg/supported-languages.html">Supported languages</a> table. If you do not know the languages spoken in your media, use either <code>IdentifyLanguage</code> or <code>IdentifyMultipleLanguages</code> and let Amazon Transcribe identify the languages for you.</p></li></ul>
  
  @param request A container for the necessary parameters to execute the StartTranscriptionJob service method.
 
@@ -744,7 +1066,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeStartTranscriptionJobResponse *> *)startTranscriptionJob:(AWSTranscribeStartTranscriptionJobRequest *)request;
 
 /**
- <p>Starts an asynchronous job to transcribe speech to text. </p>
+ <p>Transcribes the audio from a media file and applies any additional Request Parameters you choose to include in your request.</p><p>To make a <code>StartTranscriptionJob</code> request, you must first upload your media file into an Amazon S3 bucket; you can then specify the Amazon S3 location of the file using the <code>Media</code> parameter.</p><p>You must include the following parameters in your <code>StartTranscriptionJob</code> request:</p><ul><li><p><code>region</code>: The Amazon Web Services Region where you are making your request. For a list of Amazon Web Services Regions supported with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/general/latest/gr/transcribe.html">Amazon Transcribe endpoints and quotas</a>.</p></li><li><p><code>TranscriptionJobName</code>: A custom name you create for your transcription job that is unique within your Amazon Web Services account.</p></li><li><p><code>Media</code> (<code>MediaFileUri</code>): The Amazon S3 location of your media file.</p></li><li><p>One of <code>LanguageCode</code>, <code>IdentifyLanguage</code>, or <code>IdentifyMultipleLanguages</code>: If you know the language of your media file, specify it using the <code>LanguageCode</code> parameter; you can find all valid language codes in the <a href="https://docs.aws.amazon.com/transcribe/latest/dg/supported-languages.html">Supported languages</a> table. If you do not know the languages spoken in your media, use either <code>IdentifyLanguage</code> or <code>IdentifyMultipleLanguages</code> and let Amazon Transcribe identify the languages for you.</p></li></ul>
  
  @param request A container for the necessary parameters to execute the StartTranscriptionJob service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -757,7 +1079,82 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)startTranscriptionJob:(AWSTranscribeStartTranscriptionJobRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeStartTranscriptionJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Updates a vocabulary with new values that you provide in a different text file from the one you used to create the vocabulary. The <code>UpdateMedicalVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request.</p>
+ <p>Adds one or more custom tags, each in the form of a key:value pair, to the specified resource.</p><p>To learn more about using tags with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tagging.html">Tagging resources</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the TagResource service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeTagResourceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorConflict`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeTagResourceRequest
+ @see AWSTranscribeTagResourceResponse
+ */
+- (AWSTask<AWSTranscribeTagResourceResponse *> *)tagResource:(AWSTranscribeTagResourceRequest *)request;
+
+/**
+ <p>Adds one or more custom tags, each in the form of a key:value pair, to the specified resource.</p><p>To learn more about using tags with Amazon Transcribe, refer to <a href="https://docs.aws.amazon.com/transcribe/latest/dg/tagging.html">Tagging resources</a>.</p>
+ 
+ @param request A container for the necessary parameters to execute the TagResource service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorConflict`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeTagResourceRequest
+ @see AWSTranscribeTagResourceResponse
+ */
+- (void)tagResource:(AWSTranscribeTagResourceRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeTagResourceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Removes the specified tags from the specified Amazon Transcribe resource.</p><p>If you include <code>UntagResource</code> in your request, you must also include <code>ResourceArn</code> and <code>TagKeys</code>.</p>
+ 
+ @param request A container for the necessary parameters to execute the UntagResource service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeUntagResourceResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorConflict`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeUntagResourceRequest
+ @see AWSTranscribeUntagResourceResponse
+ */
+- (AWSTask<AWSTranscribeUntagResourceResponse *> *)untagResource:(AWSTranscribeUntagResourceRequest *)request;
+
+/**
+ <p>Removes the specified tags from the specified Amazon Transcribe resource.</p><p>If you include <code>UntagResource</code> in your request, you must also include <code>ResourceArn</code> and <code>TagKeys</code>.</p>
+ 
+ @param request A container for the necessary parameters to execute the UntagResource service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorConflict`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorInternalFailure`.
+ 
+ @see AWSTranscribeUntagResourceRequest
+ @see AWSTranscribeUntagResourceResponse
+ */
+- (void)untagResource:(AWSTranscribeUntagResourceRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeUntagResourceResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates the specified Call Analytics category with new rules. Note that the <code>UpdateCallAnalyticsCategory</code> operation overwrites all existing rules contained in the specified category. You cannot append additional rules onto an existing category.</p><p>To create a new category, see .</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateCallAnalyticsCategory service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSTranscribeUpdateCallAnalyticsCategoryResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeUpdateCallAnalyticsCategoryRequest
+ @see AWSTranscribeUpdateCallAnalyticsCategoryResponse
+ */
+- (AWSTask<AWSTranscribeUpdateCallAnalyticsCategoryResponse *> *)updateCallAnalyticsCategory:(AWSTranscribeUpdateCallAnalyticsCategoryRequest *)request;
+
+/**
+ <p>Updates the specified Call Analytics category with new rules. Note that the <code>UpdateCallAnalyticsCategory</code> operation overwrites all existing rules contained in the specified category. You cannot append additional rules onto an existing category.</p><p>To create a new category, see .</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateCallAnalyticsCategory service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSTranscribeErrorDomain` domain and the following error code: `AWSTranscribeErrorBadRequest`, `AWSTranscribeErrorLimitExceeded`, `AWSTranscribeErrorInternalFailure`, `AWSTranscribeErrorNotFound`, `AWSTranscribeErrorConflict`.
+ 
+ @see AWSTranscribeUpdateCallAnalyticsCategoryRequest
+ @see AWSTranscribeUpdateCallAnalyticsCategoryResponse
+ */
+- (void)updateCallAnalyticsCategory:(AWSTranscribeUpdateCallAnalyticsCategoryRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeUpdateCallAnalyticsCategoryResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Updates an existing custom medical vocabulary with new values. This operation overwrites all existing information with your new values; you cannot append new terms onto an existing custom vocabulary.</p>
  
  @param request A container for the necessary parameters to execute the UpdateMedicalVocabulary service method.
 
@@ -769,7 +1166,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeUpdateMedicalVocabularyResponse *> *)updateMedicalVocabulary:(AWSTranscribeUpdateMedicalVocabularyRequest *)request;
 
 /**
- <p>Updates a vocabulary with new values that you provide in a different text file from the one you used to create the vocabulary. The <code>UpdateMedicalVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request.</p>
+ <p>Updates an existing custom medical vocabulary with new values. This operation overwrites all existing information with your new values; you cannot append new terms onto an existing custom vocabulary.</p>
  
  @param request A container for the necessary parameters to execute the UpdateMedicalVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -782,7 +1179,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)updateMedicalVocabulary:(AWSTranscribeUpdateMedicalVocabularyRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeUpdateMedicalVocabularyResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Updates an existing vocabulary with new values. The <code>UpdateVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request. </p>
+ <p>Updates an existing custom vocabulary with new values. This operation overwrites all existing information with your new values; you cannot append new terms onto an existing custom vocabulary.</p>
  
  @param request A container for the necessary parameters to execute the UpdateVocabulary service method.
 
@@ -794,7 +1191,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeUpdateVocabularyResponse *> *)updateVocabulary:(AWSTranscribeUpdateVocabularyRequest *)request;
 
 /**
- <p>Updates an existing vocabulary with new values. The <code>UpdateVocabulary</code> operation overwrites all of the existing information with the values that you provide in the request. </p>
+ <p>Updates an existing custom vocabulary with new values. This operation overwrites all existing information with your new values; you cannot append new terms onto an existing custom vocabulary.</p>
  
  @param request A container for the necessary parameters to execute the UpdateVocabulary service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -807,7 +1204,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (void)updateVocabulary:(AWSTranscribeUpdateVocabularyRequest *)request completionHandler:(void (^ _Nullable)(AWSTranscribeUpdateVocabularyResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Updates a vocabulary filter with a new list of filtered words.</p>
+ <p>Updates an existing custom vocabulary filter with a new list of words. The new list you provide overwrites all previous entries; you cannot append new terms onto an existing custom vocabulary filter.</p>
  
  @param request A container for the necessary parameters to execute the UpdateVocabularyFilter service method.
 
@@ -819,7 +1216,7 @@ FOUNDATION_EXPORT NSString *const AWSTranscribeSDKVersion;
 - (AWSTask<AWSTranscribeUpdateVocabularyFilterResponse *> *)updateVocabularyFilter:(AWSTranscribeUpdateVocabularyFilterRequest *)request;
 
 /**
- <p>Updates a vocabulary filter with a new list of filtered words.</p>
+ <p>Updates an existing custom vocabulary filter with a new list of words. The new list you provide overwrites all previous entries; you cannot append new terms onto an existing custom vocabulary filter.</p>
  
  @param request A container for the necessary parameters to execute the UpdateVocabularyFilter service method.
  @param completionHandler The completion handler to call when the load request is complete.

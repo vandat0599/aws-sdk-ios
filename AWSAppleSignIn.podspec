@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = 'AWSAppleSignIn'
-  s.version      = '2.17.0'
+  s.version      = '2.34.0'
   s.summary      = 'Amazon Web Services SDK for iOS.'
 
   s.description  = 'The AWS SDK for iOS provides a library, code samples, and documentation for developers to build connected mobile applications using AWS.'
@@ -9,11 +9,12 @@ Pod::Spec.new do |s|
   s.license      = 'Apache License, Version 2.0'
   s.author       = { 'Amazon Web Services' => 'amazonwebservices' }
   s.platform     = :ios, '13.0'
-  s.source       = { :git => 'https://github.com/aws/aws-sdk-ios.git',
+  s.source       = { :git => 'https://github.com/aws-amplify/aws-sdk-ios.git',
                      :tag => s.version}
   s.requires_arc = true
-  s.dependency 'AWSAuthCore', '2.17.0'
+  s.dependency 'AWSCore', '2.34.0'
+  s.dependency 'AWSAuthCore', '2.34.0'
   s.source_files = 'AWSAuthSDK/Sources/AWSAppleSignIn/*.{h,m}'
   s.public_header_files = 'AWSAuthSDK/Sources/AWSAppleSignIn/*.h'
+  s.resource_bundle = { 'AWSAppleSignIn' => ['AWSAppleSignIn/PrivacyInfo.xcprivacy']}
 end
-

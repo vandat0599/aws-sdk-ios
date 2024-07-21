@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -20,15 +20,21 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 
 @implementation AWSSTSAssumeRoleRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"durationSeconds" : @"DurationSeconds",
              @"externalId" : @"ExternalId",
              @"policy" : @"Policy",
              @"policyArns" : @"PolicyArns",
+             @"providedContexts" : @"ProvidedContexts",
              @"roleArn" : @"RoleArn",
              @"roleSessionName" : @"RoleSessionName",
              @"serialNumber" : @"SerialNumber",
+             @"sourceIdentity" : @"SourceIdentity",
              @"tags" : @"Tags",
              @"tokenCode" : @"TokenCode",
              @"transitiveTagKeys" : @"TransitiveTagKeys",
@@ -39,6 +45,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSPolicyDescriptorType class]];
 }
 
++ (NSValueTransformer *)providedContextsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSProvidedContext class]];
+}
+
 + (NSValueTransformer *)tagsJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSSTSTag class]];
 }
@@ -47,11 +57,16 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 
 @implementation AWSSTSAssumeRoleResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"assumedRoleUser" : @"AssumedRoleUser",
              @"credentials" : @"Credentials",
              @"packedPolicySize" : @"PackedPolicySize",
+             @"sourceIdentity" : @"SourceIdentity",
              };
 }
 
@@ -66,6 +81,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 @end
 
 @implementation AWSSTSAssumeRoleWithSAMLRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -86,6 +105,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 
 @implementation AWSSTSAssumeRoleWithSAMLResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"assumedRoleUser" : @"AssumedRoleUser",
@@ -94,6 +117,7 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
              @"issuer" : @"Issuer",
              @"nameQualifier" : @"NameQualifier",
              @"packedPolicySize" : @"PackedPolicySize",
+             @"sourceIdentity" : @"SourceIdentity",
              @"subject" : @"Subject",
              @"subjectType" : @"SubjectType",
              };
@@ -110,6 +134,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 @end
 
 @implementation AWSSTSAssumeRoleWithWebIdentityRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -131,6 +159,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 
 @implementation AWSSTSAssumeRoleWithWebIdentityResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"assumedRoleUser" : @"AssumedRoleUser",
@@ -138,6 +170,7 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
              @"credentials" : @"Credentials",
              @"packedPolicySize" : @"PackedPolicySize",
              @"provider" : @"Provider",
+             @"sourceIdentity" : @"SourceIdentity",
              @"subjectFromWebIdentityToken" : @"SubjectFromWebIdentityToken",
              };
 }
@@ -154,6 +187,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 
 @implementation AWSSTSAssumedRoleUser
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"arn" : @"Arn",
@@ -164,6 +201,10 @@ NSString *const AWSSTSErrorDomain = @"com.amazonaws.AWSSTSErrorDomain";
 @end
 
 @implementation AWSSTSCredentials
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -186,6 +227,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSDecodeAuthorizationMessageRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"encodedMessage" : @"EncodedMessage",
@@ -196,6 +241,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSDecodeAuthorizationMessageResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"decodedMessage" : @"DecodedMessage",
@@ -205,6 +254,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSSTSFederatedUser
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -217,6 +270,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSGetAccessKeyInfoRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"accessKeyId" : @"AccessKeyId",
@@ -226,6 +283,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSSTSGetAccessKeyInfoResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -237,9 +298,17 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSGetCallerIdentityRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 @end
 
 @implementation AWSSTSGetCallerIdentityResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -252,6 +321,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSSTSGetFederationTokenRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -275,6 +348,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSGetFederationTokenResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"credentials" : @"Credentials",
@@ -295,6 +372,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSGetSessionTokenRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"durationSeconds" : @"DurationSeconds",
@@ -306,6 +387,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 @end
 
 @implementation AWSSTSGetSessionTokenResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -321,6 +406,10 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @implementation AWSSTSPolicyDescriptorType
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"arn" : @"arn",
@@ -329,7 +418,26 @@ return [date aws_stringValue:AWSDateISO8601DateFormat1];
 
 @end
 
+@implementation AWSSTSProvidedContext
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"contextAssertion" : @"ContextAssertion",
+             @"providerArn" : @"ProviderArn",
+             };
+}
+
+@end
+
 @implementation AWSSTSTag
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2024 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -57,6 +57,54 @@ static id mockNetworking = nil;
 
 }
 
+- (void)testCompleteAttachmentUpload {
+    NSString *key = @"testCompleteAttachmentUpload";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+    [[[[AWSConnectParticipant ConnectParticipantForKey:key] completeAttachmentUpload:[AWSConnectParticipantCompleteAttachmentUploadRequest new]] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", task.error.domain);
+        XCTAssertEqual(8848, task.error.code);
+        XCTAssertNil(task.result);
+        return nil;
+    }] waitUntilFinished];
+
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
+- (void)testCompleteAttachmentUploadCompletionHandler {
+    NSString *key = @"testCompleteAttachmentUpload";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+	[[AWSConnectParticipant ConnectParticipantForKey:key] completeAttachmentUpload:[AWSConnectParticipantCompleteAttachmentUploadRequest new] completionHandler:^(AWSConnectParticipantCompleteAttachmentUploadResponse* _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
+        XCTAssertEqual(8848, error.code);
+        XCTAssertNil(response);
+        dispatch_semaphore_signal(semaphore);
+    }];
+	
+ 	dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int)(2.0 * NSEC_PER_SEC)));
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
 - (void)testCreateParticipantConnection {
     NSString *key = @"testCreateParticipantConnection";
     AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
@@ -105,6 +153,54 @@ static id mockNetworking = nil;
     [AWSConnectParticipant removeConnectParticipantForKey:key];
 }
 
+- (void)testDescribeView {
+    NSString *key = @"testDescribeView";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+    [[[[AWSConnectParticipant ConnectParticipantForKey:key] describeView:[AWSConnectParticipantDescribeViewRequest new]] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", task.error.domain);
+        XCTAssertEqual(8848, task.error.code);
+        XCTAssertNil(task.result);
+        return nil;
+    }] waitUntilFinished];
+
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
+- (void)testDescribeViewCompletionHandler {
+    NSString *key = @"testDescribeView";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+	[[AWSConnectParticipant ConnectParticipantForKey:key] describeView:[AWSConnectParticipantDescribeViewRequest new] completionHandler:^(AWSConnectParticipantDescribeViewResponse* _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
+        XCTAssertEqual(8848, error.code);
+        XCTAssertNil(response);
+        dispatch_semaphore_signal(semaphore);
+    }];
+	
+ 	dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int)(2.0 * NSEC_PER_SEC)));
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
 - (void)testDisconnectParticipant {
     NSString *key = @"testDisconnectParticipant";
     AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
@@ -140,6 +236,54 @@ static id mockNetworking = nil;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 
 	[[AWSConnectParticipant ConnectParticipantForKey:key] disconnectParticipant:[AWSConnectParticipantDisconnectParticipantRequest new] completionHandler:^(AWSConnectParticipantDisconnectParticipantResponse* _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
+        XCTAssertEqual(8848, error.code);
+        XCTAssertNil(response);
+        dispatch_semaphore_signal(semaphore);
+    }];
+	
+ 	dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int)(2.0 * NSEC_PER_SEC)));
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
+- (void)testGetAttachment {
+    NSString *key = @"testGetAttachment";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+    [[[[AWSConnectParticipant ConnectParticipantForKey:key] getAttachment:[AWSConnectParticipantGetAttachmentRequest new]] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", task.error.domain);
+        XCTAssertEqual(8848, task.error.code);
+        XCTAssertNil(task.result);
+        return nil;
+    }] waitUntilFinished];
+
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
+- (void)testGetAttachmentCompletionHandler {
+    NSString *key = @"testGetAttachment";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+	[[AWSConnectParticipant ConnectParticipantForKey:key] getAttachment:[AWSConnectParticipantGetAttachmentRequest new] completionHandler:^(AWSConnectParticipantGetAttachmentResponse* _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
         XCTAssertEqual(8848, error.code);
@@ -284,6 +428,54 @@ static id mockNetworking = nil;
     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
 
 	[[AWSConnectParticipant ConnectParticipantForKey:key] sendMessage:[AWSConnectParticipantSendMessageRequest new] completionHandler:^(AWSConnectParticipantSendMessageResponse* _Nullable response, NSError * _Nullable error) {
+        XCTAssertNotNil(error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
+        XCTAssertEqual(8848, error.code);
+        XCTAssertNil(response);
+        dispatch_semaphore_signal(semaphore);
+    }];
+	
+ 	dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, (int)(2.0 * NSEC_PER_SEC)));
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
+- (void)testStartAttachmentUpload {
+    NSString *key = @"testStartAttachmentUpload";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+    [[[[AWSConnectParticipant ConnectParticipantForKey:key] startAttachmentUpload:[AWSConnectParticipantStartAttachmentUploadRequest new]] continueWithBlock:^id(AWSTask *task) {
+        XCTAssertNotNil(task.error);
+        XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", task.error.domain);
+        XCTAssertEqual(8848, task.error.code);
+        XCTAssertNil(task.result);
+        return nil;
+    }] waitUntilFinished];
+
+    OCMVerify([mockNetworking sendRequest:[OCMArg isNotNil]]);
+
+    [AWSConnectParticipant removeConnectParticipantForKey:key];
+}
+
+- (void)testStartAttachmentUploadCompletionHandler {
+    NSString *key = @"testStartAttachmentUpload";
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSEast1 credentialsProvider:nil];
+    [AWSConnectParticipant registerConnectParticipantWithConfiguration:configuration forKey:key];
+
+    AWSConnectParticipant *awsClient = [AWSConnectParticipant ConnectParticipantForKey:key];
+    XCTAssertNotNil(awsClient);
+    XCTAssertNotNil(mockNetworking);
+    [awsClient setValue:mockNetworking forKey:@"networking"];
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+	[[AWSConnectParticipant ConnectParticipantForKey:key] startAttachmentUpload:[AWSConnectParticipantStartAttachmentUploadRequest new] completionHandler:^(AWSConnectParticipantStartAttachmentUploadResponse* _Nullable response, NSError * _Nullable error) {
         XCTAssertNotNil(error);
         XCTAssertEqualObjects(@"OCMockExpectedNetworkingError", error.domain);
         XCTAssertEqual(8848, error.code);

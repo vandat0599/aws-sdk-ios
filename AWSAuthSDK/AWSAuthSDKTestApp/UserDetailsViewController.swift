@@ -29,15 +29,29 @@ class UserDetailsViewController: UIViewController {
     
     @IBOutlet weak var attribute1Label: UILabel!
     @IBOutlet weak var attribute2Label: UILabel!
+    @IBOutlet weak var attribute3Label: UILabel!
+    @IBOutlet weak var customeAttribute1Label: UILabel!
+    @IBOutlet weak var customeAttribute2Label: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        listenUserState()
         refreshData()
     }
     
     @IBAction func updateUserAttributeAction(_ sender: Any) {
         resetData()
         updateUserAttributes()
+    }
+    
+    func listenUserState() {
+        AWSMobileClient.default().addUserStateListener(self) { (state, additionalInfo) in
+            print("User details state change - \(state)")
+            if (state == .signedOutUserPoolsTokenInvalid) {
+                // Dismiss this view if the user state expired.
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
     func refreshData() {
@@ -58,9 +72,12 @@ class UserDetailsViewController: UIViewController {
             self.credentialExpirationLabel.text = "NA"
             self.attribute1Label.text = "NA"
             self.attribute2Label.text = "NA"
+            self.attribute3Label.text = "NA"
+            self.customeAttribute1Label.text = "NA"
+            self.customeAttribute2Label.text = "NA"
         }
     }
-    
+
     func fetchToken() {
         AWSMobileClient.default().getTokens { (token, error) in
             
@@ -125,12 +142,21 @@ class UserDetailsViewController: UIViewController {
         AWSMobileClient.default().getUserAttributes { attributes, error in
             DispatchQueue.main.async {
                 guard let attributes = attributes else {
-                    self.attribute1Label.text = "NA"
-                    self.attribute2Label.text = "NA"
                     return
                 }
-                self.attribute1Label.text = attributes[self.CUSTOM_ATTRIBUTE_KEY1]
-                self.attribute2Label.text = String(attributes[self.CUSTOM_ATTRIBUTE_KEY2]!)
+                if attributes.count == 3 {
+                    self.attribute1Label.text = attributes["email_verified"]
+                    self.attribute2Label.text = attributes["email"]
+                    self.attribute3Label.text = attributes["sub"]
+                    self.customeAttribute1Label.text = "NA"
+                    self.customeAttribute2Label.text = "NA"
+                } else {
+                    self.attribute1Label.text = attributes["email_verified"]
+                    self.attribute2Label.text = attributes["email"]
+                    self.attribute3Label.text = attributes["sub"]
+                    self.customeAttribute1Label.text = attributes[self.CUSTOM_ATTRIBUTE_KEY1]
+                    self.customeAttribute2Label.text = attributes[self.CUSTOM_ATTRIBUTE_KEY2]
+                }
             }
         }
     }

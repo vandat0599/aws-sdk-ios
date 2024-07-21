@@ -64,29 +64,45 @@ unsigned char setTag = 0x31;
     NSString *privateTag = [AWSIoTKeychain.privateKeyTag stringByAppendingString:certificateId];
     
     _publicKeyBits = [AWSIoTKeychain getPublicKeyBits:publicTag];
-    SecKeyRef privateKeyRef = [AWSIoTKeychain getPrivateKeyRef:privateTag];
+    if (!_publicKeyBits) {
+        return nil;
+    }
 
-    if (!_publicKeyBits || !privateKeyRef) {
+    SecKeyRef privateKeyRef = [AWSIoTKeychain getPrivateKeyRef:privateTag];
+    if (!privateKeyRef) {
         return nil;
     }
     
     NSMutableData * certRequestData = [self createCertificateRequestData];
     
-    CC_SHA1_CTX SHA1Struct;
-    CC_SHA1_Init(&SHA1Struct);
-    CC_SHA1_Update(&SHA1Struct, [certRequestData mutableBytes], (unsigned int)[certRequestData length]);
-    unsigned char SHA1Digest[CC_SHA1_DIGEST_LENGTH];
-    CC_SHA1_Final(SHA1Digest, &SHA1Struct);
+    CC_SHA256_CTX SHA256Struct;
+    CC_SHA256_Init(&SHA256Struct);
+    CC_SHA256_Update(&SHA256Struct, [certRequestData mutableBytes], (unsigned int)[certRequestData length]);
+    unsigned char SHA256Digest[CC_SHA256_DIGEST_LENGTH];
+    CC_SHA256_Final(SHA256Digest, &SHA256Struct);
     
     unsigned char sig[256];
     size_t sigLen = sizeof(sig);
-    OSStatus sanityCheck = SecKeyRawSign(privateKeyRef, kSecPaddingPKCS1SHA1, SHA1Digest, sizeof(SHA1Digest), sig, &sigLen);
+    OSStatus sanityCheck = SecKeyRawSign(privateKeyRef, kSecPaddingPKCS1SHA256, SHA256Digest, sizeof(SHA256Digest), sig, &sigLen);
     if (sanityCheck != noErr) {
         return nil;
     }
     
     NSMutableData * scr = [[NSMutableData alloc] initWithData:certRequestData];
-    unsigned char tag[] = {0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 1, 1, 5, 0x05, 0x00};
+
+    // DER encoded value of digest algorithm sha256WithRSAEncryption
+    // http://oid-info.com/get/1.2.840.113549.1.1.11
+    // Structure:
+    // 0x30         DER SEQUENCE type
+    // 0x0D         - Length 13
+    // 0x06             DER OBJECT IDENTIFIER type
+    //                  (https://docs.microsoft.com/en-us/windows/win32/seccertenroll/about-object-identifier)
+    // 0x09             - Length 9
+    // 0x2A...0x0B      - Encoded value of OID 1.2.840.113549.1.1.11
+    // 0x05             DER NULL type
+    // 0x00             - Length 0
+    unsigned char tag[] = {0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x0B, 0x05, 0x00};
+
     [scr appendBytes:tag length:sizeof(tag)];
     
     NSMutableData * signdata = [NSMutableData new];
@@ -100,7 +116,9 @@ unsigned char setTag = 0x31;
     [scr appendData:signdata];
     
     [self addByte:seqTag intoData:scr];
-    
+
+    CFRelease(privateKeyRef);
+
     return [scr copy];
 }
 

@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -82,6 +82,8 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
     AWSLexMessageFormatTypeComposite,
 };
 
+@class AWSLexActiveContext;
+@class AWSLexActiveContextTimeToLive;
 @class AWSLexButton;
 @class AWSLexDeleteSessionRequest;
 @class AWSLexDeleteSessionResponse;
@@ -100,6 +102,48 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @class AWSLexPutSessionResponse;
 @class AWSLexResponseCard;
 @class AWSLexSentimentResponse;
+
+/**
+ <p>A context is a variable that contains information about the current state of the conversation between a user and Amazon Lex. Context can be set automatically by Amazon Lex when an intent is fulfilled, or it can be set at runtime using the <code>PutContent</code>, <code>PutText</code>, or <code>PutSession</code> operation.</p>
+ Required parameters: [name, timeToLive, parameters]
+ */
+@interface AWSLexActiveContext : AWSModel
+
+
+/**
+ <p>The name of the context.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable name;
+
+/**
+ <p>State variables for the current context. You can use these values as default values for slots in subsequent events.</p>
+ */
+@property (nonatomic, strong) NSDictionary<NSString *, NSString *> * _Nullable parameters;
+
+/**
+ <p>The length of time or number of turns that a context remains active.</p>
+ */
+@property (nonatomic, strong) AWSLexActiveContextTimeToLive * _Nullable timeToLive;
+
+@end
+
+/**
+ <p>The length of time or number of turns that a context remains active.</p>
+ */
+@interface AWSLexActiveContextTimeToLive : AWSModel
+
+
+/**
+ <p>The number of seconds that the context should be active after it is first sent in a <code>PostContent</code> or <code>PostText</code> response. You can set the value between 5 and 86,400 seconds (24 hours).</p>
+ */
+@property (nonatomic, strong) NSNumber * _Nullable timeToLiveInSeconds;
+
+/**
+ <p>The number of conversation turns that the context should be active. A conversation turn is one <code>PostContent</code> or <code>PostText</code> request and the corresponding response from Amazon Lex.</p>
+ */
+@property (nonatomic, strong) NSNumber * _Nullable turnsToLive;
+
+@end
 
 /**
  <p>Represents an option to be shown on the client platform (Facebook, Slack, etc.)</p>
@@ -283,6 +327,11 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 
 
 /**
+ <p>A list of active contexts for the session. A context can be set when an intent is fulfilled or by calling the <code>PostContent</code>, <code>PostText</code>, or <code>PutSession</code> operation.</p><p>You can use a context to control the intents that can follow up an intent, or to modify the operation of your application.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLexActiveContext *> * _Nullable activeContexts;
+
+/**
  <p>Describes the current state of the bot.</p>
  */
 @property (nonatomic, strong) AWSLexDialogAction * _Nullable dialogAction;
@@ -373,6 +422,11 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, strong) NSString * _Nullable accept;
 
 /**
+ <p>A list of contexts active for the request. A context can be activated when a previous intent is fulfilled, or by including the context in the request,</p><p>If you don't specify a list of contexts, Amazon Lex will use the current list of contexts for the session. If you specify an empty list, all contexts for the session are cleared.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable activeContexts;
+
+/**
  <p>Alias of the Amazon Lex bot.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable botAlias;
@@ -416,6 +470,11 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 
 
 /**
+ <p>A list of active contexts for the session. A context can be set when an intent is fulfilled or by calling the <code>PostContent</code>, <code>PostText</code>, or <code>PutSession</code> operation.</p><p>You can use a context to control the intents that can follow up an intent, or to modify the operation of your application.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable activeContexts;
+
+/**
  <p>One to four alternative intents that may be applicable to the user's intent.</p><p>Each alternative includes a score that indicates how confident Amazon Lex is that the intent matches the user's intent. The intents are sorted by the confidence score.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable alternativeIntents;
@@ -426,7 +485,7 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, strong) NSData * _Nullable audioStream;
 
 /**
- <p>The version of the bot that responded to the conversation. You can use this information to help determine if one version of a bot is performing better than another version.</p><p>If you have enabled the new natural language understanding (NLU) model, you can use this to determine if the improvement is due to changes to the bot or changes to the NLU.</p><p>For more information about enabling the new NLU, see the <a href="https://docs.aws.amazon.com/lex/latest/dg/API_PutBot.html#lex-PutBot-request-enableModelImprovements">enableModelImprovements</a> parameter of the <code>PutBot</code> operation.</p>
+ <p>The version of the bot that responded to the conversation. You can use this information to help determine if one version of a bot is performing better than another version.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable botVersion;
 
@@ -441,7 +500,17 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, assign) AWSLexDialogState dialogState;
 
 /**
- <p>The text used to process the request.</p><p>If the input was an audio stream, the <code>inputTranscript</code> field contains the text extracted from the audio stream. This is the text that is actually processed to recognize intents and slot values. You can use this information to determine if Amazon Lex is correctly processing the audio that you send.</p>
+ <p>The text used to process the request.</p><p>If the input was an audio stream, the <code>encodedInputTranscript</code> field contains the text extracted from the audio stream. This is the text that is actually processed to recognize intents and slot values. You can use this information to determine if Amazon Lex is correctly processing the audio that you send.</p><p>The <code>encodedInputTranscript</code> field is base-64 encoded. You must decode the field before you can use the value.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable encodedInputTranscript;
+
+/**
+ <p>The message to convey to the user. The message can come from the bot's configuration or from a Lambda function.</p><p>If the intent is not configured with a Lambda function, or if the Lambda function returned <code>Delegate</code> as the <code>dialogAction.type</code> in its response, Amazon Lex decides on the next course of action and selects an appropriate message from the bot's configuration based on the current interaction context. For example, if Amazon Lex isn't able to understand user input, it uses a clarification prompt message.</p><p>When you create an intent you can assign messages to groups. When messages are assigned to groups Amazon Lex returns one message from each group in the response. The message field is an escaped JSON string containing the messages. For more information about the structure of the JSON string returned, see <a>msg-prompts-formats</a>.</p><p>If the Lambda function returns a message, Amazon Lex passes it to the client in its response.</p><p>The <code>encodedMessage</code> field is base-64 encoded. You must decode the field before you can use the value.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable encodedMessage;
+
+/**
+ <p>The text used to process the request.</p><p>You can use this field only in the de-DE, en-AU, en-GB, en-US, es-419, es-ES, es-US, fr-CA, fr-FR, and it-IT locales. In all other locales, the <code>inputTranscript</code> field is null. You should use the <code>encodedInputTranscript</code> field instead.</p><p>If the input was an audio stream, the <code>inputTranscript</code> field contains the text extracted from the audio stream. This is the text that is actually processed to recognize intents and slot values. You can use this information to determine if Amazon Lex is correctly processing the audio that you send.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable inputTranscript;
 
@@ -451,7 +520,7 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, strong) NSString * _Nullable intentName;
 
 /**
- <p>The message to convey to the user. The message can come from the bot's configuration or from a Lambda function.</p><p>If the intent is not configured with a Lambda function, or if the Lambda function returned <code>Delegate</code> as the <code>dialogAction.type</code> in its response, Amazon Lex decides on the next course of action and selects an appropriate message from the bot's configuration based on the current interaction context. For example, if Amazon Lex isn't able to understand user input, it uses a clarification prompt message.</p><p>When you create an intent you can assign messages to groups. When messages are assigned to groups Amazon Lex returns one message from each group in the response. The message field is an escaped JSON string containing the messages. For more information about the structure of the JSON string returned, see <a>msg-prompts-formats</a>.</p><p>If the Lambda function returns a message, Amazon Lex passes it to the client in its response.</p>
+ <p>You can only use this field in the de-DE, en-AU, en-GB, en-US, es-419, es-ES, es-US, fr-CA, fr-FR, and it-IT locales. In all other locales, the <code>message</code> field is null. You should use the <code>encodedMessage</code> field instead.</p><p>The message to convey to the user. The message can come from the bot's configuration or from a Lambda function.</p><p>If the intent is not configured with a Lambda function, or if the Lambda function returned <code>Delegate</code> as the <code>dialogAction.type</code> in its response, Amazon Lex decides on the next course of action and selects an appropriate message from the bot's configuration based on the current interaction context. For example, if Amazon Lex isn't able to understand user input, it uses a clarification prompt message.</p><p>When you create an intent you can assign messages to groups. When messages are assigned to groups Amazon Lex returns one message from each group in the response. The message field is an escaped JSON string containing the messages. For more information about the structure of the JSON string returned, see <a>msg-prompts-formats</a>.</p><p>If the Lambda function returns a message, Amazon Lex passes it to the client in its response.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable message;
 
@@ -461,7 +530,7 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, assign) AWSLexMessageFormatType messageFormat;
 
 /**
- <p>Provides a score that indicates how confident Amazon Lex is that the returned intent is the one that matches the user's intent. The score is between 0.0 and 1.0.</p><p>The score is a relative score, not an absolute score. The score may change based on improvements to the Amazon Lex NLU.</p>
+ <p>Provides a score that indicates how confident Amazon Lex is that the returned intent is the one that matches the user's intent. The score is between 0.0 and 1.0.</p><p>The score is a relative score, not an absolute score. The score may change based on improvements to Amazon Lex. </p>
  */
 @property (nonatomic, strong) NSString * _Nullable nluIntentConfidence;
 
@@ -497,6 +566,11 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
  */
 @interface AWSLexPostTextRequest : AWSRequest
 
+
+/**
+ <p>A list of contexts active for the request. A context can be activated when a previous intent is fulfilled, or by including the context in the request,</p><p>If you don't specify a list of contexts, Amazon Lex will use the current list of contexts for the session. If you specify an empty list, all contexts for the session are cleared.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLexActiveContext *> * _Nullable activeContexts;
 
 /**
  <p>The alias of the Amazon Lex bot.</p>
@@ -537,12 +611,17 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 
 
 /**
+ <p>A list of active contexts for the session. A context can be set when an intent is fulfilled or by calling the <code>PostContent</code>, <code>PostText</code>, or <code>PutSession</code> operation.</p><p>You can use a context to control the intents that can follow up an intent, or to modify the operation of your application.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLexActiveContext *> * _Nullable activeContexts;
+
+/**
  <p>One to four alternative intents that may be applicable to the user's intent.</p><p>Each alternative includes a score that indicates how confident Amazon Lex is that the intent matches the user's intent. The intents are sorted by the confidence score.</p>
  */
 @property (nonatomic, strong) NSArray<AWSLexPredictedIntent *> * _Nullable alternativeIntents;
 
 /**
- <p>The version of the bot that responded to the conversation. You can use this information to help determine if one version of a bot is performing better than another version.</p><p>If you have enabled the new natural language understanding (NLU) model, you can use this to determine if the improvement is due to changes to the bot or changes to the NLU.</p><p>For more information about enabling the new NLU, see the <a href="https://docs.aws.amazon.com/lex/latest/dg/API_PutBot.html#lex-PutBot-request-enableModelImprovements">enableModelImprovements</a> parameter of the <code>PutBot</code> operation.</p>
+ <p>The version of the bot that responded to the conversation. You can use this information to help determine if one version of a bot is performing better than another version.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable botVersion;
 
@@ -567,7 +646,7 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, assign) AWSLexMessageFormatType messageFormat;
 
 /**
- <p>Provides a score that indicates how confident Amazon Lex is that the returned intent is the one that matches the user's intent. The score is between 0.0 and 1.0. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/confidence-scores.html">Confidence Scores</a>.</p><p>The score is a relative score, not an absolute score. The score may change based on improvements to the Amazon Lex natural language understanding (NLU) model.</p>
+ <p>Provides a score that indicates how confident Amazon Lex is that the returned intent is the one that matches the user's intent. The score is between 0.0 and 1.0. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/confidence-scores.html">Confidence Scores</a>.</p><p>The score is a relative score, not an absolute score. The score may change based on improvements to Amazon Lex.</p>
  */
 @property (nonatomic, strong) AWSLexIntentConfidence * _Nullable nluIntentConfidence;
 
@@ -638,6 +717,11 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, strong) NSString * _Nullable accept;
 
 /**
+ <p>A list of contexts active for the request. A context can be activated when a previous intent is fulfilled, or by including the context in the request,</p><p>If you don't specify a list of contexts, Amazon Lex will use the current list of contexts for the session. If you specify an empty list, all contexts for the session are cleared.</p>
+ */
+@property (nonatomic, strong) NSArray<AWSLexActiveContext *> * _Nullable activeContexts;
+
+/**
  <p>The alias in use for the bot that contains the session data.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable botAlias;
@@ -676,6 +760,11 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 
 
 /**
+ <p>A list of active contexts for the session.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable activeContexts;
+
+/**
  <p>The audio version of the message to convey to the user.</p>
  */
 @property (nonatomic, strong) NSData * _Nullable audioStream;
@@ -691,12 +780,17 @@ typedef NS_ENUM(NSInteger, AWSLexMessageFormatType) {
 @property (nonatomic, assign) AWSLexDialogState dialogState;
 
 /**
+ <p>The next message that should be presented to the user.</p><p>The <code>encodedMessage</code> field is base-64 encoded. You must decode the field before you can use the value.</p>
+ */
+@property (nonatomic, strong) NSString * _Nullable encodedMessage;
+
+/**
  <p>The name of the current intent.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable intentName;
 
 /**
- <p>The next message that should be presented to the user.</p>
+ <p>The next message that should be presented to the user.</p><p>You can only use this field in the de-DE, en-AU, en-GB, en-US, es-419, es-ES, es-US, fr-CA, fr-FR, and it-IT locales. In all other locales, the <code>message</code> field is null. You should use the <code>encodedMessage</code> field instead.</p>
  */
 @property (nonatomic, strong) NSString * _Nullable message;
 

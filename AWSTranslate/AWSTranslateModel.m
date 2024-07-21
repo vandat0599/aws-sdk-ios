@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateAppliedTerminology
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"name" : @"Name",
@@ -33,7 +37,158 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @end
 
+@implementation AWSTranslateCreateParallelDataRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"clientToken" : @"ClientToken",
+             @"detail" : @"Description",
+             @"encryptionKey" : @"EncryptionKey",
+             @"name" : @"Name",
+             @"parallelDataConfig" : @"ParallelDataConfig",
+             @"tags" : @"Tags",
+             };
+}
+
++ (NSValueTransformer *)encryptionKeyJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateEncryptionKey class]];
+}
+
++ (NSValueTransformer *)parallelDataConfigJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataConfig class]];
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateTag class]];
+}
+
+@end
+
+@implementation AWSTranslateCreateParallelDataResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"name" : @"Name",
+             @"status" : @"Status",
+             };
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusUpdating);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"FAILED"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusFailed);
+        }
+        return @(AWSTranslateParallelDataStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataStatusCreating:
+                return @"CREATING";
+            case AWSTranslateParallelDataStatusUpdating:
+                return @"UPDATING";
+            case AWSTranslateParallelDataStatusActive:
+                return @"ACTIVE";
+            case AWSTranslateParallelDataStatusDeleting:
+                return @"DELETING";
+            case AWSTranslateParallelDataStatusFailed:
+                return @"FAILED";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSTranslateDeleteParallelDataRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"name" : @"Name",
+             };
+}
+
+@end
+
+@implementation AWSTranslateDeleteParallelDataResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"name" : @"Name",
+             @"status" : @"Status",
+             };
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusUpdating);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"FAILED"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusFailed);
+        }
+        return @(AWSTranslateParallelDataStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataStatusCreating:
+                return @"CREATING";
+            case AWSTranslateParallelDataStatusUpdating:
+                return @"UPDATING";
+            case AWSTranslateParallelDataStatusActive:
+                return @"ACTIVE";
+            case AWSTranslateParallelDataStatusDeleting:
+                return @"DELETING";
+            case AWSTranslateParallelDataStatusFailed:
+                return @"FAILED";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
 @implementation AWSTranslateDeleteTerminologyRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -45,6 +200,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateDescribeTextTranslationJobRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"jobId" : @"JobId",
@@ -54,6 +213,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateDescribeTextTranslationJobResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -67,7 +230,26 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @end
 
+@implementation AWSTranslateDocument
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"content" : @"Content",
+             @"contentType" : @"ContentType",
+             };
+}
+
+@end
+
 @implementation AWSTranslateEncryptionKey
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -94,7 +276,58 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @end
 
+@implementation AWSTranslateGetParallelDataRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"name" : @"Name",
+             };
+}
+
+@end
+
+@implementation AWSTranslateGetParallelDataResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"auxiliaryDataLocation" : @"AuxiliaryDataLocation",
+             @"dataLocation" : @"DataLocation",
+             @"latestUpdateAttemptAuxiliaryDataLocation" : @"LatestUpdateAttemptAuxiliaryDataLocation",
+             @"parallelDataProperties" : @"ParallelDataProperties",
+             };
+}
+
++ (NSValueTransformer *)auxiliaryDataLocationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataDataLocation class]];
+}
+
++ (NSValueTransformer *)dataLocationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataDataLocation class]];
+}
+
++ (NSValueTransformer *)latestUpdateAttemptAuxiliaryDataLocationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataDataLocation class]];
+}
+
++ (NSValueTransformer *)parallelDataPropertiesJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataProperties class]];
+}
+
+@end
+
 @implementation AWSTranslateGetTerminologyRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -111,6 +344,9 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
         if ([value caseInsensitiveCompare:@"TMX"] == NSOrderedSame) {
             return @(AWSTranslateTerminologyDataFormatTmx);
         }
+        if ([value caseInsensitiveCompare:@"TSV"] == NSOrderedSame) {
+            return @(AWSTranslateTerminologyDataFormatTsv);
+        }
         return @(AWSTranslateTerminologyDataFormatUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -118,6 +354,8 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
                 return @"CSV";
             case AWSTranslateTerminologyDataFormatTmx:
                 return @"TMX";
+            case AWSTranslateTerminologyDataFormatTsv:
+                return @"TSV";
             default:
                 return nil;
         }
@@ -128,11 +366,20 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateGetTerminologyResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"auxiliaryDataLocation" : @"AuxiliaryDataLocation",
              @"terminologyDataLocation" : @"TerminologyDataLocation",
              @"terminologyProperties" : @"TerminologyProperties",
              };
+}
+
++ (NSValueTransformer *)auxiliaryDataLocationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTerminologyDataLocation class]];
 }
 
 + (NSValueTransformer *)terminologyDataLocationJSONTransformer {
@@ -147,12 +394,17 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateImportTerminologyRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"detail" : @"Description",
              @"encryptionKey" : @"EncryptionKey",
              @"mergeStrategy" : @"MergeStrategy",
              @"name" : @"Name",
+             @"tags" : @"Tags",
              @"terminologyData" : @"TerminologyData",
              };
 }
@@ -177,6 +429,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
     }];
 }
 
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateTag class]];
+}
+
 + (NSValueTransformer *)terminologyDataJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTerminologyData class]];
 }
@@ -185,10 +441,19 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateImportTerminologyResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"auxiliaryDataLocation" : @"AuxiliaryDataLocation",
              @"terminologyProperties" : @"TerminologyProperties",
              };
+}
+
++ (NSValueTransformer *)auxiliaryDataLocationJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTerminologyDataLocation class]];
 }
 
 + (NSValueTransformer *)terminologyPropertiesJSONTransformer {
@@ -198,6 +463,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateInputDataConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -210,6 +479,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateJobDetails
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"documentsWithErrorsCount" : @"DocumentsWithErrorsCount",
@@ -220,7 +493,250 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @end
 
+@implementation AWSTranslateLanguage
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"languageCode" : @"LanguageCode",
+             @"languageName" : @"LanguageName",
+             };
+}
+
+@end
+
+@implementation AWSTranslateListLanguagesRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"displayLanguageCode" : @"DisplayLanguageCode",
+             @"maxResults" : @"MaxResults",
+             @"nextToken" : @"NextToken",
+             };
+}
+
++ (NSValueTransformer *)displayLanguageCodeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"de"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeDe);
+        }
+        if ([value caseInsensitiveCompare:@"en"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeEn);
+        }
+        if ([value caseInsensitiveCompare:@"es"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeEs);
+        }
+        if ([value caseInsensitiveCompare:@"fr"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeFr);
+        }
+        if ([value caseInsensitiveCompare:@"it"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeIt);
+        }
+        if ([value caseInsensitiveCompare:@"ja"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeJa);
+        }
+        if ([value caseInsensitiveCompare:@"ko"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeKo);
+        }
+        if ([value caseInsensitiveCompare:@"pt"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodePt);
+        }
+        if ([value caseInsensitiveCompare:@"zh"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeZh);
+        }
+        if ([value caseInsensitiveCompare:@"zh-TW"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeZhTW);
+        }
+        return @(AWSTranslateDisplayLanguageCodeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateDisplayLanguageCodeDe:
+                return @"de";
+            case AWSTranslateDisplayLanguageCodeEn:
+                return @"en";
+            case AWSTranslateDisplayLanguageCodeEs:
+                return @"es";
+            case AWSTranslateDisplayLanguageCodeFr:
+                return @"fr";
+            case AWSTranslateDisplayLanguageCodeIt:
+                return @"it";
+            case AWSTranslateDisplayLanguageCodeJa:
+                return @"ja";
+            case AWSTranslateDisplayLanguageCodeKo:
+                return @"ko";
+            case AWSTranslateDisplayLanguageCodePt:
+                return @"pt";
+            case AWSTranslateDisplayLanguageCodeZh:
+                return @"zh";
+            case AWSTranslateDisplayLanguageCodeZhTW:
+                return @"zh-TW";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSTranslateListLanguagesResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"displayLanguageCode" : @"DisplayLanguageCode",
+             @"languages" : @"Languages",
+             @"nextToken" : @"NextToken",
+             };
+}
+
++ (NSValueTransformer *)displayLanguageCodeJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"de"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeDe);
+        }
+        if ([value caseInsensitiveCompare:@"en"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeEn);
+        }
+        if ([value caseInsensitiveCompare:@"es"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeEs);
+        }
+        if ([value caseInsensitiveCompare:@"fr"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeFr);
+        }
+        if ([value caseInsensitiveCompare:@"it"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeIt);
+        }
+        if ([value caseInsensitiveCompare:@"ja"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeJa);
+        }
+        if ([value caseInsensitiveCompare:@"ko"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeKo);
+        }
+        if ([value caseInsensitiveCompare:@"pt"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodePt);
+        }
+        if ([value caseInsensitiveCompare:@"zh"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeZh);
+        }
+        if ([value caseInsensitiveCompare:@"zh-TW"] == NSOrderedSame) {
+            return @(AWSTranslateDisplayLanguageCodeZhTW);
+        }
+        return @(AWSTranslateDisplayLanguageCodeUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateDisplayLanguageCodeDe:
+                return @"de";
+            case AWSTranslateDisplayLanguageCodeEn:
+                return @"en";
+            case AWSTranslateDisplayLanguageCodeEs:
+                return @"es";
+            case AWSTranslateDisplayLanguageCodeFr:
+                return @"fr";
+            case AWSTranslateDisplayLanguageCodeIt:
+                return @"it";
+            case AWSTranslateDisplayLanguageCodeJa:
+                return @"ja";
+            case AWSTranslateDisplayLanguageCodeKo:
+                return @"ko";
+            case AWSTranslateDisplayLanguageCodePt:
+                return @"pt";
+            case AWSTranslateDisplayLanguageCodeZh:
+                return @"zh";
+            case AWSTranslateDisplayLanguageCodeZhTW:
+                return @"zh-TW";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)languagesJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateLanguage class]];
+}
+
+@end
+
+@implementation AWSTranslateListParallelDataRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"maxResults" : @"MaxResults",
+             @"nextToken" : @"NextToken",
+             };
+}
+
+@end
+
+@implementation AWSTranslateListParallelDataResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextToken" : @"NextToken",
+             @"parallelDataPropertiesList" : @"ParallelDataPropertiesList",
+             };
+}
+
++ (NSValueTransformer *)parallelDataPropertiesListJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateParallelDataProperties class]];
+}
+
+@end
+
+@implementation AWSTranslateListTagsForResourceRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"resourceArn" : @"ResourceArn",
+             };
+}
+
+@end
+
+@implementation AWSTranslateListTagsForResourceResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"tags" : @"Tags",
+             };
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateTag class]];
+}
+
+@end
+
 @implementation AWSTranslateListTerminologiesRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -232,6 +748,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateListTerminologiesResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -247,6 +767,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateListTextTranslationJobsRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -264,6 +788,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateListTextTranslationJobsResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"nextToken" : @"NextToken",
@@ -279,15 +807,218 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateOutputDataConfig
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"encryptionKey" : @"EncryptionKey",
              @"s3Uri" : @"S3Uri",
+             };
+}
+
++ (NSValueTransformer *)encryptionKeyJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateEncryptionKey class]];
+}
+
+@end
+
+@implementation AWSTranslateParallelDataConfig
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"format" : @"Format",
+             @"s3Uri" : @"S3Uri",
+             };
+}
+
++ (NSValueTransformer *)formatJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"TSV"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataFormatTsv);
+        }
+        if ([value caseInsensitiveCompare:@"CSV"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataFormatCsv);
+        }
+        if ([value caseInsensitiveCompare:@"TMX"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataFormatTmx);
+        }
+        return @(AWSTranslateParallelDataFormatUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataFormatTsv:
+                return @"TSV";
+            case AWSTranslateParallelDataFormatCsv:
+                return @"CSV";
+            case AWSTranslateParallelDataFormatTmx:
+                return @"TMX";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSTranslateParallelDataDataLocation
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"location" : @"Location",
+             @"repositoryType" : @"RepositoryType",
              };
 }
 
 @end
 
+@implementation AWSTranslateParallelDataProperties
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"arn" : @"Arn",
+             @"createdAt" : @"CreatedAt",
+             @"detail" : @"Description",
+             @"encryptionKey" : @"EncryptionKey",
+             @"failedRecordCount" : @"FailedRecordCount",
+             @"importedDataSize" : @"ImportedDataSize",
+             @"importedRecordCount" : @"ImportedRecordCount",
+             @"lastUpdatedAt" : @"LastUpdatedAt",
+             @"latestUpdateAttemptAt" : @"LatestUpdateAttemptAt",
+             @"latestUpdateAttemptStatus" : @"LatestUpdateAttemptStatus",
+             @"message" : @"Message",
+             @"name" : @"Name",
+             @"parallelDataConfig" : @"ParallelDataConfig",
+             @"skippedRecordCount" : @"SkippedRecordCount",
+             @"sourceLanguageCode" : @"SourceLanguageCode",
+             @"status" : @"Status",
+             @"targetLanguageCodes" : @"TargetLanguageCodes",
+             };
+}
+
++ (NSValueTransformer *)createdAtJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)encryptionKeyJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateEncryptionKey class]];
+}
+
++ (NSValueTransformer *)lastUpdatedAtJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)latestUpdateAttemptAtJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)latestUpdateAttemptStatusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusUpdating);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"FAILED"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusFailed);
+        }
+        return @(AWSTranslateParallelDataStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataStatusCreating:
+                return @"CREATING";
+            case AWSTranslateParallelDataStatusUpdating:
+                return @"UPDATING";
+            case AWSTranslateParallelDataStatusActive:
+                return @"ACTIVE";
+            case AWSTranslateParallelDataStatusDeleting:
+                return @"DELETING";
+            case AWSTranslateParallelDataStatusFailed:
+                return @"FAILED";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)parallelDataConfigJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataConfig class]];
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusUpdating);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"FAILED"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusFailed);
+        }
+        return @(AWSTranslateParallelDataStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataStatusCreating:
+                return @"CREATING";
+            case AWSTranslateParallelDataStatusUpdating:
+                return @"UPDATING";
+            case AWSTranslateParallelDataStatusActive:
+                return @"ACTIVE";
+            case AWSTranslateParallelDataStatusDeleting:
+                return @"DELETING";
+            case AWSTranslateParallelDataStatusFailed:
+                return @"FAILED";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
 @implementation AWSTranslateStartTextTranslationJobRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -296,6 +1027,8 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
              @"inputDataConfig" : @"InputDataConfig",
              @"jobName" : @"JobName",
              @"outputDataConfig" : @"OutputDataConfig",
+             @"parallelDataNames" : @"ParallelDataNames",
+             @"settings" : @"Settings",
              @"sourceLanguageCode" : @"SourceLanguageCode",
              @"targetLanguageCodes" : @"TargetLanguageCodes",
              @"terminologyNames" : @"TerminologyNames",
@@ -310,9 +1043,17 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateOutputDataConfig class]];
 }
 
++ (NSValueTransformer *)settingsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslationSettings class]];
+}
+
 @end
 
 @implementation AWSTranslateStartTextTranslationJobResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -371,6 +1112,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateStopTextTranslationJobRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"jobId" : @"JobId",
@@ -380,6 +1125,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateStopTextTranslationJobResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -436,7 +1185,53 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @end
 
+@implementation AWSTranslateTag
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"key" : @"Key",
+             @"value" : @"Value",
+             };
+}
+
+@end
+
+@implementation AWSTranslateTagResourceRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"resourceArn" : @"ResourceArn",
+             @"tags" : @"Tags",
+             };
+}
+
++ (NSValueTransformer *)tagsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateTag class]];
+}
+
+@end
+
+@implementation AWSTranslateTagResourceResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
 @implementation AWSTranslateTerm
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -449,11 +1244,37 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateTerminologyData
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"directionality" : @"Directionality",
              @"file" : @"File",
              @"format" : @"Format",
              };
+}
+
++ (NSValueTransformer *)directionalityJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"UNI"] == NSOrderedSame) {
+            return @(AWSTranslateDirectionalityUni);
+        }
+        if ([value caseInsensitiveCompare:@"MULTI"] == NSOrderedSame) {
+            return @(AWSTranslateDirectionalityMulti);
+        }
+        return @(AWSTranslateDirectionalityUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateDirectionalityUni:
+                return @"UNI";
+            case AWSTranslateDirectionalityMulti:
+                return @"MULTI";
+            default:
+                return nil;
+        }
+    }];
 }
 
 + (NSValueTransformer *)formatJSONTransformer {
@@ -464,6 +1285,9 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
         if ([value caseInsensitiveCompare:@"TMX"] == NSOrderedSame) {
             return @(AWSTranslateTerminologyDataFormatTmx);
         }
+        if ([value caseInsensitiveCompare:@"TSV"] == NSOrderedSame) {
+            return @(AWSTranslateTerminologyDataFormatTsv);
+        }
         return @(AWSTranslateTerminologyDataFormatUnknown);
     } reverseBlock:^NSString *(NSNumber *value) {
         switch ([value integerValue]) {
@@ -471,6 +1295,8 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
                 return @"CSV";
             case AWSTranslateTerminologyDataFormatTmx:
                 return @"TMX";
+            case AWSTranslateTerminologyDataFormatTsv:
+                return @"TSV";
             default:
                 return nil;
         }
@@ -480,6 +1306,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateTerminologyDataLocation
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -492,15 +1322,23 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateTerminologyProperties
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"arn" : @"Arn",
              @"createdAt" : @"CreatedAt",
              @"detail" : @"Description",
+             @"directionality" : @"Directionality",
              @"encryptionKey" : @"EncryptionKey",
+             @"format" : @"Format",
              @"lastUpdatedAt" : @"LastUpdatedAt",
+             @"message" : @"Message",
              @"name" : @"Name",
              @"sizeBytes" : @"SizeBytes",
+             @"skippedTermCount" : @"SkippedTermCount",
              @"sourceLanguageCode" : @"SourceLanguageCode",
              @"targetLanguageCodes" : @"TargetLanguageCodes",
              @"termCount" : @"TermCount",
@@ -515,8 +1353,55 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
     }];
 }
 
++ (NSValueTransformer *)directionalityJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"UNI"] == NSOrderedSame) {
+            return @(AWSTranslateDirectionalityUni);
+        }
+        if ([value caseInsensitiveCompare:@"MULTI"] == NSOrderedSame) {
+            return @(AWSTranslateDirectionalityMulti);
+        }
+        return @(AWSTranslateDirectionalityUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateDirectionalityUni:
+                return @"UNI";
+            case AWSTranslateDirectionalityMulti:
+                return @"MULTI";
+            default:
+                return nil;
+        }
+    }];
+}
+
 + (NSValueTransformer *)encryptionKeyJSONTransformer {
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateEncryptionKey class]];
+}
+
++ (NSValueTransformer *)formatJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CSV"] == NSOrderedSame) {
+            return @(AWSTranslateTerminologyDataFormatCsv);
+        }
+        if ([value caseInsensitiveCompare:@"TMX"] == NSOrderedSame) {
+            return @(AWSTranslateTerminologyDataFormatTmx);
+        }
+        if ([value caseInsensitiveCompare:@"TSV"] == NSOrderedSame) {
+            return @(AWSTranslateTerminologyDataFormatTsv);
+        }
+        return @(AWSTranslateTerminologyDataFormatUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateTerminologyDataFormatCsv:
+                return @"CSV";
+            case AWSTranslateTerminologyDataFormatTmx:
+                return @"TMX";
+            case AWSTranslateTerminologyDataFormatTsv:
+                return @"TSV";
+            default:
+                return nil;
+        }
+    }];
 }
 
 + (NSValueTransformer *)lastUpdatedAtJSONTransformer {
@@ -530,6 +1415,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 @end
 
 @implementation AWSTranslateTextTranslationJobFilter
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -606,6 +1495,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @implementation AWSTranslateTextTranslationJobProperties
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"dataAccessRoleArn" : @"DataAccessRoleArn",
@@ -617,6 +1510,8 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
              @"jobStatus" : @"JobStatus",
              @"message" : @"Message",
              @"outputDataConfig" : @"OutputDataConfig",
+             @"parallelDataNames" : @"ParallelDataNames",
+             @"settings" : @"Settings",
              @"sourceLanguageCode" : @"SourceLanguageCode",
              @"submittedTime" : @"SubmittedTime",
              @"targetLanguageCodes" : @"TargetLanguageCodes",
@@ -690,6 +1585,10 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
     return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateOutputDataConfig class]];
 }
 
++ (NSValueTransformer *)settingsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslationSettings class]];
+}
+
 + (NSValueTransformer *)submittedTimeJSONTransformer {
     return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
         return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
@@ -700,10 +1599,71 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
 
 @end
 
-@implementation AWSTranslateTranslateTextRequest
+@implementation AWSTranslateTranslateDocumentRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"document" : @"Document",
+             @"settings" : @"Settings",
+             @"sourceLanguageCode" : @"SourceLanguageCode",
+             @"targetLanguageCode" : @"TargetLanguageCode",
+             @"terminologyNames" : @"TerminologyNames",
+             };
+}
+
++ (NSValueTransformer *)documentJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateDocument class]];
+}
+
++ (NSValueTransformer *)settingsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslationSettings class]];
+}
+
+@end
+
+@implementation AWSTranslateTranslateDocumentResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"appliedSettings" : @"AppliedSettings",
+             @"appliedTerminologies" : @"AppliedTerminologies",
+             @"sourceLanguageCode" : @"SourceLanguageCode",
+             @"targetLanguageCode" : @"TargetLanguageCode",
+             @"translatedDocument" : @"TranslatedDocument",
+             };
+}
+
++ (NSValueTransformer *)appliedSettingsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslationSettings class]];
+}
+
++ (NSValueTransformer *)appliedTerminologiesJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateAppliedTerminology class]];
+}
+
++ (NSValueTransformer *)translatedDocumentJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslatedDocument class]];
+}
+
+@end
+
+@implementation AWSTranslateTranslateTextRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"settings" : @"Settings",
              @"sourceLanguageCode" : @"SourceLanguageCode",
              @"targetLanguageCode" : @"TargetLanguageCode",
              @"terminologyNames" : @"TerminologyNames",
@@ -711,12 +1671,21 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
              };
 }
 
++ (NSValueTransformer *)settingsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslationSettings class]];
+}
+
 @end
 
 @implementation AWSTranslateTranslateTextResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"appliedSettings" : @"AppliedSettings",
              @"appliedTerminologies" : @"AppliedTerminologies",
              @"sourceLanguageCode" : @"SourceLanguageCode",
              @"targetLanguageCode" : @"TargetLanguageCode",
@@ -724,8 +1693,219 @@ NSString *const AWSTranslateErrorDomain = @"com.amazonaws.AWSTranslateErrorDomai
              };
 }
 
++ (NSValueTransformer *)appliedSettingsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateTranslationSettings class]];
+}
+
 + (NSValueTransformer *)appliedTerminologiesJSONTransformer {
     return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSTranslateAppliedTerminology class]];
+}
+
+@end
+
+@implementation AWSTranslateTranslatedDocument
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"content" : @"Content",
+             };
+}
+
+@end
+
+@implementation AWSTranslateTranslationSettings
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"formality" : @"Formality",
+             @"profanity" : @"Profanity",
+             };
+}
+
++ (NSValueTransformer *)formalityJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"FORMAL"] == NSOrderedSame) {
+            return @(AWSTranslateFormalityFormal);
+        }
+        if ([value caseInsensitiveCompare:@"INFORMAL"] == NSOrderedSame) {
+            return @(AWSTranslateFormalityInformal);
+        }
+        return @(AWSTranslateFormalityUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateFormalityFormal:
+                return @"FORMAL";
+            case AWSTranslateFormalityInformal:
+                return @"INFORMAL";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)profanityJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"MASK"] == NSOrderedSame) {
+            return @(AWSTranslateProfanityMask);
+        }
+        return @(AWSTranslateProfanityUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateProfanityMask:
+                return @"MASK";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSTranslateUntagResourceRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"resourceArn" : @"ResourceArn",
+             @"tagKeys" : @"TagKeys",
+             };
+}
+
+@end
+
+@implementation AWSTranslateUntagResourceResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
+@end
+
+@implementation AWSTranslateUpdateParallelDataRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"clientToken" : @"ClientToken",
+             @"detail" : @"Description",
+             @"name" : @"Name",
+             @"parallelDataConfig" : @"ParallelDataConfig",
+             };
+}
+
++ (NSValueTransformer *)parallelDataConfigJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONDictionaryTransformerWithModelClass:[AWSTranslateParallelDataConfig class]];
+}
+
+@end
+
+@implementation AWSTranslateUpdateParallelDataResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"latestUpdateAttemptAt" : @"LatestUpdateAttemptAt",
+             @"latestUpdateAttemptStatus" : @"LatestUpdateAttemptStatus",
+             @"name" : @"Name",
+             @"status" : @"Status",
+             };
+}
+
++ (NSValueTransformer *)latestUpdateAttemptAtJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^id(NSNumber *number) {
+        return [NSDate dateWithTimeIntervalSince1970:[number doubleValue]];
+    } reverseBlock:^id(NSDate *date) {
+        return [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
+    }];
+}
+
++ (NSValueTransformer *)latestUpdateAttemptStatusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusUpdating);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"FAILED"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusFailed);
+        }
+        return @(AWSTranslateParallelDataStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataStatusCreating:
+                return @"CREATING";
+            case AWSTranslateParallelDataStatusUpdating:
+                return @"UPDATING";
+            case AWSTranslateParallelDataStatusActive:
+                return @"ACTIVE";
+            case AWSTranslateParallelDataStatusDeleting:
+                return @"DELETING";
+            case AWSTranslateParallelDataStatusFailed:
+                return @"FAILED";
+            default:
+                return nil;
+        }
+    }];
+}
+
++ (NSValueTransformer *)statusJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"CREATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusCreating);
+        }
+        if ([value caseInsensitiveCompare:@"UPDATING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusUpdating);
+        }
+        if ([value caseInsensitiveCompare:@"ACTIVE"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusActive);
+        }
+        if ([value caseInsensitiveCompare:@"DELETING"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusDeleting);
+        }
+        if ([value caseInsensitiveCompare:@"FAILED"] == NSOrderedSame) {
+            return @(AWSTranslateParallelDataStatusFailed);
+        }
+        return @(AWSTranslateParallelDataStatusUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSTranslateParallelDataStatusCreating:
+                return @"CREATING";
+            case AWSTranslateParallelDataStatusUpdating:
+                return @"UPDATING";
+            case AWSTranslateParallelDataStatusActive:
+                return @"ACTIVE";
+            case AWSTranslateParallelDataStatusDeleting:
+                return @"DELETING";
+            case AWSTranslateParallelDataStatusFailed:
+                return @"FAILED";
+            default:
+                return nil;
+        }
+    }];
 }
 
 @end

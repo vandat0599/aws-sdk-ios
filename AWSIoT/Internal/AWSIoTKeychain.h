@@ -18,6 +18,7 @@
 #import <Security/Security.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonCryptor.h>
+#import "AWSIoTKeyChainTypes.h"
 
 FOUNDATION_EXPORT NSString *const AWSIoTKeychainStartPrivateKeyTag;
 FOUNDATION_EXPORT NSString *const AWSIoTKeychainEndPrivateKeyTag;
@@ -39,12 +40,14 @@ FOUNDATION_EXPORT NSString *const AWSIoTKeychainEndCertKeyTag;
 
 + (BOOL)generateKeyPairWithPublicTag:(NSString *)publicTag privateTag:(NSString *)privateTag;
 + (BOOL)deleteAsymmetricKeysWithPublicTag:(NSString *)publicTag privateTag:(NSString *)privateTag;
-+ (BOOL)isValidCertificate:(NSString *)tag;
++ (BOOL)isValidCertificate:(NSString*)privateKeyTag certificateLabel:(NSString*)certificateLabel;
 + (BOOL)addCertificateToKeychain:(NSString *)cert;
++ (BOOL)addCertificateToKeychain:(NSString*)cert tag:(NSString*)tag;
 + (BOOL)addCertificateFromPemFile:(NSString*)fileName withTag:(NSString*)tag;
 + (BOOL)addCertificate:(NSData *)cert;
 + (BOOL)addCertificate:(NSData*)cert withTag:(NSString*)tag;
 + (BOOL)addCertificateRef:(SecCertificateRef)certRef;
++ (BOOL)addCertificateRef:(SecCertificateRef)certRef tag:(NSString*)tag;
 + (BOOL)removeCertificateWithTag:(NSString*)tag;
 + (BOOL)removeCertificate;
 
@@ -52,11 +55,13 @@ FOUNDATION_EXPORT NSString *const AWSIoTKeychainEndCertKeyTag;
 + (NSData *)getPublicKeyBits:(NSString *)tag;
 + (SecKeyRef)getPrivateKeyRef:(NSString *)tag;
 + (NSData *)getPrivateKeyBits:(NSString *)tag;
-+ (SecIdentityRef)getIdentityRef:(NSString *)tag;
++ (SecIdentityRef)getIdentityRef:(NSString*)privateKeyTag certificateLabel:(NSString *)certificateLabel;
 + (BOOL)addPublicKeyRef:(SecKeyRef)pubkeyRef tag:(NSString *)tag;
 + (BOOL)addPublicKey:(NSData *)pubkey tag:(NSString *)tag;
 + (BOOL)addPrivateKeyRef:(SecKeyRef)privkeyRef tag:(NSString *)tag;
 + (BOOL)addPrivateKey:(NSData *)privkey tag:(NSString *)tag;
 + (BOOL)deletePrivateKeyWithTag:(NSString*)tag;
+
++ (void)setKeyChainAccessibility:(AWSIoTKeyChainAccessibility)accessibility;
 
 @end

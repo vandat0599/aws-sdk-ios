@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -20,6 +20,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 
 @implementation AWSIoTDataDeleteThingShadowRequest
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"shadowName" : @"shadowName",
@@ -31,6 +35,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 
 @implementation AWSIoTDataDeleteThingShadowResponse
 
++ (BOOL)supportsSecureCoding {
+    return NO;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"payload" : @"payload",
@@ -39,7 +47,43 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 
 @end
 
+@implementation AWSIoTDataGetRetainedMessageRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"topic" : @"topic",
+             };
+}
+
+@end
+
+@implementation AWSIoTDataGetRetainedMessageResponse
+
++ (BOOL)supportsSecureCoding {
+    return NO;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"lastModifiedTime" : @"lastModifiedTime",
+             @"payload" : @"payload",
+             @"qos" : @"qos",
+             @"topic" : @"topic",
+             @"userProperties" : @"userProperties",
+             };
+}
+
+@end
+
 @implementation AWSIoTDataGetThingShadowRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -52,6 +96,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 
 @implementation AWSIoTDataGetThingShadowResponse
 
++ (BOOL)supportsSecureCoding {
+    return NO;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"payload" : @"payload",
@@ -61,6 +109,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 @end
 
 @implementation AWSIoTDataListNamedShadowsForThingRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -74,6 +126,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 
 @implementation AWSIoTDataListNamedShadowsForThingResponse
 
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
              @"nextToken" : @"nextToken",
@@ -84,11 +140,94 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 
 @end
 
-@implementation AWSIoTDataPublishRequest
+@implementation AWSIoTDataListRetainedMessagesRequest
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
+             @"maxResults" : @"maxResults",
+             @"nextToken" : @"nextToken",
+             };
+}
+
+@end
+
+@implementation AWSIoTDataListRetainedMessagesResponse
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"nextToken" : @"nextToken",
+             @"retainedTopics" : @"retainedTopics",
+             };
+}
+
++ (NSValueTransformer *)retainedTopicsJSONTransformer {
+    return [NSValueTransformer awsmtl_JSONArrayTransformerWithModelClass:[AWSIoTDataRetainedMessageSummary class]];
+}
+
+@end
+
+@implementation AWSIoTDataPublishRequest
+
++ (BOOL)supportsSecureCoding {
+    return NO;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"contentType" : @"contentType",
+             @"correlationData" : @"correlationData",
+             @"messageExpiry" : @"messageExpiry",
              @"payload" : @"payload",
+             @"payloadFormatIndicator" : @"payloadFormatIndicator",
+             @"qos" : @"qos",
+             @"responseTopic" : @"responseTopic",
+             @"retainValue" : @"retain",
+             @"topic" : @"topic",
+             @"userProperties" : @"userProperties",
+             };
+}
+
++ (NSValueTransformer *)payloadFormatIndicatorJSONTransformer {
+    return [AWSMTLValueTransformer reversibleTransformerWithForwardBlock:^NSNumber *(NSString *value) {
+        if ([value caseInsensitiveCompare:@"UNSPECIFIED_BYTES"] == NSOrderedSame) {
+            return @(AWSIoTDataPayloadFormatIndicatorUnspecifiedBytes);
+        }
+        if ([value caseInsensitiveCompare:@"UTF8_DATA"] == NSOrderedSame) {
+            return @(AWSIoTDataPayloadFormatIndicatorUtf8Data);
+        }
+        return @(AWSIoTDataPayloadFormatIndicatorUnknown);
+    } reverseBlock:^NSString *(NSNumber *value) {
+        switch ([value integerValue]) {
+            case AWSIoTDataPayloadFormatIndicatorUnspecifiedBytes:
+                return @"UNSPECIFIED_BYTES";
+            case AWSIoTDataPayloadFormatIndicatorUtf8Data:
+                return @"UTF8_DATA";
+            default:
+                return nil;
+        }
+    }];
+}
+
+@end
+
+@implementation AWSIoTDataRetainedMessageSummary
+
++ (BOOL)supportsSecureCoding {
+    return YES;
+}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+	return @{
+             @"lastModifiedTime" : @"lastModifiedTime",
+             @"payloadSize" : @"payloadSize",
              @"qos" : @"qos",
              @"topic" : @"topic",
              };
@@ -97,6 +236,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 @end
 
 @implementation AWSIoTDataUpdateThingShadowRequest
+
++ (BOOL)supportsSecureCoding {
+    return NO;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{
@@ -109,6 +252,10 @@ NSString *const AWSIoTDataErrorDomain = @"com.amazonaws.AWSIoTDataErrorDomain";
 @end
 
 @implementation AWSIoTDataUpdateThingShadowResponse
+
++ (BOOL)supportsSecureCoding {
+    return NO;
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
 	return @{

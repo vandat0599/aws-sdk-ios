@@ -1,5 +1,5 @@
 //
-// Copyright 2010-2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// Copyright 2010-2023 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License").
 // You may not use this file except in compliance with the License.
@@ -298,6 +298,31 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
  @see AWSPinpointTargetingCreateImportJobResponse
  */
 - (void)createImportJob:(AWSPinpointTargetingCreateImportJobRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingCreateImportJobResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Creates a new message template for messages using the in-app message channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateInAppTemplate service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingCreateInAppTemplateResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`, `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorForbidden`.
+ 
+ @see AWSPinpointTargetingCreateInAppTemplateRequest
+ @see AWSPinpointTargetingCreateInAppTemplateResponse
+ */
+- (AWSTask<AWSPinpointTargetingCreateInAppTemplateResponse *> *)createInAppTemplate:(AWSPinpointTargetingCreateInAppTemplateRequest *)request;
+
+/**
+ <p>Creates a new message template for messages using the in-app message channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the CreateInAppTemplate service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`, `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorForbidden`.
+ 
+ @see AWSPinpointTargetingCreateInAppTemplateRequest
+ @see AWSPinpointTargetingCreateInAppTemplateResponse
+ */
+- (void)createInAppTemplate:(AWSPinpointTargetingCreateInAppTemplateRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingCreateInAppTemplateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
  <p>Creates a journey for an application.</p>
@@ -773,6 +798,31 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
  @see AWSPinpointTargetingDeleteGcmChannelResponse
  */
 - (void)deleteGcmChannel:(AWSPinpointTargetingDeleteGcmChannelRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingDeleteGcmChannelResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Deletes a message template for messages sent using the in-app message channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteInAppTemplate service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingDeleteInAppTemplateResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingDeleteInAppTemplateRequest
+ @see AWSPinpointTargetingDeleteInAppTemplateResponse
+ */
+- (AWSTask<AWSPinpointTargetingDeleteInAppTemplateResponse *> *)deleteInAppTemplate:(AWSPinpointTargetingDeleteInAppTemplateRequest *)request;
+
+/**
+ <p>Deletes a message template for messages sent using the in-app message channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the DeleteInAppTemplate service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingDeleteInAppTemplateRequest
+ @see AWSPinpointTargetingDeleteInAppTemplateResponse
+ */
+- (void)deleteInAppTemplate:(AWSPinpointTargetingDeleteInAppTemplateRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingDeleteInAppTemplateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
  <p>Deletes a journey from an application.</p>
@@ -1650,6 +1700,56 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
 - (void)getImportJobs:(AWSPinpointTargetingGetImportJobsRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetImportJobsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
+ <p>Retrieves the in-app messages targeted for the provided endpoint ID.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetInAppMessages service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingGetInAppMessagesResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetInAppMessagesRequest
+ @see AWSPinpointTargetingGetInAppMessagesResponse
+ */
+- (AWSTask<AWSPinpointTargetingGetInAppMessagesResponse *> *)getInAppMessages:(AWSPinpointTargetingGetInAppMessagesRequest *)request;
+
+/**
+ <p>Retrieves the in-app messages targeted for the provided endpoint ID.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetInAppMessages service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetInAppMessagesRequest
+ @see AWSPinpointTargetingGetInAppMessagesResponse
+ */
+- (void)getInAppMessages:(AWSPinpointTargetingGetInAppMessagesRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetInAppMessagesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Retrieves the content and settings of a message template for messages sent through the in-app channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetInAppTemplate service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingGetInAppTemplateResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetInAppTemplateRequest
+ @see AWSPinpointTargetingGetInAppTemplateResponse
+ */
+- (AWSTask<AWSPinpointTargetingGetInAppTemplateResponse *> *)getInAppTemplate:(AWSPinpointTargetingGetInAppTemplateRequest *)request;
+
+/**
+ <p>Retrieves the content and settings of a message template for messages sent through the in-app channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetInAppTemplate service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetInAppTemplateRequest
+ @see AWSPinpointTargetingGetInAppTemplateResponse
+ */
+- (void)getInAppTemplate:(AWSPinpointTargetingGetInAppTemplateRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetInAppTemplateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
  <p>Retrieves information about the status, configuration, and other settings for a journey.</p>
  
  @param request A container for the necessary parameters to execute the GetJourney service method.
@@ -1748,6 +1848,81 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
  @see AWSPinpointTargetingGetJourneyExecutionMetricsResponse
  */
 - (void)getJourneyExecutionMetrics:(AWSPinpointTargetingGetJourneyExecutionMetricsRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetJourneyExecutionMetricsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Retrieves (queries) pre-aggregated data for a standard run execution metric that applies to a journey activity.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetJourneyRunExecutionActivityMetrics service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsRequest
+ @see AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse
+ */
+- (AWSTask<AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse *> *)getJourneyRunExecutionActivityMetrics:(AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsRequest *)request;
+
+/**
+ <p>Retrieves (queries) pre-aggregated data for a standard run execution metric that applies to a journey activity.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetJourneyRunExecutionActivityMetrics service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsRequest
+ @see AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse
+ */
+- (void)getJourneyRunExecutionActivityMetrics:(AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetJourneyRunExecutionActivityMetricsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Retrieves (queries) pre-aggregated data for a standard run execution metric that applies to a journey.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetJourneyRunExecutionMetrics service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetJourneyRunExecutionMetricsRequest
+ @see AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse
+ */
+- (AWSTask<AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse *> *)getJourneyRunExecutionMetrics:(AWSPinpointTargetingGetJourneyRunExecutionMetricsRequest *)request;
+
+/**
+ <p>Retrieves (queries) pre-aggregated data for a standard run execution metric that applies to a journey.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetJourneyRunExecutionMetrics service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetJourneyRunExecutionMetricsRequest
+ @see AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse
+ */
+- (void)getJourneyRunExecutionMetrics:(AWSPinpointTargetingGetJourneyRunExecutionMetricsRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetJourneyRunExecutionMetricsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Provides information about the runs of a journey.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetJourneyRuns service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingGetJourneyRunsResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetJourneyRunsRequest
+ @see AWSPinpointTargetingGetJourneyRunsResponse
+ */
+- (AWSTask<AWSPinpointTargetingGetJourneyRunsResponse *> *)getJourneyRuns:(AWSPinpointTargetingGetJourneyRunsRequest *)request;
+
+/**
+ <p>Provides information about the runs of a journey.</p>
+ 
+ @param request A container for the necessary parameters to execute the GetJourneyRuns service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingGetJourneyRunsRequest
+ @see AWSPinpointTargetingGetJourneyRunsResponse
+ */
+- (void)getJourneyRuns:(AWSPinpointTargetingGetJourneyRunsRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingGetJourneyRunsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
  <p>Retrieves the content and settings of a message template for messages that are sent through a push notification channel.</p>
@@ -2275,7 +2450,7 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
 - (void)putEvents:(AWSPinpointTargetingPutEventsRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingPutEventsResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
- <p>Removes one or more attributes, of the same attribute type, from all the endpoints that are associated with an application.</p>
+ <p>Removes one or more custom attributes, of the same attribute type, from the application. Existing endpoints still have the attributes but Amazon Pinpoint will stop capturing new or changed values for these attributes.</p>
  
  @param request A container for the necessary parameters to execute the RemoveAttributes service method.
 
@@ -2287,7 +2462,7 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
 - (AWSTask<AWSPinpointTargetingRemoveAttributesResponse *> *)removeAttributes:(AWSPinpointTargetingRemoveAttributesRequest *)request;
 
 /**
- <p>Removes one or more attributes, of the same attribute type, from all the endpoints that are associated with an application.</p>
+ <p>Removes one or more custom attributes, of the same attribute type, from the application. Existing endpoints still have the attributes but Amazon Pinpoint will stop capturing new or changed values for these attributes.</p>
  
  @param request A container for the necessary parameters to execute the RemoveAttributes service method.
  @param completionHandler The completion handler to call when the load request is complete.
@@ -2323,6 +2498,31 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
  @see AWSPinpointTargetingSendMessagesResponse
  */
 - (void)sendMessages:(AWSPinpointTargetingSendMessagesRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingSendMessagesResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Send an OTP message</p>
+ 
+ @param request A container for the necessary parameters to execute the SendOTPMessage service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingSendOTPMessageResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingSendOTPMessageRequest
+ @see AWSPinpointTargetingSendOTPMessageResponse
+ */
+- (AWSTask<AWSPinpointTargetingSendOTPMessageResponse *> *)sendOTPMessage:(AWSPinpointTargetingSendOTPMessageRequest *)request;
+
+/**
+ <p>Send an OTP message</p>
+ 
+ @param request A container for the necessary parameters to execute the SendOTPMessage service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingSendOTPMessageRequest
+ @see AWSPinpointTargetingSendOTPMessageResponse
+ */
+- (void)sendOTPMessage:(AWSPinpointTargetingSendOTPMessageRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingSendOTPMessageResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
  <p>Creates and sends a message to a list of users.</p>
@@ -2719,11 +2919,36 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
 - (void)updateGcmChannel:(AWSPinpointTargetingUpdateGcmChannelRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingUpdateGcmChannelResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 /**
+ <p>Updates an existing message template for messages sent through the in-app message channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateInAppTemplate service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingUpdateInAppTemplateResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingUpdateInAppTemplateRequest
+ @see AWSPinpointTargetingUpdateInAppTemplateResponse
+ */
+- (AWSTask<AWSPinpointTargetingUpdateInAppTemplateResponse *> *)updateInAppTemplate:(AWSPinpointTargetingUpdateInAppTemplateRequest *)request;
+
+/**
+ <p>Updates an existing message template for messages sent through the in-app message channel.</p>
+ 
+ @param request A container for the necessary parameters to execute the UpdateInAppTemplate service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingUpdateInAppTemplateRequest
+ @see AWSPinpointTargetingUpdateInAppTemplateResponse
+ */
+- (void)updateInAppTemplate:(AWSPinpointTargetingUpdateInAppTemplateRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingUpdateInAppTemplateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
  <p>Updates the configuration and other settings for a journey.</p>
  
  @param request A container for the necessary parameters to execute the UpdateJourney service method.
 
- @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingUpdateJourneyResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingUpdateJourneyResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`, `AWSPinpointTargetingErrorConflict`.
  
  @see AWSPinpointTargetingUpdateJourneyRequest
  @see AWSPinpointTargetingUpdateJourneyResponse
@@ -2736,7 +2961,7 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
  @param request A container for the necessary parameters to execute the UpdateJourney service method.
  @param completionHandler The completion handler to call when the load request is complete.
                           `response` - A response object, or `nil` if the request failed.
-                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`, `AWSPinpointTargetingErrorConflict`.
  
  @see AWSPinpointTargetingUpdateJourneyRequest
  @see AWSPinpointTargetingUpdateJourneyResponse
@@ -2967,6 +3192,31 @@ FOUNDATION_EXPORT NSString *const AWSPinpointTargetingSDKVersion;
  @see AWSPinpointTargetingUpdateVoiceTemplateResponse
  */
 - (void)updateVoiceTemplate:(AWSPinpointTargetingUpdateVoiceTemplateRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingUpdateVoiceTemplateResponse * _Nullable response, NSError * _Nullable error))completionHandler;
+
+/**
+ <p>Verify an OTP</p>
+ 
+ @param request A container for the necessary parameters to execute the VerifyOTPMessage service method.
+
+ @return An instance of `AWSTask`. On successful execution, `task.result` will contain an instance of `AWSPinpointTargetingVerifyOTPMessageResponse`. On failed execution, `task.error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingVerifyOTPMessageRequest
+ @see AWSPinpointTargetingVerifyOTPMessageResponse
+ */
+- (AWSTask<AWSPinpointTargetingVerifyOTPMessageResponse *> *)verifyOTPMessage:(AWSPinpointTargetingVerifyOTPMessageRequest *)request;
+
+/**
+ <p>Verify an OTP</p>
+ 
+ @param request A container for the necessary parameters to execute the VerifyOTPMessage service method.
+ @param completionHandler The completion handler to call when the load request is complete.
+                          `response` - A response object, or `nil` if the request failed.
+                          `error` - An error object that indicates why the request failed, or `nil` if the request was successful. On failed execution, `error` may contain an `NSError` with `AWSPinpointTargetingErrorDomain` domain and the following error code: `AWSPinpointTargetingErrorBadRequest`, `AWSPinpointTargetingErrorInternalServerError`, `AWSPinpointTargetingErrorPayloadTooLarge`, `AWSPinpointTargetingErrorForbidden`, `AWSPinpointTargetingErrorNotFound`, `AWSPinpointTargetingErrorMethodNotAllowed`, `AWSPinpointTargetingErrorTooManyRequests`.
+ 
+ @see AWSPinpointTargetingVerifyOTPMessageRequest
+ @see AWSPinpointTargetingVerifyOTPMessageResponse
+ */
+- (void)verifyOTPMessage:(AWSPinpointTargetingVerifyOTPMessageRequest *)request completionHandler:(void (^ _Nullable)(AWSPinpointTargetingVerifyOTPMessageResponse * _Nullable response, NSError * _Nullable error))completionHandler;
 
 @end
 
